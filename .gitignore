@@ -24,3 +24,15 @@ Frontend/yarn-debug.log*
 Frontend/yarn-error.log*
 
 # BACKEND
+# User defined
+/Backend/AnimalAdoptionApplication/nbproject/private/
+/Backend/AnimalAdoptionApplication/dist/
+/Backend/AnimalAdoptionApplication/build/
+
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-ejb/nbproject/private/
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-ejb/build/
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-ejb/dist/
+
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/nbproject/private/
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/dist/
+/Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/build/

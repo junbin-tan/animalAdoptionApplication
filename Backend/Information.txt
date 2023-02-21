@@ -1,0 +1,5 @@
+SQL Database: animaladoptionapplication
+JNDI Name: jdbc/animalAdoptionApplication
+JDBC Connection Pool Name: animalAdoptionApplicationConnectionPool
+Datasource Classname: com.mysql.cj.jdbc.MysqlDataSource
+Persistence Unit Name: AnimalAdoptionApplication-ejbPU
