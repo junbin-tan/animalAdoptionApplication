@@ -72,6 +72,22 @@ public class AnimalSessionBean implements AnimalSessionBeanLocal {
             return animalToRetrieve;
         }
     }
+    
+     @Override
+    public Animal retrieveAnimalById(Long id) throws AnimalNotFoundException {
+        Animal animal = em.find(Animal.class, id);
+        
+        if(animal != null)
+        {
+            return animal;
+        }
+        else
+        {
+            throw new AnimalNotFoundException("Animal ID " + id + " does not exist!");
+        }     
+    }
+    
+    
 
     @Override
     public void updateAnimal(Animal animal) throws AnimalNotFoundException {

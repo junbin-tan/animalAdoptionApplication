@@ -26,5 +26,7 @@ public interface AnimalSessionBeanLocal {
     public void updateAnimal(Animal animal) throws AnimalNotFoundException;
     
     public void deleteAnimal (Animal animal) throws AnimalNotFoundException, AnimalCannotBeRemovedException;
+
+    public Animal retrieveAnimalById(Long id) throws AnimalNotFoundException;
     
 }

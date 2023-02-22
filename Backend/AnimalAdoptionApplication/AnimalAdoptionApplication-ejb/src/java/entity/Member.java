@@ -115,5 +115,144 @@ public class Member implements Serializable {
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Boolean getOpenToFoster() {
+        return openToFoster;
+    }
+
+    public void setOpenToFoster(Boolean openToFoster) {
+        this.openToFoster = openToFoster;
+    }
+
+    public Boolean getOpenToAdopt() {
+        return openToAdopt;
+    }
+
+    public void setOpenToAdopt(Boolean openToAdopt) {
+        this.openToAdopt = openToAdopt;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public ResidentialTypeEnum getResidentialType() {
+        return residentialType;
+    }
+
+    public void setResidentialType(ResidentialTypeEnum residentialType) {
+        this.residentialType = residentialType;
+    }
+
+    public AccountStatusEnum getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatusEnum accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public List<Review> getReviewsCreated() {
+        return reviewsCreated;
+    }
+
+    public void setReviewsCreated(List<Review> reviewsCreated) {
+        this.reviewsCreated = reviewsCreated;
+    }
+
+    public List<Review> getReviewsReceived() {
+        return reviewsReceived;
+    }
+
+    public void setReviewsReceived(List<Review> reviewsReceived) {
+        this.reviewsReceived = reviewsReceived;
+    }
+
+    public List<EventListing> getEventListings() {
+        return eventListings;
+    }
+
+    public void setEventListings(List<EventListing> eventListings) {
+        this.eventListings = eventListings;
+    }
+
+    public List<EventRegistration> getEventRegistrations() {
+        return eventRegistrations;
+    }
+
+    public void setEventRegistrations(List<EventRegistration> eventRegistrations) {
+        this.eventRegistrations = eventRegistrations;
+    }
+
+    public List<AnimalListing> getAnimalListings() {
+        return animalListings;
+    }
+
+    public void setAnimalListings(List<AnimalListing> animalListings) {
+        this.animalListings = animalListings;
+    }
+
+    public List<ApplicationForm> getApplicationForms() {
+        return applicationForms;
+    }
+
+    public void setApplicationForms(List<ApplicationForm> applicationForms) {
+        this.applicationForms = applicationForms;
+    }
+
+    public List<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations) {
+        this.donations = donations;
+    }
+    
+    
+    
     
 }
