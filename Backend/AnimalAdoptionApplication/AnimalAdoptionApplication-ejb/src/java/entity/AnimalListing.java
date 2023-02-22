@@ -44,6 +44,7 @@ public class AnimalListing implements Serializable {
     private Boolean isFostering;
     private Date fosterStartDate;
     private Date fosterEndDate;
+    private Boolean isActive;
     
     @OneToOne
     @JoinColumn(nullable = false)
@@ -141,6 +142,14 @@ public class AnimalListing implements Serializable {
     public void setFosterEndDate(Date fosterEndDate) {
         this.fosterEndDate = fosterEndDate;
     }
+    
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
     public Animal getAnimal() {
         return animal;
@@ -165,4 +174,6 @@ public class AnimalListing implements Serializable {
     public void setApplicationForms(List<ApplicationForm> applicationForms) {
         this.applicationForms = applicationForms;
     }
+
+    
 }

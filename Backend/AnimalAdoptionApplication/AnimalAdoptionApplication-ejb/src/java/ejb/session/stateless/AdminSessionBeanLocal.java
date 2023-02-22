@@ -6,7 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Admin;
-import exception.AdminExistsException;
+import exception.AdminNotFoundException;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
 import javax.ejb.Local;
@@ -18,8 +18,12 @@ import javax.ejb.Local;
 @Local
 public interface AdminSessionBeanLocal {
     
-//    public Long createAdmin(Admin newAdmin) throws AdminExistsException, UnknownPersistenceException, InputDataValidationException;
-//    
-//    public Admin retrieveAdminBy
-//    
+    public Long createAdmin(Admin newAdmin) throws UnknownPersistenceException, InputDataValidationException;
+    
+    public Admin retrieveAdminByEmail(String emailAddress) throws AdminNotFoundException;
+    
+    public void updateAdmin (Admin admin) throws AdminNotFoundException;
+    
+    public void deleteAdmin (Admin admin) throws AdminNotFoundException;
+     
 }

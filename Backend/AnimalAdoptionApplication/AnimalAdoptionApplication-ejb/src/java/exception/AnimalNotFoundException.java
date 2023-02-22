@@ -9,22 +9,22 @@ package exception;
  *
  * @author yijie
  */
-public class AdminExistsException extends Exception {
+public class AnimalNotFoundException extends Exception {
 
     /**
-     * Creates a new instance of <code>AdminExistsException</code> without
+     * Creates a new instance of <code>AnimalNotFoundException</code> without
      * detail message.
      */
-    public AdminExistsException() {
+    public AnimalNotFoundException() {
     }
 
     /**
-     * Constructs an instance of <code>AdminExistsException</code> with the
+     * Constructs an instance of <code>AnimalNotFoundException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public AdminExistsException(String msg) {
+    public AnimalNotFoundException(String msg) {
         super(msg);
     }
 }
