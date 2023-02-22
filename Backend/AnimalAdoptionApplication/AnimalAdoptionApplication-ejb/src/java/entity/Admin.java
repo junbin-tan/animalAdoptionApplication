@@ -30,7 +30,7 @@ public class Admin implements Serializable {
     @Column(length = 64, nullable = false)
     @NotNull
     private String lastName;
-    @Column(length = 64, nullable = false)
+    @Column(length = 64, nullable = false, unique = true)
     @NotNull
     private String email;
     @Column(length = 10, nullable = false)
