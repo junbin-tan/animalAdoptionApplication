@@ -106,7 +106,7 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
     }
 
     @Override
-    public void updateStaff(ApplicationForm appForm) throws ApplicationNotFoundException, UpdateApplicationFormException, InputDataValidationException {
+    public void updateApplicationForm(ApplicationForm appForm) throws ApplicationNotFoundException, UpdateApplicationFormException, InputDataValidationException {
         if (appForm != null && appForm.getApplicationFormId() != null) {
             Set<ConstraintViolation<ApplicationForm>> constraintViolations = validator.validate(appForm);
 

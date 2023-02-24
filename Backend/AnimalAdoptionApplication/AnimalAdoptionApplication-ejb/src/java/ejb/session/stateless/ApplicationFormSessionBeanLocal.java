@@ -31,7 +31,7 @@ public interface ApplicationFormSessionBeanLocal {
 
     public ApplicationForm retrieveApplicationFormById(Long appFormId) throws ApplicationNotFoundException;
 
-    public void updateStaff(ApplicationForm appForm) throws ApplicationNotFoundException, UpdateApplicationFormException, InputDataValidationException;
+    public void updateApplicationForm(ApplicationForm appForm) throws ApplicationNotFoundException, UpdateApplicationFormException, InputDataValidationException;
 
     public void deleteApplicationForm(Long appFormId) throws ApplicationNotFoundException;
     
