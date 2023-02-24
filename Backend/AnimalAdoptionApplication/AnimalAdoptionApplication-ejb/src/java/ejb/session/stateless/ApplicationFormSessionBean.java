@@ -132,7 +132,10 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
         Member member = appFormToRemove.getMember();
         AnimalListing animalListing = appFormToRemove.getAnimalListing();
 
+        appFormToRemove.setMember(null);
         member.getApplicationForms().remove(appFormToRemove);
+        
+        appFormToRemove.setAnimalListing(null);
         animalListing.getApplicationForms().remove(appFormToRemove);
 
         em.remove(appFormToRemove);
