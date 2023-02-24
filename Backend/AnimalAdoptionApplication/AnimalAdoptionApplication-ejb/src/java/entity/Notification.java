@@ -36,6 +36,11 @@ public class Notification implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Date dateTime;
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    @NotNull
+    private Member member;
 
     public Notification() {
     }
@@ -95,6 +100,14 @@ public class Notification implements Serializable {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
     
     

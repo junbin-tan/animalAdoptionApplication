@@ -72,6 +72,8 @@ public class Member implements Serializable {
     private List<ApplicationForm> applicationForms;
     @OneToMany(mappedBy = "member")
     private List<Donation> donations;
+    @OneToMany(mappedBy = "member")
+    private List<Notification> notifications;
 
     public Member() {
         this.reviewsCreated = new ArrayList<Review>();
@@ -81,6 +83,7 @@ public class Member implements Serializable {
         this.animalListings = new ArrayList<AnimalListing>();
         this.applicationForms = new ArrayList<ApplicationForm>();
         this.donations = new ArrayList<Donation>();
+        this.notifications = new ArrayList<Notification>();
     }
     
     @Override
@@ -251,6 +254,15 @@ public class Member implements Serializable {
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
     }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+    
     
     
     
