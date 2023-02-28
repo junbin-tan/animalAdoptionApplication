@@ -5,7 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>AnimalAdoptionApplication-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">libs.Jakarta_EE_8_API_Library.classpath</included-library>
+            <included-library dirs="200">libs.jakartaee-api-8.0.classpath</included-library>
+            <included-library dirs="200">file.reference.stripe-java-22.11.0-beta.1.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

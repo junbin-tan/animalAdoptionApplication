@@ -28,6 +28,7 @@ public class Donation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
+	
     @Column(nullable = false)
     @NotNull
     private Date date;
