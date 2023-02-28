@@ -15,7 +15,7 @@ const Contact = () => {
 
   return (
     <>
-      <CommonSection title="Contact" />
+      <CommonSection title="Events & Marketing" />
       <section>
         <Container>
           <Row>
