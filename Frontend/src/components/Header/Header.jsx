@@ -6,19 +6,19 @@ import { NavLink, Link } from "react-router-dom";
 
 const NAV__LINKS = [
   {
-    display: "Home",
+    display: "Homepage",
     url: "/home",
   },
   {
-    display: "Market",
+    display: "Adoption/Fostering",
     url: "/market",
   },
   {
-    display: "Create",
+    display: "Donation",
     url: "/create",
   },
   {
-    display: "Contact",
+    display: "Events & Marketing",
     url: "/contact",
   },
 ];
@@ -56,7 +56,7 @@ const Header = () => {
               <span>
                 <i class="ri-fire-fill"></i>
               </span>
-              NFTs
+              Pawfect
             </h2>
           </div>
 

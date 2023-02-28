@@ -21,7 +21,7 @@ const item = {
 const Create = () => {
   return (
     <>
-      <CommonSection title="Create Item" />
+      <CommonSection title="Donation" />
 
       <section>
         <Container>
