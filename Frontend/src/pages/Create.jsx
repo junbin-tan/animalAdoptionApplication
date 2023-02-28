@@ -1,28 +1,24 @@
 import React from "react";
+import {Link, Route, Routes} from 'react-router-dom';
 
-import { Container, Row, Col } from "reactstrap";
+import {  Container, Row, Col } from "reactstrap";
 import CommonSection from "../components/ui/Common-section/CommonSection";
 import NftCard from "../components/ui/Nft-card/NftCard";
-import img from "../assets/images/img-01.jpg";
+import img from "../assets/images/qrCode.png";
 import avatar from "../assets/images/ava-01.png";
 
 import "../styles/create-item.css";
 
 const item = {
-  id: "01",
-  title: "Guard",
-  desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
   imgUrl: img,
-  creator: "Trista Francis",
   creatorImg: avatar,
-  currentBid: 7.89,
+  creator: "Trista Francis",
 };
 
 const Create = () => {
   return (
     <>
       <CommonSection title="Donation" />
-
       <section>
         <Container>
           <Row>
@@ -34,43 +30,9 @@ const Create = () => {
             <Col lg="9" md="8" sm="6">
               <div className="create__item">
                 <form>
-                  <div className="form__input">
-                    <label htmlFor="">Upload File</label>
-                    <input type="file" className="upload__input" />
-                  </div>
 
                   <div className="form__input">
-                    <label htmlFor="">Price</label>
-                    <input
-                      type="number"
-                      placeholder="Enter price for one item (ETH)"
-                    />
-                  </div>
-
-                  <div className="form__input">
-                    <label htmlFor="">Minimum Bid</label>
-                    <input type="number" placeholder="Enter minimum bid" />
-                  </div>
-
-                  <div className=" d-flex align-items-center gap-4">
-                    <div className="form__input w-50">
-                      <label htmlFor="">Starting Date</label>
-                      <input type="date" />
-                    </div>
-
-                    <div className="form__input w-50">
-                      <label htmlFor="">Expiration Date</label>
-                      <input type="date" />
-                    </div>
-                  </div>
-
-                  <div className="form__input">
-                    <label htmlFor="">Title</label>
-                    <input type="text" placeholder="Enter title" />
-                  </div>
-
-                  <div className="form__input">
-                    <label htmlFor="">Description</label>
+                    <label htmlFor="">Leave a comment!</label>
                     <textarea
                       name=""
                       id=""
@@ -79,7 +41,19 @@ const Create = () => {
                       className="w-100"
                     ></textarea>
                   </div>
+                  <div></div>
                 </form>
+              </div>
+              <div>
+                <a
+                  href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="bid__btn d-flex align-items-center gap-1">
+                    <i class="ri-search-2-line"></i> Proccede with Donation
+                  </button>
+                </a>
               </div>
             </Col>
           </Row>
