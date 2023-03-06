@@ -1,4 +1,8 @@
 import React from "react";
+<<<<<<< Updated upstream
+=======
+//import {Link, Route, Routes} from 'react-router-dom';
+>>>>>>> Stashed changes
 
 import { Container, Row, Col } from "reactstrap";
 import CommonSection from "../components/ui/Common-section/CommonSection";

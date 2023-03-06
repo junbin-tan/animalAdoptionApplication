@@ -82,7 +82,7 @@ const Header = () => {
               <span>
                 <i class="ri-wallet-line"></i>
               </span>
-              <Link to="/wallet">Connect Wallet</Link>
+              <Link to="/create">Donate Now!</Link>
             </button>
 
             <span className="mobile__menu">
