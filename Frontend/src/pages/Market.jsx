@@ -4,14 +4,14 @@ import CommonSection from "../components/ui/Common-section/CommonSection";
 
 import NftCard from "../components/ui/Nft-card/NftCard";
 
-import { MOST_VIEWED } from "../assets/data/data";
+import { ADOPTION_FOSTERING } from "../assets/data/data";
 
 import { Container, Row, Col } from "reactstrap";
 
 import "../styles/market.css";
 
 const Market = () => {
-  const [data, setData] = useState(MOST_VIEWED);
+  const [data, setData] = useState(ADOPTION_FOSTERING);
 
   const handleCategory = () => {};
 
@@ -22,13 +22,13 @@ const Market = () => {
     const filterValue = e.target.value;
 
     if (filterValue === "high") {
-      const filterData = MOST_VIEWED.filter((item) => item.currentBid >= 6);
+      const filterData = ADOPTION_FOSTERING.filter((item) => item.currentBid >= 6);
 
       setData(filterData);
     }
 
     if (filterValue === "mid") {
-      const filterData = MOST_VIEWED.filter(
+      const filterData = ADOPTION_FOSTERING.filter(
         (item) => item.currentBid >= 5.5 && item.currentBid < 6
       );
 
@@ -36,7 +36,7 @@ const Market = () => {
     }
 
     if (filterValue === "low") {
-      const filterData = MOST_VIEWED.filter(
+      const filterData = ADOPTION_FOSTERING.filter(
         (item) => item.currentBid >= 4.89 && item.currentBid < 5.5
       );
 
@@ -85,7 +85,7 @@ const Market = () => {
               </div>
             </Col>
 
-            {data?.map((item) => (
+            {ADOPTION_FOSTERING.map((item) => (
               <Col lg="3" md="4" sm="6" className="mb-4" key={item.id}>
                 <NftCard item={item} />
               </Col>
