@@ -34,7 +34,7 @@ const NftCard = (props) => {
 
             <div>
               <h6>Published On</h6>
-              <p>12 May 2023</p>
+              <p>28 Febuary 2023</p>
             </div>
           </div>
         </div>
