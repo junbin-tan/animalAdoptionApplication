@@ -150,7 +150,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                  sumRating += reviewToRetrieve.get(i).getRating();           
             }
             
-            return sumRating/reviewToRetrieve.size() ;
+            return sumRating/reviewToRetrieve.size() ; // calculate average rating
         }
     }
     
