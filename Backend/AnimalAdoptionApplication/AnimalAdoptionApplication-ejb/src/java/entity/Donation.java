@@ -7,8 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +45,7 @@ public class Donation implements Serializable {
     @Column(nullable = true)
     private DonationStatusEnum donationStatus;
     
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private Member member;
 	

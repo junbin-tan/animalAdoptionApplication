@@ -7,8 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,20 +29,20 @@ public class Testimonial implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long testimonialId;
+	
     @Column(nullable = false)
     @NotNull
     private String message;
+	
     @Column(nullable = false)
     @NotNull
     private Date date;
     
     @OneToOne
-    @JoinColumn(nullable = false)
-    @NotNull
+    @JoinColumn(nullable = true)
     private Donation donation;
 
-    public Testimonial() {
-    }
+    public Testimonial() {}
     
     @Override
     public int hashCode() {

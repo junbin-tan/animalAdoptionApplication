@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Donation;
+import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
 import javax.ejb.Local;
@@ -18,5 +19,9 @@ import javax.ejb.Local;
 public interface DonationSessionBeanLocal {
 
 	public Long createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException;
+
+	public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException;
+
+	public long setDonationToTestimonial(Long donationId, Long testId);
 	
 }

@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Donation;
+import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
 import java.util.Set;
@@ -73,7 +74,61 @@ public class DonationSessionBean implements DonationSessionBeanLocal {
         }
     }
 
+	@Override
+    public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException {
+        Set<ConstraintViolation<Testimonial>>constraintViolations = validator.validate(newTestimonial);
+        
+        if(constraintViolations.isEmpty()) {
+            try {
+                entityManager.persist(newTestimonial);
+                entityManager.flush();
+
+                return newTestimonial.getTestimonialId();
+            }
+            catch(PersistenceException ex)
+            {
+                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
+                    {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                    else
+                    {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                }
+                else
+                {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            }
+        }
+        else
+        {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessageForTestimonial(constraintViolations));
+        }
+    }
+
+	public long setDonationToTestimonial(Long donationId, Long testId) {
+		Donation d = entityManager.find(Donation.class, donationId);
+		Testimonial test = entityManager.find(Testimonial.class, testId);
+		test.setDonation(d);
+		entityManager.flush();
+		return test.getTestimonialId();
+	}
+
 	 private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Donation>>constraintViolations) {
+        String msg = "Input data validation error!:";
+            
+        for(ConstraintViolation constraintViolation:constraintViolations)
+        {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+        
+        return msg;
+    }
+	 
+	 private String prepareInputDataValidationErrorsMessageForTestimonial(Set<ConstraintViolation<Testimonial>>constraintViolations) {
         String msg = "Input data validation error!:";
             
         for(ConstraintViolation constraintViolation:constraintViolations)

@@ -52,8 +52,16 @@ public class DonationResource {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public Donation createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException {
 		Date currentDate = new Date();
+		
 		newDonation.setDate(currentDate);
-		donationSessionBeanLocal.createNewDonation(newDonation);
+		newDonation.getTestimonial().setDate(currentDate);
+		
+		Testimonial newTestimonial = newDonation.getTestimonial();
+
+		long testId = donationSessionBeanLocal.createNewTestimonial(newDonation.getTestimonial());
+		newDonation.setTestimonial(newTestimonial);
+		long donationId = donationSessionBeanLocal.createNewDonation(newDonation);
+		donationSessionBeanLocal.setDonationToTestimonial(donationId, testId);
 		return newDonation;
 	} 
 
