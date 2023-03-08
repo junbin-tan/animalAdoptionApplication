@@ -184,10 +184,11 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         List<EventRegistration> eventRegistration = memberToRemove.getEventRegistrations();
         List<AnimalListing> animalListing = memberToRemove.getAnimalListings();
         List<ApplicationForm> applicationForms = memberToRemove.getApplicationForms();
-        List<Donation> donations = memberToRemove.getDonations();
+        //List<Donation> donations = memberToRemove.getDonations();
         
         
-        if(reviewsCreated.isEmpty() && reviewsReceived.isEmpty() && eventListing.isEmpty() && eventRegistration.isEmpty() && animalListing.isEmpty() && applicationForms.isEmpty() && donations.isEmpty())
+        /*
+		if(reviewsCreated.isEmpty() && reviewsReceived.isEmpty() && eventListing.isEmpty() && eventRegistration.isEmpty() && animalListing.isEmpty() && applicationForms.isEmpty() && donations.isEmpty())
         {
             em.remove(memberToRemove);
         }
@@ -195,8 +196,8 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         {
             throw new DeleteMemberException("Member ID " + memberId + " is associated with existing items and cannot be deleted!");
         }
+		*/
     }
-    
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Member>>constraintViolations) {
         String msg = "Input data validation error!:";
@@ -206,13 +207,5 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         }
         return msg;
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
 }
