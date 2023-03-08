@@ -9,13 +9,13 @@ package exception;
  *
  * @author Jun Bin
  */
-public class MemberExistException extends Exception{
+public class MemberExistsException extends Exception{
 
     /**
      * Creates a new instance of <code>MemberExistException</code> without
      * detail message.
      */
-    public MemberExistException() {
+    public MemberExistsException() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class MemberExistException extends Exception{
      *
      * @param msg the detail message.
      */
-    public MemberExistException(String msg) {
+    public MemberExistsException(String msg) {
         super(msg);
     }
 }

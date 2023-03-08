@@ -8,7 +8,7 @@ package ejb.session.stateless;
 import entity.Member;
 import exception.DeleteMemberException;
 import exception.InputDataValidationException;
-import exception.MemberExistException;
+import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
@@ -22,7 +22,7 @@ import javax.ejb.Local;
 @Local
 public interface MemberSessionBeanLocal {
 
-    public Long createMember(Member newMember) throws MemberExistException, UnknownPersistenceException, InputDataValidationException;
+    public Long createMember(Member newMember) throws MemberExistsException, UnknownPersistenceException, InputDataValidationException;
 
     public List<Member> retrieveAllMembers();
 

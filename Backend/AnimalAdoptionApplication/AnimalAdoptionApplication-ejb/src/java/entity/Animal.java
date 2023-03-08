@@ -55,8 +55,7 @@ public class Animal implements Serializable {
     private Boolean isNeutered;
     
     @OneToOne
-    @JoinColumn(nullable = false)
-    @NotNull
+    @JoinColumn(nullable = true)
     private AnimalListing animalListing;
 
     public Animal() {

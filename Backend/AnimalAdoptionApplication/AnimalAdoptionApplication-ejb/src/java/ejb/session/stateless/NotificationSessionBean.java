@@ -11,16 +11,18 @@ import entity.Member;
 import entity.Notification;
 import exception.InputDataValidationException;
 import exception.MemberNotFoundException;
-import exception.NotificationExistException;
+import exception.NotificationExistsException;
 import exception.NotificationNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateNotificationException;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -48,17 +50,15 @@ public class NotificationSessionBean implements NotificationSessionBeanLocal {
     }
     
     @Override
-    public Long createNewNotification(Notification newNotification, Member member) throws UnknownPersistenceException, InputDataValidationException, NotificationExistException, MemberNotFoundException {
+    public Long createNewNotification(String emailAddress, Notification newNotification) throws UnknownPersistenceException, InputDataValidationException, NotificationExistsException, MemberNotFoundException {
         Set<ConstraintViolation<Notification>> constraintViolations = validator.validate(newNotification);
         if (constraintViolations.isEmpty()) {
             try {
 
-                Member managedMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+                Member managedMember = memberSessionBeanLocal.retrieveMemberByEmail(emailAddress);
 
                 newNotification.setMember(managedMember);
                 managedMember.getNotifications().add(newNotification);
-
-           
 
                 em.persist(newNotification);
                 em.flush();
@@ -67,7 +67,7 @@ public class NotificationSessionBean implements NotificationSessionBeanLocal {
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new NotificationExistException();
+                        throw new NotificationExistsException();
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }
@@ -89,6 +89,22 @@ public class NotificationSessionBean implements NotificationSessionBeanLocal {
         } else {
             throw new NotificationNotFoundException("Notification ID " + notificationId + " not found!");
         }
+    }
+    
+    @Override
+    public List<Notification> retrieveAllNotificationsToMember(String emailAddress) throws MemberNotFoundException {
+       try { 
+            Member memberToRetrieve = memberSessionBeanLocal.retrieveMemberByEmail(emailAddress);
+            Long memberId = memberToRetrieve.getMemberId();
+
+            Query query = em.createQuery("SELECT n FROM Notification n WHERE n.member.memberId = :memberId");
+            query.setParameter("memberId", memberId);
+            
+            return query.getResultList();
+            
+       } catch (MemberNotFoundException ex) {
+           throw new MemberNotFoundException(ex.getMessage());
+       }
     }
     
     
@@ -127,15 +143,6 @@ public class NotificationSessionBean implements NotificationSessionBeanLocal {
         
         em.remove(notificationToRemove);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Notification>> constraintViolations) {
         String msg = "Input data validation error!:";

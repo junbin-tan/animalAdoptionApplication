@@ -9,13 +9,13 @@ package exception;
  *
  * @author jiawe
  */
-public class NotificationExistException extends Exception {
+public class NotificationExistsException extends Exception {
 
     /**
      * Creates a new instance of <code>NotificationExistException</code> without
      * detail message.
      */
-    public NotificationExistException() {
+    public NotificationExistsException() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class NotificationExistException extends Exception {
      *
      * @param msg the detail message.
      */
-    public NotificationExistException(String msg) {
+    public NotificationExistsException(String msg) {
         super(msg);
     }
 }

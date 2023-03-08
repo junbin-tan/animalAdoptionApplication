@@ -33,7 +33,7 @@ public class Donation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
 	
-	@Temporal(TemporalType.DATE)	
+    @Temporal(TemporalType.DATE)	
     private Date date;
 	
     @Column(nullable = true)
@@ -45,7 +45,7 @@ public class Donation implements Serializable {
     @Column(nullable = true)
     private DonationStatusEnum donationStatus;
     
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private Member member;
 	

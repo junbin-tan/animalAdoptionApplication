@@ -70,7 +70,7 @@ public class Member implements Serializable {
     private List<AnimalListing> animalListings;
     @OneToMany(mappedBy = "member")
     private List<ApplicationForm> applicationForms;
-	@OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member")
     private List<Donation> donations;
     @OneToMany(mappedBy = "member")
     private List<Notification> notifications;
@@ -84,6 +84,7 @@ public class Member implements Serializable {
         this.applicationForms = new ArrayList<ApplicationForm>();
         this.donations = new ArrayList<Donation>();
         this.notifications = new ArrayList<Notification>();
+        this.accountStatus = AccountStatusEnum.UNVERIFIED;
     }
     
     @Override

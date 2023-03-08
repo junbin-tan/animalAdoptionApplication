@@ -5,48 +5,60 @@
  */
 package webservices.restful;
 
+import ejb.session.stateless.MemberSessionBeanLocal;
+import entity.Member;
+import exception.InputDataValidationException;
+import exception.MemberExistsException;
+import exception.UnknownPersistenceException;
+import javax.ejb.EJB;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
  *
  * @author jiawe
  */
-@Path("members")
+@Path("member")
 public class MembersResource {
+    @EJB
+    private MemberSessionBeanLocal memberSessionBeanLocal;
 
     @Context
     private UriInfo context;
 
-    /**
-     * Creates a new instance of MembersResource
-     */
     public MembersResource() {
     }
-
-    /**
-     * Retrieves representation of an instance of webservices.restful.MembersResource
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * PUT method for updating or creating an instance of MembersResource
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    
+    @POST
+    @Path("/createMember")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createMember(Member newMember) {
+        try {
+           memberSessionBeanLocal.createMember(newMember);
+           
+           return Response.status(204).build();
+            
+        } catch (UnknownPersistenceException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        
+        } catch (InputDataValidationException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        
+        } catch (MemberExistsException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", "Member already exists.").build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
     }
 }
