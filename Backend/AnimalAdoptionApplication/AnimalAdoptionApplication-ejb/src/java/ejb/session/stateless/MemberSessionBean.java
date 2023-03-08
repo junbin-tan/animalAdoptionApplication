@@ -14,7 +14,7 @@ import entity.Member;
 import entity.Review;
 import exception.DeleteMemberException;
 import exception.InputDataValidationException;
-import exception.MemberExistException;
+import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
@@ -54,7 +54,7 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
     
     
     @Override
-    public Long createMember(Member newMember) throws MemberExistException, UnknownPersistenceException, InputDataValidationException
+    public Long createMember(Member newMember) throws MemberExistsException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<Member>>constraintViolations = validator.validate(newMember);
         
@@ -73,7 +73,7 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new MemberExistException();
+                        throw new MemberExistsException();
                     }
                     else
                     {

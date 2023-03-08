@@ -10,8 +10,8 @@ package entity;
  * @author yijie
  */
 public enum AccountStatusEnum {
-    VERIFIED,
     UNVERIFIED,
+    VERIFIED,
     DEACTIVATED,
     FLAGGED
 }

@@ -27,7 +27,7 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
-    @Column(length = 64, nullable = false)
+    @Column(nullable = false)
     @NotNull
     private String title;
     @Column(nullable = false)
@@ -38,11 +38,12 @@ public class Notification implements Serializable {
     private Date dateTime;
     
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @NotNull
+    //Design purposes such that this can be null before passing it into the NotificationSessionBean. Otherwise, it will result in exception. 
+    //The code design in session bean and front end will ensure member's email is fed to the method.
     private Member member;
 
     public Notification() {
+        this.dateTime = new Date();
     }
 
     @Override

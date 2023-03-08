@@ -18,7 +18,7 @@ import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
 import exception.ListingNotFoundException;
-import exception.MemberExistException;
+import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
