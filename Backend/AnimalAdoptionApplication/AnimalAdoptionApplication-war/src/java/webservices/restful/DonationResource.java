@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
  */@Path("donation")
 public class DonationResource {
 
-	@GET
+    @GET
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     public String getJson() throws Exception {
         //TODO return proper representation object
