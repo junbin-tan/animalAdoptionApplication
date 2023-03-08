@@ -47,7 +47,7 @@ function App() {
 
         </div>
       </ThemeProvider>
-      {/* Once you comment out Layout below, the topbar that Jun Bin created would work. Once Layout is uncommented, it would not work. */}
+      {/* Once you comment out Layout below, you will see the home page of the website */}
       {/* <Layout />  */}
     </ColorModeContext.Provider>
   );
