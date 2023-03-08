@@ -7,14 +7,18 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,28 +33,27 @@ public class Donation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
 	
-    @Column(nullable = false)
-    @NotNull
+	@Temporal(TemporalType.DATE)	
     private Date date;
-    @Column(nullable = false)
-    @NotNull
+	
+    @Column(nullable = true)
     private PaymentModeEnum paymentMode;
-    @Column(nullable = false)
-    @NotNull
+	
+    @Column(nullable = true)
     private Double amount;
-    @Column(nullable = false)
-    @NotNull
+	
+    @Column(nullable = true)
     private DonationStatusEnum donationStatus;
     
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    @NotNull
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = true)
     private Member member;
+	
     @OneToOne
+    @JoinColumn(nullable = true)
     private Testimonial testimonial;
 
-    public Donation() {
-    }
+    public Donation() {}
     
     @Override
     public int hashCode() {
@@ -117,7 +120,7 @@ public class Donation implements Serializable {
         this.donationStatus = donationStatus;
     }
 
-    public Member getMember() {
+	public Member getMember() {
         return member;
     }
 
@@ -132,7 +135,4 @@ public class Donation implements Serializable {
     public void setTestimonial(Testimonial testimonial) {
         this.testimonial = testimonial;
     }
-    
-    
-    
 }

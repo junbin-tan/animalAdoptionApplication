@@ -70,7 +70,7 @@ public class Member implements Serializable {
     private List<AnimalListing> animalListings;
     @OneToMany(mappedBy = "member")
     private List<ApplicationForm> applicationForms;
-    @OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member")
     private List<Donation> donations;
     @OneToMany(mappedBy = "member")
     private List<Notification> notifications;
@@ -247,7 +247,7 @@ public class Member implements Serializable {
         this.applicationForms = applicationForms;
     }
 
-    public List<Donation> getDonations() {
+	public List<Donation> getDonations() {
         return donations;
     }
 
@@ -262,9 +262,5 @@ public class Member implements Serializable {
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
     }
-    
-    
-    
-    
     
 }
