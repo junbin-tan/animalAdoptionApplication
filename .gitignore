@@ -6,6 +6,12 @@ Frontend/node_modules
 Frontend/.pnp
 Frontend/.pnp.js
 
+# public_frontend
+# dependencies
+public_frontend/node_modules
+public_frontend/.pnp
+public_frontend/.pnp.js
+
 # testing
 Frontend/coverage
 
