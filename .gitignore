@@ -23,6 +23,29 @@ Frontend/npm-debug.log*
 Frontend/yarn-debug.log*
 Frontend/yarn-error.log*
 
+# PUBLIC FRONTEND 
+# dependencies
+public_frontend/node_modules
+public_frontend/.pnp
+public_frontend/.pnp.js
+
+# testing
+public_frontend/coverage
+
+# production
+public_frontend/build
+
+# misc
+public_frontend/.DS_Store
+public_frontend/.env.local
+public_frontend/.env.development.local
+public_frontend/.env.test.local
+public_frontend/.env.production.local
+
+public_frontend/npm-debug.log*
+public_frontend/yarn-debug.log*
+public_frontend/yarn-error.log*
+
 # BACKEND
 # User defined
 /Backend/AnimalAdoptionApplication/nbproject/private/
