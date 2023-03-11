@@ -8,10 +8,19 @@ import { classNames } from "primereact/utils";
 import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Api from "../../helpers/Api";
+import { useNavigate } from "react-router-dom";
 // Initialize Userfront Core JS
 Userfront.init("5nx5q8vb");
 
 const LoginPage = () => {
+
+  // redirect to register page if user clicks on register button on login page
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path = `/register`; 
+    navigate(path);
+  }
+
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
 
@@ -169,6 +178,8 @@ const LoginPage = () => {
               {/* Submit button */}
               <Button type="submit" label="Login" className="mt-2" />
             </form>
+              {/* Register button  */}
+              <Button label="Register" className="mt-2" onClick={routeChange}/>
           </div>
         </div>
       </div>

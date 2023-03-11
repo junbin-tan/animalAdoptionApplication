@@ -90,7 +90,7 @@ const RegisterPage = () => {
         method: "password",
         email: data.email,
         password: data.password,
-        redirect: false,
+        redirect: "/",
         data: data,
       })
         .then((response) => {
