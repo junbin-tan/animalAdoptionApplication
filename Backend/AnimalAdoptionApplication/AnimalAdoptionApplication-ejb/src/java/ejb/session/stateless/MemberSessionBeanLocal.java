@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Member;
 import exception.DeleteMemberException;
 import exception.InputDataValidationException;
+import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
@@ -33,5 +34,7 @@ public interface MemberSessionBeanLocal {
     public void updateMember(Member oldMember) throws MemberNotFoundException, UpdateMemberException, InputDataValidationException;
 
     public void deleteMember(Long memberId) throws MemberNotFoundException, DeleteMemberException;
+
+    public Member memberLogin(String email, String password) throws InvalidLoginCredentialException;
     
 }
