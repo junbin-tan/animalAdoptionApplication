@@ -14,6 +14,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import RegisterPage from "./pages/register/registerPage";
 import LoginPage from "./pages/login/loginPage";
+import DonationPage from "./pages/Donation/donationPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -29,7 +30,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/Donation" element={<DonationPage />} />
               </Routes>
             </main>
 
