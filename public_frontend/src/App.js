@@ -1,6 +1,7 @@
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Userfront from "@userfront/core";
 //theme
 import "primereact/resources/themes/lara-light-blue/theme.css";   
 //core

@@ -4,6 +4,8 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
+import Userfront from "@userfront/core";
+
 
 // icon import
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -14,7 +16,7 @@ import CallIcon from '@mui/icons-material/Call';
 import InfoIcon from '@mui/icons-material/Info';
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"; 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -23,7 +25,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     <MenuItem
       active={selected === title}
       style={{ colors: colors.grey[100] }}
-      onClick={() => setSelected(title)}
+      onClick={() => {
+          setSelected(title);
+          if(title === "Logout") {
+              Userfront.logout();
+          }
+      }}
       icon={icon}
     >
       <Typography>{title}</Typography>

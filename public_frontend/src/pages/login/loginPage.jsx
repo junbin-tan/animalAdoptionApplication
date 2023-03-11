@@ -5,8 +5,11 @@ import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
+import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Api from "../../helpers/Api";
+// Initialize Userfront Core JS
+Userfront.init("5nx5q8vb");
 
 const LoginPage = () => {
   const [showMessage, setShowMessage] = useState(false);
@@ -37,17 +40,32 @@ const LoginPage = () => {
     onSubmit: (data) => {
       //   setFormData(data);
       console.log(data);
-      Api.login(data).then((response) => {
-        const jsonData = response.json();
-        jsonData.then((data) => {
-          if (data.error) {
-            setFormData(data);
-            setShowMessage(true);
-          } else {
-            // redirect to home page
-          }
+      Userfront.login({
+        method: "password",
+        emailOrUsername: data.email,
+        password: data.password,
+        redirect: "/"
+      })
+        .then((response) => {
+          Api.login(data).then((response) => {
+            const jsonData = response.json();
+            jsonData.then((data) => {
+              if (data.error) {
+                setFormData(data);
+                setShowMessage(true);
+              } else {
+                // redirect to home page
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.log(error.message);
+          data.error = error.message;
+          setFormData(data);
+          setShowMessage(true);
         });
-      });
+
       formik.resetForm();
     },
   });
@@ -87,7 +105,7 @@ const LoginPage = () => {
           <div className="flex align-items-center flex-column pt-6 px-3">
             <i
               className="pi pi-times"
-              style={{ fontSize: "5rem", color: "var(--green-500)" }}
+              style={{ fontSize: "5rem", color: "var(--red-500)" }}
             ></i>
             <h5>Login Failed!</h5>
             <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
