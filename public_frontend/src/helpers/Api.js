@@ -23,6 +23,16 @@ const Api = {
         body: JSON.stringify(data),
      });
    },
+   createNewDonation(data) {
+      return fetch(`${SERVER_PREFIX}/donation/createNewDonation`, {
+         headers: {
+             Accept: "application/json",
+             "Content-Type": "application/json",
+         },
+         method: "POST",
+         body: JSON.stringify(data),
+      });
+    },
 };
 
 export default Api;

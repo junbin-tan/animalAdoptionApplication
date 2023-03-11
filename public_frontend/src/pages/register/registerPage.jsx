@@ -9,8 +9,13 @@ import { Checkbox } from "primereact/checkbox";
 import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
 import { classNames } from "primereact/utils";
+import Userfront from "@userfront/core";
 import "./registerPage.css";
 import Api from "../../helpers/Api";
+import { date } from "yup";
+
+// Initialize Userfront Core JS
+Userfront.init("5nx5q8vb");
 
 const RegisterPage = () => {
   const residentialTypes = [
@@ -58,7 +63,6 @@ const RegisterPage = () => {
         errors.phoneNumber = "Phone number is required.";
       }
 
-
       if (!data.location) {
         errors.location = "Location is required";
       }
@@ -80,10 +84,34 @@ const RegisterPage = () => {
     onSubmit: (data) => {
       setFormData(data);
       delete data.accept; // delete accept json property because we don't need to submit it to backend restful
-      data.residentialType = data.residentialType['name']; //extract out residential type value (HDB, LANDED, CONDO)
+      data.residentialType = data.residentialType["name"]; //extract out residential type value (HDB, LANDED, CONDO)
       console.log(data);
-      Api.createMember(data).then((data) => setShowMessage(true));
-    //   setShowMessage(true);
+      Userfront.signup({
+        method: "password",
+        email: data.email,
+        password: data.password,
+        redirect: "/",
+        data: data,
+      })
+        .then((response) => {
+          Api.createMember(data).then((response) => {
+            // TODO: redirect to home page
+            setShowMessage(true);
+          });
+        })
+        .catch((response) => {
+          const jsonData = response.json();
+          jsonData.then((data) => {
+            setFormData(data);
+            setShowMessage(true);
+          });
+        })
+        .catch((error) => {
+          console.log(error.message);
+          data.error = error.message;
+          setFormData(data);
+          setShowMessage(true);
+        });
 
       formik.resetForm();
     },
@@ -136,16 +164,37 @@ const RegisterPage = () => {
           style={{ width: "30vw" }}
         >
           <div className="flex align-items-center flex-column pt-6 px-3">
-            <i
-              className="pi pi-check-circle"
-              style={{ fontSize: "5rem", color: "var(--green-500)" }}
-            ></i>
-            <h5>Registration Successful!</h5>
-            <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
-              Your account is registered under name <b>{formData.name}</b> ;
-              it'll be valid next 30 days without activation. Please check{" "}
-              <b>{formData.email}</b> for activation instructions.
-            </p>
+
+            {/* when got error, show error message for register */}
+            {formData.error && (
+              <>
+                <i
+                  className="pi pi-times"
+                  style={{ fontSize: "5rem", color: "var(--red-500)" }}
+                ></i>
+
+                <h5>Registration Error!</h5>
+                <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
+                  <b>{formData.error}</b>
+                </p>
+              </>
+            )}
+            {/* when no error, show success register */}
+            {!formData.error && (
+              <>
+                <i
+                  className="pi pi-check-circle"
+                  style={{ fontSize: "5rem", color: "var(--green-500)" }}
+                ></i>
+
+                <h5>Registration Successful!</h5>
+                <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
+                  Your account is registered under name <b>{formData.name}</b> ;
+                  it'll be valid next 30 days without activation. Please check{" "}
+                  <b>{formData.email}</b> for activation instructions.
+                </p>
+              </>
+            )} 
           </div>
         </Dialog>
         <div className="flex justify-content-center">
