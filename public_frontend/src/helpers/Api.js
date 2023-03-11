@@ -12,7 +12,17 @@ const Api = {
         method: "POST",
         body: JSON.stringify(data),
      });
-   }
+   },
+   login(data) {
+      return fetch(`${SERVER_PREFIX}/member/login`, {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+     });
+   },
 };
 
 export default Api;
