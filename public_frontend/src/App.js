@@ -1,11 +1,18 @@
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
-
+//theme
+import "primereact/resources/themes/lara-light-blue/theme.css";   
+//core
+import "primereact/resources/primereact.min.css";
+//icons
+import "primeicons/primeicons.css";  
 // importing scene/pages to set up routers
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
+import RegisterPage from "./pages/register/registerPage";
+import LoginPage from "./pages/login/loginPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -20,6 +27,8 @@ function App() {
               <Topbar />
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
               </Routes>
             </main>
 

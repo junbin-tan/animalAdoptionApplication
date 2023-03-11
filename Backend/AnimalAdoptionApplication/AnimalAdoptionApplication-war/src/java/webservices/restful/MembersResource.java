@@ -8,8 +8,12 @@ package webservices.restful;
 import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.Member;
 import exception.InputDataValidationException;
+import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
 import exception.UnknownPersistenceException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -19,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -58,6 +63,20 @@ public class MembersResource {
         
         } catch (MemberExistsException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Member already exists.").build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(JsonObject o) {
+        try {
+            Member m = memberSessionBeanLocal.memberLogin(o.getString("email"), o.getString("password"));
+            return Response.status(200).entity(m).build();
+        } catch (InvalidLoginCredentialException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }

@@ -14,6 +14,7 @@ import entity.Member;
 import entity.Review;
 import exception.DeleteMemberException;
 import exception.InputDataValidationException;
+import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
@@ -50,6 +51,30 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
     {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
+    }
+    
+    @Override
+    public Member memberLogin(String email, String password) throws InvalidLoginCredentialException {
+        try {
+            Member member = retrieveMemberByEmail(email);
+            
+            if (member.getPassword().equals(password)) {
+                member.getReviewsCreated().size();
+                member.getReviewsReceived().size();
+                member.getEventListings().size();
+                member.getEventRegistrations().size();
+                member.getAnimalListings().size();
+                member.getApplicationForms().size();
+                member.getDonations().size();
+                member.getNotifications().size();
+                
+                return member;
+            } else {
+                throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
+            }
+        } catch (MemberNotFoundException ex) {
+            throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
+        }
     }
     
     
