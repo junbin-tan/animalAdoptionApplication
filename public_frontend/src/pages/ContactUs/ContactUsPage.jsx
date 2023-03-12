@@ -7,8 +7,11 @@ import "./ContactUsPage.css";
 
 
 const ContactUsPage = () => {
+    // const [name, setName] =useState("");
+    // const [email, setEmail] =useState("");
+    // const [message, setMessage] =useState("");
     const [showMessage, setShowMessage] = useState(false);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState();
 
     const formik = useFormik({
         initialValues: {
@@ -42,6 +45,10 @@ const ContactUsPage = () => {
 
         onSubmit: (data) => {
           setFormData(data);
+          // setName(data.name);
+          // setEmail(data.email);
+          // setMessage(data.message)
+          // window.location = 'mailto:pawfectIS3106@gmail.com?subject=' + name + '_' + email + 'mailto!&body=' + message;
           delete data.accept;
           formik.resetForm();
         },
