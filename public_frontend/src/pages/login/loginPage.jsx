@@ -14,16 +14,15 @@ import Auth from "../../helpers/Auth";
 Userfront.init("5nx5q8vb");
 
 const LoginPage = () => {
-
   // redirect user to dashboard page if user is already logged in
   Auth.redirectIfLoggedIn("/");
 
   // redirect to register page if user clicks on register button on login page
-  let navigate = useNavigate(); 
-  const routeChange = () =>{ 
-    let path = `/register`; 
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `/register`;
     navigate(path);
-  }
+  };
 
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
@@ -51,33 +50,65 @@ const LoginPage = () => {
       return errors;
     },
     onSubmit: (data) => {
-      //   setFormData(data);
       console.log(data);
-      Userfront.login({
-        method: "password",
-        emailOrUsername: data.email,
-        password: data.password,
-        redirect: "/"
-      })
+
+      Api.login(data)
         .then((response) => {
-          Api.login(data).then((response) => {
-            const jsonData = response.json();
-            jsonData.then((data) => {
-              if (data.error) {
+          const responseJson = response.json();
+          responseJson.then((responseJsonData) => {
+            if (responseJsonData.error) {
+              setFormData(responseJsonData);
+              setShowMessage(true);
+            } else {
+              // call Userfront library auth here
+              Userfront.login({
+                method: "password",
+                emailOrUsername: data.email,
+                password: data.password,
+                redirect: "/",
+              }).catch((error) => {
+                console.log(error.message);
+                data.error = error.message;
                 setFormData(data);
                 setShowMessage(true);
-              } else {
-                // redirect to home page
-              }
-            });
+              });
+            }
           });
         })
         .catch((error) => {
-          console.log(error.message);
-          data.error = error.message;
+          // this error here caught when java server is not on or null pointer exception :(
+          console.log(error);
+          data.error =
+            "Our backend server is facing issues right now. Please try again later.";
           setFormData(data);
           setShowMessage(true);
         });
+
+      // Userfront.login({
+      //   method: "password",
+      //   emailOrUsername: data.email,
+      //   password: data.password,
+      //   redirect: "/"
+      // })
+      //   .then((response) => {
+      //     Api.login(data).then((response) => {
+      //       const jsonData = response.json();
+      //       jsonData.then((data) => {
+      //         if (data.error) {
+      //           setFormData(data);
+      //           setShowMessage(true);
+      //         } else {
+      //           // redirect to home page
+      //         }
+      //       });
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log(error.message);
+      //     data.error = error.message;
+      //     setFormData(data);
+      //     setShowMessage(true);
+      //   });
 
       formik.resetForm();
     },
@@ -182,8 +213,8 @@ const LoginPage = () => {
               {/* Submit button */}
               <Button type="submit" label="Login" className="mt-2" />
             </form>
-              {/* Register button  */}
-              <Button label="Register" className="mt-2" onClick={routeChange}/>
+            {/* Register button  */}
+            <Button label="Register" className="mt-2" onClick={routeChange} />
           </div>
         </div>
       </div>

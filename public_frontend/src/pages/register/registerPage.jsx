@@ -92,32 +92,43 @@ const RegisterPage = () => {
 
       Api.createMember(data)
         .then((response) => {
-          Userfront.signup({
-            method: "password",
-            email: data.email,
-            password: data.password,
-            redirect: "/",
-            data: data,
-          })
-            .then((response) => {
-              setShowMessage(true);
-            })
-            .catch((error) => {
-              data.error = error.message;
-              setFormData(data);
-              setShowMessage(true);
+          if (response.ok) {
+            // response ok code 200 from java backend
+            const responseJson = response.json();
+            responseJson.then((responseJsonData) => {
+              Userfront.signup({
+                method: "password",
+                email: data.email,
+                password: data.password,
+                redirect: "/",
+                data: responseJsonData, // store member obj data from java into userfront auth library
+              })
+                .then((response) => {
+                  setShowMessage(true);
+                })
+                .catch((error) => {
+                  data.error = error.message;
+                  setFormData(data);
+                  setShowMessage(true);
+                });
             });
+          } else {
+            const responseJson = response.json();
+            responseJson.then((responseJsonData) => {
+              if (responseJsonData.error) {
+                setFormData(responseJsonData);
+                setShowMessage(true);
+              }
+            });
+          }
         })
         .catch((error) => {
+          // this error here caught when java server is not on or null pointer exception :(
           console.log(error);
-          data.error = "Our backend server is facing issues right now. Please try again later.";
+          data.error =
+            "Our backend server is facing issues right now. Please try again later.";
           setFormData(data);
           setShowMessage(true);
-          // const jsonData = error.json();
-          // jsonData.then((data) => {
-          //   setFormData(data);
-          //   setShowMessage(true);
-          // });
         });
 
       // Userfront.signup({
