@@ -5,6 +5,7 @@
  */
 package webservices.restful;
 
+import com.auth0.jwt.algorithms.Algorithm;
 import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.Member;
 import exception.InputDataValidationException;
