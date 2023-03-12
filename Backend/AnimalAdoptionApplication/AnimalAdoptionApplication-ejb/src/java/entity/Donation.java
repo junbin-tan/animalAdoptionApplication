@@ -45,8 +45,10 @@ public class Donation implements Serializable {
     @Column(nullable = true)
     private PaymentModeEnum paymentMode;
 	
-    @Column(nullable = true)
+    /*
+	@Column(nullable = true)
     private Double amount;
+	*/
 	
     @Column(nullable = true)
     private DonationTypeEnum donationType;
@@ -111,13 +113,15 @@ public class Donation implements Serializable {
         this.paymentMode = paymentMode;
     }
 
-    public Double getAmount() {
+    /*
+	public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+	*/
 
 
 	public Member getMember() {

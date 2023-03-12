@@ -11,6 +11,25 @@ import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
 import Auth from "../../helpers/Auth";
 
+const handleAnchorClick = event => {
+  // 👇️ use event.preventDefault() if you want to
+  // prevent navigation
+  // event.preventDefault();
+  <a
+  onClick={handleAnchorClick}
+  href="https://bobbyhadz.com"
+  target="_blank"
+  rel="noreferrer"
+>
+  bobbyhadz.com
+</a>
+
+  console.log('Anchor element clicked');
+
+  // 👇️ refers to the link element
+  console.log(event.currentTarget);
+};
+
 const DonationPage = () => {
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
@@ -31,12 +50,12 @@ const DonationPage = () => {
  //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
+  const [toNext, setToNext] = useState(false)
 
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      amount: "",
       donationType: "",
       testimonial: "",
       accept: false,
@@ -51,10 +70,6 @@ const DonationPage = () => {
       ) {
         errors.email = "Invalid email address. E.g. example@email.com";
       }
-      if (!data.amount) {
-        errors.amount = "Please specify an amount.";
-      }
-
       if (!data.donationType) {
         errors.residentialType = "Donation Type is required.";
       }
@@ -68,12 +83,14 @@ const DonationPage = () => {
     onSubmit: (data) => {
       setFormData(data);
       delete data.accept;
-      data.donationType = data.donationType["name"];
+      data.donationType = data.donationType["name"].toUpperCase();
       const test = {message:data.testimonial};
       data.testimonial = test;
       console.log(data);
       Api.createNewDonation(data).then((data) => setShowMessage(true));
       formik.resetForm();
+      setToNext(true)
+      
     },
   });
 
@@ -89,12 +106,14 @@ const DonationPage = () => {
 
   const dialogFooter = (
     <div className="flex justify-content-center">
+    <a href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII" target="_blank" rel="noopener noreferrer">
       <Button
-        label="OK"
+        label="Redirect me"
         className="p-button-text"
         autoFocus
         onClick={() => setShowMessage(false)}
       />
+       </a>
     </div>
   );
 
@@ -168,33 +187,6 @@ const DonationPage = () => {
                   </label>
                 </span>
                 {getFormErrorMessage("name")}
-              </div>
-
-              {/* Amount textbox */}
-              <div className="field">
-                <span className="p-float-label">
-                  <InputText
-                    type="number"
-                    pattern="[0-9]*"
-                    id="amount"
-                    name="amount"
-                    value={formik.values.amount}
-                    onChange={formik.handleChange}
-                    autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("amount"),
-                    })}
-                  />
-                  <label
-                    htmlFor="name"
-                    className={classNames({
-                      "p-error": isFormFieldValid("amount"),
-                    })}
-                  >
-                    Donation Amount*
-                  </label>
-                </span>
-                {getFormErrorMessage("amount")}
               </div>
 
               {/* Email textbox */}
