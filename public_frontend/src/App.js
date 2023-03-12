@@ -15,6 +15,7 @@ import RegisterPage from "./pages/register/registerPage";
 import LoginPage from "./pages/login/loginPage";
 import DonationPage from "./pages/Donation/donationPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,6 +33,7 @@ function App() {
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
               <Route exact path="/Donation" element={<DonationPage />} />
+              <Route exact path="/Contact" element={<ContactUsPage />} />
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />

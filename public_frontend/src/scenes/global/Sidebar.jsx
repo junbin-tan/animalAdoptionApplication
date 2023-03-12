@@ -23,7 +23,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   return (
     <MenuItem
       active={selected === title}
-      style={{ colors: colors.grey[100] }}
+      style={{ colors: colors.grey[100]}}
       onClick={() => {
         setSelected(title);
         if (title === "Logout") {
@@ -71,13 +71,13 @@ const Sidebar = () => {
           },
         }}
       >
-        <ProSidebar collapsed={isCollapsed}>
+        <ProSidebar collapsed={isCollapsed} style={{height: "100vh" }}>
           <Menu iconShape="square">
             {/* Create logo and menu icons here */}
             <MenuItem
               onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-              style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
+              style={{ margin: "10px 0 20px 0", color: colors.grey[100]}}
             >
               {!isCollapsed && (
                 <Box
