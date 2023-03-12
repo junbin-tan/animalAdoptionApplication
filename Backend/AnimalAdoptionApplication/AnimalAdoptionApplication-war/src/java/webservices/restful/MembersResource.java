@@ -5,11 +5,13 @@
  */
 package webservices.restful;
 
+import com.auth0.jwt.algorithms.Algorithm;
 import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.Member;
 import exception.InputDataValidationException;
 import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
+import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,10 +51,9 @@ public class MembersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createMember(Member newMember) {
         try {
-           memberSessionBeanLocal.createMember(newMember);
-           
-           return Response.status(204).build();
-            
+           Long memId = memberSessionBeanLocal.createMember(newMember);
+           Member m = memberSessionBeanLocal.retrieveMemberByMemberId(memId);
+           return Response.status(200).entity(m).build();
         } catch (UnknownPersistenceException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
@@ -63,6 +64,9 @@ public class MembersResource {
         
         } catch (MemberExistsException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Member already exists.").build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        } catch (MemberNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
