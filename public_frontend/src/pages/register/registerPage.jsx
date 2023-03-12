@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -12,12 +12,16 @@ import { classNames } from "primereact/utils";
 import Userfront from "@userfront/core";
 import "./registerPage.css";
 import Api from "../../helpers/Api";
-import { date } from "yup";
+import Auth from "../../helpers/Auth";
 
 // Initialize Userfront Core JS
 Userfront.init("5nx5q8vb");
 
 const RegisterPage = () => {
+
+  // redirect user to dashboard page if user is already logged in
+  Auth.redirectIfLoggedIn("/");
+
   const residentialTypes = [
     { name: "HDB", code: "HDB" },
     { name: "CONDO", code: "CONDO" },

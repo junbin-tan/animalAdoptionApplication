@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -9,10 +9,14 @@ import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Api from "../../helpers/Api";
 import { useNavigate } from "react-router-dom";
+import Auth from "../../helpers/Auth";
 // Initialize Userfront Core JS
 Userfront.init("5nx5q8vb");
 
 const LoginPage = () => {
+
+  // redirect user to dashboard page if user is already logged in
+  Auth.redirectIfLoggedIn("/");
 
   // redirect to register page if user clicks on register button on login page
   let navigate = useNavigate(); 

@@ -1,12 +1,13 @@
 import { Box } from "@mui/system";
 import Header from "../../components/Header";
-import Userfront from "@userfront/core";
+import Auth from "../../helpers/Auth";
 
 const Dashboard = () => {
   // if the user tries to access dashboard while logged out, redirect them to /login. Do this for every single page that requires user to be logged in
-  Userfront.redirectIfLoggedOut({redirect: "/login"});
+  Auth.redirectIfLoggedOut();
   // If the user is logged in, show the dashboard
-  const userData = JSON.stringify(Userfront.user, null, 2); // get user data
+  const currentUser = Auth.getUser();
+  const userData = currentUser && JSON.stringify(currentUser, null, 2); // get user data
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">

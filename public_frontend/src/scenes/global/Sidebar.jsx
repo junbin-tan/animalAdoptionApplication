@@ -4,7 +4,7 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-import Userfront from "@userfront/core";
+import Auth from "../../helpers/Auth";
 
 // icon import
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -27,7 +27,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       onClick={() => {
         setSelected(title);
         if (title === "Logout") {
-          Userfront.logout();
+          Auth.logout();
         }
       }}
       icon={icon}
@@ -46,11 +46,11 @@ const Sidebar = () => {
   // check what page you are currently at
   const [selected, setSelected] = useState("Dashboard");
 
-  const isLoggedIn = Userfront.tokens.accessToken;
-  const currentUser = isLoggedIn && Userfront.user;
+  // get currrent user if authenticated
+  const currentUser = Auth.getUser();
 
   //!important will overidee the background
-  if (isLoggedIn) {
+  if (currentUser) {
     return (
       <Box
         sx={{
