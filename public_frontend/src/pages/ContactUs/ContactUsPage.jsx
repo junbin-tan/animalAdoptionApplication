@@ -18,14 +18,17 @@ const ContactUsPage = () => {
         validate: (data) => {
           let errors = {};
     
-          if (!data.email) {
-            errors.email = "Email is required.";
-          
-          }    
-        
           if (!data.name) {
             errors.name = "Name is required.";
-        
+          }
+
+          if (!data.email) {
+            errors.email = "Email is required.";
+          }
+
+          if (!data.message) {
+            errors.message = "Message is required.";
+
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
           
@@ -38,11 +41,7 @@ const ContactUsPage = () => {
 
         onSubmit: (data) => {
           setFormData(data);
-          delete data.accept; 
-        //   data.residentialType = data.residentialType['name']; //extract out residential type value (HDB, LANDED, CONDO)
-        //   console.log(data);
-        //   Api.createMember(data).then((data) => setShowMessage(true));
-    
+          delete data.accept;
           formik.resetForm();
         },
       });
@@ -71,10 +70,10 @@ const ContactUsPage = () => {
 
 return (
     <>
-    <h2> Drop us a message! </h2>
+    <h2> Contact Us</h2>
+    <h3> Drop us a message! </h3>
         <div className="flex justify-content-center">
             <div className="card">
-            <h5 className="text-center">Register</h5>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
             
                 {/* Name textbox */}
@@ -104,8 +103,7 @@ return (
 
                 {/* Email textbox */}
                 <div className="field">
-                <span className="p-float-label p-input-icon-right">
-                    <i className="pi pi-envelope" />
+                <span className="p-float-label" style={{ marginTop: '15px'}}>
                     <InputText
                     id="email"
                     name="email"
@@ -129,8 +127,7 @@ return (
 
                 {/* Message textbox */}
                 <div className="field">
-                <span className="p-float-label p-input-icon-right">
-                    <i className="pi pi-envelope" />
+                <span className="p-float-label" style={{ marginTop: '15px'}}>
                     <InputText
                     id="message"
                     name="message"
@@ -139,6 +136,7 @@ return (
                     className={classNames({
                         "p-invalid": isFormFieldValid("message"),
                     })}
+                    style={{height: '180px'}}
                     />
                     <label
                     htmlFor="message"
@@ -146,7 +144,7 @@ return (
                         "p-error": isFormFieldValid("message"),
                     })}
                     >
-                    Drop us a message!*
+                    Message*
                     </label>
                 </span>
                 {getFormErrorMessage("message")}
