@@ -7,7 +7,7 @@ package webservices.restful;
 
 import ejb.session.stateless.DonationSessionBeanLocal;
 import entity.Donation;
-import entity.DonationStatusEnum;
+import entity.DonationTypeEnum;
 import entity.Member;
 import entity.PaymentModeEnum;
 import entity.Testimonial;
@@ -55,6 +55,7 @@ public class DonationResource {
 		
 		newDonation.setDate(currentDate);
 		newDonation.getTestimonial().setDate(currentDate);
+		newDonation.setPaymentMode(PaymentModeEnum.CREDITCARD); //only supports credit card as of now, may support paynow etc in the future
 		
 		Testimonial newTestimonial = newDonation.getTestimonial();
 

@@ -9,8 +9,7 @@ package entity;
  *
  * @author yijie
  */
-public enum DonationStatusEnum {
-    COMPLETED,
-    PENDING,
-    CANCELLED
+public enum DonationTypeEnum {
+	ANONYMOUS,
+	OPEN
 }

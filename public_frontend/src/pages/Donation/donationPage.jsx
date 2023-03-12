@@ -9,22 +9,26 @@ import { classNames } from "primereact/utils";
 import "./donationPage.css";
 import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
+import Auth from "../../helpers/Auth";
 
-const RegisterPage = () => {
+const DonationPage = () => {
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
     { name: "Open", code: "Open" },
   ];
-  /*
-  {
-"paymentMode": "CREDITCARD",
-"amount": "1500.0",
-"donationStatus" : "PENDING",
-"testimonial" : {
-    "message" : "This website is good!"
-    }
-}
+  //JSON format that will be parsed
+/*
+{
+  "name" : "Alwin",
+  "email" : "alwinngjw@gmail.com",
+  "amount": "1500.0",
+  "donationType" : "OPEN",
+  "testimonial" : {
+      "message" : "This website is good!"
+      }
+  }
   */
+ //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
 
@@ -32,6 +36,7 @@ const RegisterPage = () => {
     initialValues: {
       name: "",
       email: "",
+      amount: "",
       donationType: "",
       testimonial: "",
       accept: false,
@@ -45,6 +50,9 @@ const RegisterPage = () => {
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
       ) {
         errors.email = "Invalid email address. E.g. example@email.com";
+      }
+      if (!data.amount) {
+        errors.amount = "Please specify an amount.";
       }
 
       if (!data.donationType) {
@@ -63,10 +71,8 @@ const RegisterPage = () => {
       data.donationType = data.donationType["name"];
       const test = {message:data.testimonial};
       data.testimonial = test;
-      //data.testimonial;
       console.log(data);
       Api.createNewDonation(data).then((data) => setShowMessage(true));
-
       formik.resetForm();
     },
   });
@@ -131,7 +137,7 @@ const RegisterPage = () => {
             ></i>
             <h5>Donation Successful!</h5>
             <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
-                You will be Redirected to Stripe's payment gateway
+              You will be Redirected to Stripe's payment gateway
             </p>
           </div>
         </Dialog>
@@ -162,6 +168,33 @@ const RegisterPage = () => {
                   </label>
                 </span>
                 {getFormErrorMessage("name")}
+              </div>
+
+              {/* Amount textbox */}
+              <div className="field">
+                <span className="p-float-label">
+                  <InputText
+                    type="number"
+                    pattern="[0-9]*"
+                    id="amount"
+                    name="amount"
+                    value={formik.values.amount}
+                    onChange={formik.handleChange}
+                    autoFocus
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("amount"),
+                    })}
+                  />
+                  <label
+                    htmlFor="name"
+                    className={classNames({
+                      "p-error": isFormFieldValid("amount"),
+                    })}
+                  >
+                    Donation Amount*
+                  </label>
+                </span>
+                {getFormErrorMessage("amount")}
               </div>
 
               {/* Email textbox */}
@@ -274,4 +307,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default DonationPage;
