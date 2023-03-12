@@ -18,7 +18,6 @@ import Auth from "../../helpers/Auth";
 Userfront.init("5nx5q8vb");
 
 const RegisterPage = () => {
-
   // redirect user to dashboard page if user is already logged in
   Auth.redirectIfLoggedIn("/");
 
@@ -90,32 +89,74 @@ const RegisterPage = () => {
       delete data.accept; // delete accept json property because we don't need to submit it to backend restful
       data.residentialType = data.residentialType["name"]; //extract out residential type value (HDB, LANDED, CONDO)
       console.log(data);
-      Userfront.signup({
-        method: "password",
-        email: data.email,
-        password: data.password,
-        redirect: "/",
-        data: data,
-      })
+
+      Api.createMember(data)
         .then((response) => {
-          Api.createMember(data).then((response) => {
-            // TODO: redirect to home page
-            setShowMessage(true);
-          });
-        })
-        .catch((response) => {
-          const jsonData = response.json();
-          jsonData.then((data) => {
-            setFormData(data);
-            setShowMessage(true);
-          });
+          if (response.ok) {
+            // response ok code 200 from java backend
+            const responseJson = response.json();
+            responseJson.then((responseJsonData) => {
+              Userfront.signup({
+                method: "password",
+                email: data.email,
+                password: data.password,
+                redirect: "/",
+                data: responseJsonData, // store member obj data from java into userfront auth library
+              })
+                .then((response) => {
+                  setShowMessage(true);
+                })
+                .catch((error) => {
+                  data.error = error.message;
+                  setFormData(data);
+                  setShowMessage(true);
+                });
+            });
+          } else {
+            const responseJson = response.json();
+            responseJson.then((responseJsonData) => {
+              if (responseJsonData.error) {
+                setFormData(responseJsonData);
+                setShowMessage(true);
+              }
+            });
+          }
         })
         .catch((error) => {
-          console.log(error.message);
-          data.error = error.message;
+          // this error here caught when java server is not on or null pointer exception :(
+          console.log(error);
+          data.error =
+            "Our backend server is facing issues right now. Please try again later.";
           setFormData(data);
           setShowMessage(true);
         });
+
+      // Userfront.signup({
+      //   method: "password",
+      //   email: data.email,
+      //   password: data.password,
+      //   redirect: "/",
+      //   data: data,
+      // })
+      //   .then((response) => {
+      //     Api.createMember(data).then((response) => {
+      //       // TODO: redirect to home page
+      //       setShowMessage(true);
+      //     });
+      //   })
+      //   .catch((response) => {
+      //     const jsonData = response.json();
+      //     jsonData.then((data) => {
+      //       setFormData(data);
+      //       setShowMessage(true);
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log(error.message);
+      //     data.error = error.message;
+      //     setFormData(data);
+      //     setShowMessage(true);
+      //   });
 
       formik.resetForm();
     },
@@ -168,7 +209,6 @@ const RegisterPage = () => {
           style={{ width: "30vw" }}
         >
           <div className="flex align-items-center flex-column pt-6 px-3">
-
             {/* when got error, show error message for register */}
             {formData.error && (
               <>
@@ -198,7 +238,7 @@ const RegisterPage = () => {
                   <b>{formData.email}</b> for activation instructions.
                 </p>
               </>
-            )} 
+            )}
           </div>
         </Dialog>
         <div className="flex justify-content-center">
