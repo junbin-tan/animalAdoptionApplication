@@ -46,11 +46,9 @@ const Api = {
          body: JSON.stringify(data),
       });
     },
-    testAuthorization() { // testing method to ensure only authenticated user can call certain API methods, like we don't want unauthenticated user able to call API methods like createEvent
-      return fetch(`${SERVER_PREFIX}/member/testAuth`, {
+   getMember() { // get Actual member json object with all data like donations, testimonials, events, etc
+      return fetch(`${SERVER_PREFIX}/member/getMember/${Auth.getUser().email}`, {
          headers: {
-             Accept: "application/json",
-             "Content-Type": "application/json",
              "Authorization": `Bearer ${Auth.getAccessToken()}`,
          },
          method: "GET",
