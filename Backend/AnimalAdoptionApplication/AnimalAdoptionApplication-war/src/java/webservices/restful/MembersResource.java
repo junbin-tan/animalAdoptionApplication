@@ -13,6 +13,8 @@ import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -22,6 +24,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -34,6 +37,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("member")
 public class MembersResource {
+
     @EJB
     private MemberSessionBeanLocal memberSessionBeanLocal;
 
@@ -42,24 +46,24 @@ public class MembersResource {
 
     public MembersResource() {
     }
-    
+
     @POST
     @Path("/createMember")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createMember(Member newMember) {
         try {
-           Long memId = memberSessionBeanLocal.createMember(newMember);
-           Member m = memberSessionBeanLocal.retrieveMemberByMemberId(memId);
-           return Response.status(200).entity(m).build();
+            Long memId = memberSessionBeanLocal.createMember(newMember);
+            Member m = memberSessionBeanLocal.retrieveMemberByMemberId(memId);
+            return Response.status(200).entity(m).build();
         } catch (UnknownPersistenceException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        
+
         } catch (InputDataValidationException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        
+
         } catch (MemberExistsException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Member already exists.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
@@ -68,7 +72,7 @@ public class MembersResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -82,23 +86,29 @@ public class MembersResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @GET
-    @Path("/testAuth")
+    @Path("/getMember/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response testAuth(@Context HttpHeaders headers) {
+    public Response getMember(@Context HttpHeaders headers, @PathParam("email") String email) {
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
         boolean validToken = JwtVerification.verifyJwtToken(token);
         String msg = "";
         if (validToken) {
             msg = "User calling this is a verified Userfront user. YAY!";
-            return Response.status(200).entity(msg).build();
+            try {
+                Member m = memberSessionBeanLocal.retrieveMemberByEmail(email);
+                return Response.status(200).entity(m).build();
+            } catch (MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            }
         } else {
             msg = "Invalid Userfront user! Go away!";
             JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
 }
