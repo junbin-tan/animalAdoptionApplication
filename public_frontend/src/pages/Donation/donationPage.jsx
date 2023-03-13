@@ -3,30 +3,60 @@ import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import { InputMask } from "primereact/inputmask";
-import { Password } from "primereact/password";
 import { Checkbox } from "primereact/checkbox";
 import { Dialog } from "primereact/dialog";
-import { Divider } from "primereact/divider";
 import { classNames } from "primereact/utils";
 import "./donationPage.css";
 import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
+import Auth from "../../helpers/Auth";
 
-const RegisterPage = () => {
-  const residentialTypes = [
-    { name: "HDB", code: "HDB" },
-    { name: "CONDO", code: "CONDO" },
-    { name: "LANDED", code: "LANDED" },
+const handleAnchorClick = event => {
+  // 👇️ use event.preventDefault() if you want to
+  // prevent navigation
+  // event.preventDefault();
+  <a
+  onClick={handleAnchorClick}
+  href="https://bobbyhadz.com"
+  target="_blank"
+  rel="noreferrer"
+>
+  bobbyhadz.com
+</a>
+
+  console.log('Anchor element clicked');
+
+  // 👇️ refers to the link element
+  console.log(event.currentTarget);
+};
+
+const DonationPage = () => {
+  const donationType = [
+    { name: "Anonymous", code: "anonymous" },
+    { name: "Open", code: "Open" },
   ];
+  //JSON format that will be parsed
+/*
+{
+  "name" : "Alwin",
+  "email" : "alwinngjw@gmail.com",
+  "amount": "1500.0",
+  "donationType" : "OPEN",
+  "testimonial" : {
+      "message" : "This website is good!"
+      }
+  }
+  */
+ //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
+  const [toNext, setToNext] = useState(false)
 
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      residentialType: "",
+      donationType: "",
       testimonial: "",
       accept: false,
     },
@@ -40,9 +70,8 @@ const RegisterPage = () => {
       ) {
         errors.email = "Invalid email address. E.g. example@email.com";
       }
-
-      if (!data.residentialType) {
-        errors.residentialType = "Residential Type is required.";
+      if (!data.donationType) {
+        errors.residentialType = "Donation Type is required.";
       }
 
       if (!data.accept) {
@@ -53,12 +82,15 @@ const RegisterPage = () => {
     },
     onSubmit: (data) => {
       setFormData(data);
-      delete data.accept; 
-      data.residentialType = data.residentialType['name']; //extract out residential type value (HDB, LANDED, CONDO)
+      delete data.accept;
+      data.donationType = data.donationType["name"].toUpperCase();
+      const test = {message:data.testimonial};
+      data.testimonial = test;
       console.log(data);
-      Api.createMember(data).then((data) => setShowMessage(true));
-
+      Api.createNewDonation(data).then((data) => setShowMessage(true));
       formik.resetForm();
+      setToNext(true)
+      
     },
   });
 
@@ -74,20 +106,39 @@ const RegisterPage = () => {
 
   const dialogFooter = (
     <div className="flex justify-content-center">
+    <a href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII" target="_blank" rel="noopener noreferrer">
       <Button
-        label="OK"
+        label="Redirect me"
         className="p-button-text"
         autoFocus
         onClick={() => setShowMessage(false)}
       />
+       </a>
     </div>
   );
 
   return (
     <>
-      <div style={{ margin: "5px" }}>
-        <img src={logo} alt="qrCode" style={{ width: "300px" }} />
+      <div
+        style={{
+          margin: "5px",
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        <img
+          src={logo}
+          alt="qrCode"
+          style={{
+            width: "300px",
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+        />
       </div>
+
       <div className="form-demo">
         <Dialog
           visible={showMessage}
@@ -105,17 +156,14 @@ const RegisterPage = () => {
             ></i>
             <h5>Donation Successful!</h5>
             <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
-              Your account is registered under name <b>{formData.name}</b> ;
-              it'll be valid next 30 days without activation. Please check{" "}
-              <b>{formData.email}</b> for activation instructions.
+              You will be Redirected to Stripe's payment gateway
             </p>
           </div>
         </Dialog>
         <div className="flex justify-content-center">
           <div className="card">
-            <h5 className="text-center">Register</h5>
+            <h5 className="text-center">Donate</h5>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
-            
               {/* Name textbox */}
               <div className="field">
                 <span className="p-float-label">
@@ -166,27 +214,27 @@ const RegisterPage = () => {
                 {getFormErrorMessage("email")}
               </div>
 
-              {/* Residential Type dropdown list */}
+              {/* Donation Type dropdown list */}
               <div className="field">
                 <span className="p-float-label">
                   <Dropdown
-                    id="residentialType"
-                    name="residentialType"
-                    value={formik.values.residentialType}
+                    id="donationType"
+                    name="donationType"
+                    value={formik.values.donationType}
                     onChange={formik.handleChange}
-                    options={residentialTypes}
+                    options={donationType}
                     optionLabel="name"
                     className={classNames({
                       "p-invalid": isFormFieldValid("residentialType"),
                     })}
                   />
                   <label
-                    htmlFor="residentialType"
+                    htmlFor="donationType"
                     className={classNames({
-                      "p-error": isFormFieldValid("residentialType"),
+                      "p-error": isFormFieldValid("donationType"),
                     })}
                   >
-                    Residential Type
+                    Donation Type
                   </label>
                 </span>
               </div>
@@ -238,7 +286,11 @@ const RegisterPage = () => {
               </div>
 
               {/* Submit button */}
-              <Button type="submit" label="Procede to Donate!" className="mt-2" />
+              <Button
+                type="submit"
+                label="Procede to Donate!"
+                className="mt-2"
+              />
             </form>
           </div>
         </div>
@@ -247,4 +299,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default DonationPage;

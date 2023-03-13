@@ -32,6 +32,12 @@ public class Donation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationId;
+
+	@Column(nullable = true)
+	private String name;
+
+	@Column(nullable = true)
+	private String email;
 	
     @Temporal(TemporalType.DATE)	
     private Date date;
@@ -39,13 +45,16 @@ public class Donation implements Serializable {
     @Column(nullable = true)
     private PaymentModeEnum paymentMode;
 	
-    @Column(nullable = true)
+    /*
+	@Column(nullable = true)
     private Double amount;
+	*/
 	
     @Column(nullable = true)
-    private DonationStatusEnum donationStatus;
+    private DonationTypeEnum donationType;
+
     
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(nullable = true)
     private Member member;
 	
@@ -104,21 +113,16 @@ public class Donation implements Serializable {
         this.paymentMode = paymentMode;
     }
 
-    public Double getAmount() {
+    /*
+	public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+	*/
 
-    public DonationStatusEnum getDonationStatus() {
-        return donationStatus;
-    }
-
-    public void setDonationStatus(DonationStatusEnum donationStatus) {
-        this.donationStatus = donationStatus;
-    }
 
 	public Member getMember() {
         return member;
@@ -135,4 +139,46 @@ public class Donation implements Serializable {
     public void setTestimonial(Testimonial testimonial) {
         this.testimonial = testimonial;
     }
+
+	/**
+	 * @return the donationType
+	 */
+	public DonationTypeEnum getDonationType() {
+		return donationType;
+	}
+
+	/**
+	 * @param donationType the donationType to set
+	 */
+	public void setDonationType(DonationTypeEnum donationType) {
+		this.donationType = donationType;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

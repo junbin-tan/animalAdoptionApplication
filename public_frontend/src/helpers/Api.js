@@ -24,7 +24,7 @@ const Api = {
      });
    },
    createNewDonation(data) {
-      return fetch(`${SERVER_PREFIX}/donation/createNewDonation`, {
+      return fetch(`${SERVER_PREFIX}/donation`, {
          headers: {
              Accept: "application/json",
              "Content-Type": "application/json",
