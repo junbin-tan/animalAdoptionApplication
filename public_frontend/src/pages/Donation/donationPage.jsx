@@ -12,6 +12,7 @@ import logo from "./qrCode.png";
 import Auth from "../../helpers/Auth";
 
 const DonationPage = () => {
+   
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
     { name: "Open", code: "open" },
@@ -63,7 +64,7 @@ const DonationPage = () => {
         errors.email = "Invalid email address. E.g. example@email.com";
       }
       if (!data.donationType) {
-        errors.donationTypeType = "Donation Type is required.";
+        errors.donationType = "Donation Type is required.";
       }
 
       if (!data.accept) {
@@ -130,6 +131,7 @@ const DonationPage = () => {
       </div>
 
       <div className="form-demo">
+
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
@@ -150,6 +152,7 @@ const DonationPage = () => {
             </p>
           </div>
         </Dialog>
+        
         <div className="flex justify-content-center">
           <div className="card">
             <h5 className="text-center">Donate</h5>
