@@ -73,8 +73,8 @@ const ContactUsPage = () => {
 
 return (
     <>
-    <h2> Contact Us</h2>
-    <h3> Drop us a message! </h3>
+    <h2 style={{textAlign: "center"}}> Contact Us</h2>
+    <h3 style={{textAlign: "center"}}> Drop us a message! </h3>
         <div className="flex justify-content-center">
             <div className="card">
             <form onSubmit={formik.handleSubmit} className="p-fluid">
