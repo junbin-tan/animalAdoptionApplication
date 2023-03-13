@@ -1,0 +1,23 @@
+/* AboutUsPage.css */
+
+.top-section, .top-section h4, .top-section h5, .middle-section, .middle-section h4, .middle-section h5 {
+    text-align: left;
+    padding: 10px;
+}
+
+.top-section h5, .middle-section h5 {
+    text-align: justify;
+}
+
+.top-image-section, .middle-image-section {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.top-image-section img, .middle-image-section img {
+    float: left;
+    width: calc(100%/4);
+    height: 200px;
+    object-fit: scale-down;
+}

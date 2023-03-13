@@ -288,7 +288,7 @@ const DonationPage = () => {
               {/* Submit button */}
               <Button
                 type="submit"
-                label="Procede to Donate!"
+                label="Proceed to Donate!"
                 className="mt-2"
               />
             </form>
