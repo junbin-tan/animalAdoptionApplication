@@ -11,29 +11,10 @@ import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
 import Auth from "../../helpers/Auth";
 
-const handleAnchorClick = event => {
-  // 👇️ use event.preventDefault() if you want to
-  // prevent navigation
-  // event.preventDefault();
-  <a
-  onClick={handleAnchorClick}
-  href="https://bobbyhadz.com"
-  target="_blank"
-  rel="noreferrer"
->
-  bobbyhadz.com
-</a>
-
-  console.log('Anchor element clicked');
-
-  // 👇️ refers to the link element
-  console.log(event.currentTarget);
-};
-
 const DonationPage = () => {
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
-    { name: "Open", code: "Open" },
+    { name: "Open", code: "open" },
   ];
   //JSON format that will be parsed
 /*
@@ -54,8 +35,8 @@ const DonationPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
+      name: Auth.getUser().data.name,
+      email: Auth.getUser().data.email,
       donationType: "",
       testimonial: "",
       accept: false,
@@ -71,7 +52,7 @@ const DonationPage = () => {
         errors.email = "Invalid email address. E.g. example@email.com";
       }
       if (!data.donationType) {
-        errors.residentialType = "Donation Type is required.";
+        errors.donationTypeType = "Donation Type is required.";
       }
 
       if (!data.accept) {
@@ -89,8 +70,6 @@ const DonationPage = () => {
       console.log(data);
       Api.createNewDonation(data).then((data) => setShowMessage(true));
       formik.resetForm();
-      setToNext(true)
-      
     },
   });
 
@@ -225,7 +204,7 @@ const DonationPage = () => {
                     options={donationType}
                     optionLabel="name"
                     className={classNames({
-                      "p-invalid": isFormFieldValid("residentialType"),
+                      "p-invalid": isFormFieldValid("donationType"),
                     })}
                   />
                   <label

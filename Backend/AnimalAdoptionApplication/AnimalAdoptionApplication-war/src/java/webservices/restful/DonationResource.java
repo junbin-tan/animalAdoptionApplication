@@ -14,6 +14,7 @@ import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -52,6 +53,18 @@ public class DonationResource {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public Donation createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException {
 		Date currentDate = new Date();
+		
+		List<Member> listOfMember = donationSessionBeanLocal.getMemberByEmail(newDonation.getEmail());
+		
+		if (!listOfMember.isEmpty()) {
+			newDonation.setMember(listOfMember.get(0));
+		}
+		if (newDonation.getDonationType().equals(DonationTypeEnum.ANONYMOUS)) {
+			String anon = "ANONYMOUS";
+			newDonation.setEmail(anon);
+			newDonation.setMember(null);
+			newDonation.setName(anon);
+		}
 		
 		newDonation.setDate(currentDate);
 		newDonation.getTestimonial().setDate(currentDate);
