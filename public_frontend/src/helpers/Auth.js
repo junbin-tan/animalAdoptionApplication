@@ -14,12 +14,15 @@ const Auth = {
   },
   // redirect user to login page if he is logged out
   redirectIfLoggedOut() {
-    Userfront.redirectIfLoggedOut({redirect:"/login"});
+    Userfront.redirectIfLoggedOut({ redirect: "/login" });
   },
   // redirect user to specified path if he is logged in
   redirectIfLoggedIn(path) {
-    Userfront.redirectIfLoggedIn({redirect: path});
-  }
+    Userfront.redirectIfLoggedIn({ redirect: path });
+  },
+  getAccessToken() {
+    return Userfront.tokens.accessToken;
+  },
 };
 
 export default Auth;

@@ -5,7 +5,6 @@
  */
 package webservices.restful;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.Member;
 import exception.InputDataValidationException;
@@ -14,18 +13,17 @@ import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -84,4 +82,23 @@ public class MembersResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
+    
+    @GET
+    @Path("/testAuth")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response testAuth(@Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            return Response.status(200).entity(msg).build();
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+    
 }

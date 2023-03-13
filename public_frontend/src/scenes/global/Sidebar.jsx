@@ -15,6 +15,7 @@ import CallIcon from "@mui/icons-material/Call";
 import InfoIcon from "@mui/icons-material/Info";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -23,7 +24,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   return (
     <MenuItem
       active={selected === title}
-      style={{ colors: colors.grey[100]}}
+      style={{ colors: colors.grey[100] }}
       onClick={() => {
         setSelected(title);
         if (title === "Logout") {
@@ -71,13 +72,13 @@ const Sidebar = () => {
           },
         }}
       >
-        <ProSidebar collapsed={isCollapsed} style={{height: "100vh" }}>
+        <ProSidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
           <Menu iconShape="square">
             {/* Create logo and menu icons here */}
             <MenuItem
               onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-              style={{ margin: "10px 0 20px 0", color: colors.grey[100]}}
+              style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
             >
               {!isCollapsed && (
                 <Box
@@ -194,9 +195,128 @@ const Sidebar = () => {
         </ProSidebar>
       </Box>
     );
-  } 
+  }
 
-  return(<></>);
+  return (
+    <>
+    <Box
+        sx={{
+          "& .pro-sidebar-inner": {
+            background: `${colors.primary[400]} !important`,
+          },
+          "& .pro-icon-wrapper": {
+            backgroundColor: "transparent !important",
+          },
+          "& .pro-inner-item": {
+            padding: "5px 35px 5px 20px !important",
+          },
+          "& .pro-inner-item:hover": {
+            color: "#6870fa !important",
+          },
+          "& .pro-menu-item.active": {
+            color: "#6870fa !important",
+          },
+        }}
+      >
+        <ProSidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
+          <Menu iconShape="square">
+            {/* Create logo and menu icons here */}
+            <MenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="15px"
+                >
+                  <Typography variant="h4" color={colors.grey[100]}>
+                    Pawfect
+                  </Typography>
+                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <MenuOutlinedIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </MenuItem>
+            {/* Create user  icon + name*/}
+            {!isCollapsed && (
+              <Box mb="25px">
+                
+                
+              </Box>
+            )}
+            {/* creating menu items */}
+            <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+              
+              <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}
+              >
+                {" "}
+                Our Services
+              </Typography>
+              <Item
+                title="About Us"
+                to="/AboutUs"
+                icon={<InfoIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Adoption & Fostering"
+                to="/AdoptionAndFostering"
+                icon={<PetsIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Donation"
+                to="/Donation"
+                icon={<VolunteerActivismIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Events & Marketing"
+                to="/EventsAndMarketing"
+                icon={<EventIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Contact Us"
+                to="/Contact"
+                icon={<CallIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="FAQ"
+                to="/faq"
+                icon={<HelpOutlineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+
+              <Item
+                title="Login"
+                to="/login"
+                icon={<LoginIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              
+            </Box>
+          </Menu>
+        </ProSidebar>
+      </Box>
+    </>
+  )
 };
 
 export default Sidebar;
