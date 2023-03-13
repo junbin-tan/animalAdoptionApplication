@@ -31,12 +31,23 @@ const DonationPage = () => {
  //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
-  const [toNext, setToNext] = useState(false)
+  const [toNext, setToNext] = useState(false);
+
+  // get currrent user if authenticated
+  const currentUser = Auth.getUser();
+
+  let userFullName = "";
+  let userEmail = "";
+
+  if (currentUser) {
+    userFullName = currentUser.data.name;
+    userEmail = currentUser.email;
+  }
 
   const formik = useFormik({
     initialValues: {
-      name: Auth.getUser().data.name,
-      email: Auth.getUser().data.email,
+      name: userFullName,
+      email: userEmail,
       donationType: "",
       testimonial: "",
       accept: false,
