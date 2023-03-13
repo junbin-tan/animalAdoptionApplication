@@ -6,14 +6,17 @@
 package ejb.session.stateless;
 
 import entity.Donation;
+import entity.Member;
 import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -141,6 +144,13 @@ public class DonationSessionBean implements DonationSessionBeanLocal {
 
 	public void persist(Object object) {
 		entityManager.persist(object);
+	}
+
+	public List<Member> getMemberByEmail(String email) {
+		Query query = entityManager.createQuery("SELECT m FROM Member m WHERE m.email = :inEmail");
+		query.setParameter("inEmail", email);
+
+        return query.getResultList();
 	}
 
 	
