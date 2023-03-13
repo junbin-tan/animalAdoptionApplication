@@ -58,6 +58,7 @@ public class DonationResource {
 		
 		if (!listOfMember.isEmpty()) {
 			newDonation.setMember(listOfMember.get(0));
+			listOfMember.get(0).getDonations().add(newDonation);
 		}
 		if (newDonation.getDonationType().equals(DonationTypeEnum.ANONYMOUS)) {
 			String anon = "ANONYMOUS";
