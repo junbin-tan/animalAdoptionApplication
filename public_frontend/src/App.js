@@ -26,16 +26,16 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app" style={{ display: "flex" }}>
-          <Sidebar style={{ height: "100vh" }} />
+          <Sidebar/>
           <main className="content" style={{ flex: "1 auto" }}>
             <Topbar />
             <Routes>
               <Route exact path="/" element={<Dashboard />} />
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
+              <Route exact path="/AboutUs" element={<AboutUsPage />} />
               <Route exact path="/Donation" element={<DonationPage />} />
               <Route exact path="/Contact" element={<ContactUsPage />} />
-              <Route exact path="/AboutUs" element={<AboutUsPage />} />
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />
