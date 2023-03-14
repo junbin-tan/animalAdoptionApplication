@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -10,8 +10,19 @@ import "./donationPage.css";
 import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
 import Auth from "../../helpers/Auth";
+import UserContext from "../../helpers/context/UserContext";
 
 const DonationPage = () => {
+
+  // Start: get valid current actual user with data like events created, donations, animal listings created etc
+
+  const {currentActualUser} = useContext(UserContext);
+
+  console.log("Getting current actual user at Donation Page");
+  const currentUserDonations = currentActualUser && currentActualUser.donations;
+  console.log(currentUserDonations);
+
+  // End: get valid current actual user with data like events created, donations, animal listings created etc
    
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
