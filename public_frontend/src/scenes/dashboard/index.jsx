@@ -1,7 +1,8 @@
 import { Box } from "@mui/system";
 import Header from "../../components/Header";
 import Auth from "../../helpers/Auth";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import UserContext from "../../helpers/context/UserContext";
 
 const Dashboard = () => {
   // if the user tries to access dashboard while logged out, redirect them to /login. Do this for every single page that requires user to be logged in
@@ -13,19 +14,23 @@ const Dashboard = () => {
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
 
-  const [actualUser, setActualUser] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await Auth.getActualUser();
-      const data = await response.json();
-      setActualUser(data);
-    };
+  const {currentActualUser} = useContext(UserContext);
 
-    fetchData();
-  }, []);
+  console.log(currentActualUser);
 
-  const userDonations = actualUser && actualUser.donations; // <-- Alwin, this is how you retrieve latest donations data for current user
-  console.log(userDonations);
+  // const [actualUser, setActualUser] = useState();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await Auth.getActualUser();
+  //     const data = await response.json();
+  //     setActualUser(data);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // const userDonations = actualUser && actualUser.donations; // <-- Alwin, this is how you retrieve latest donations data for current user
+  // console.log(userDonations);
 
   // END: Code to retrieve latest actual Member Data from Java Backend Restful Server
   

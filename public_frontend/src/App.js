@@ -17,6 +17,7 @@ import DonationPage from "./pages/Donation/donationPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 import AboutUsPage from "./pages/AboutUs/AboutUsPage";
+import UserProvider from "./helpers/context/UserProvider";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -25,6 +26,7 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <UserProvider>
         <div className="app" style={{ display: "flex" }}>
           <Sidebar/>
           <main className="content" style={{ flex: "1 auto" }}>
@@ -42,6 +44,7 @@ function App() {
             </Routes>
           </main>
         </div>
+        </UserProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
