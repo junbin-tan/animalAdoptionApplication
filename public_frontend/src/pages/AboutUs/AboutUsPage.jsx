@@ -67,9 +67,9 @@ const AboutUsPage = () => {
 
         <h4> <strong>Sterilization for Humane Population Control</strong></h4>
         <h5>
-        SOSD believes in sterilisation as a humane method for the control of the stray population. We sterilise our adult dogs before 
+        Pawfect believes in sterilisation as a humane method for the control of the stray population. We sterilise our adult dogs before 
         we put them up for adoption and follow-up on our adopted puppies to ensure that they are sterilised when they are old enough. 
-        SOSD also advocates that our authorities implement a nationwide sterilisation program for our street dogs.
+        Pawfect also advocates that our authorities implement a nationwide sterilisation program for our street dogs.
         </h5>   
 
         <div className="middle-image-section">
