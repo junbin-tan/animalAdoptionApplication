@@ -7,9 +7,11 @@ import { tokens } from "../../theme";
 import Auth from "../../helpers/Auth";
 
 // icon import
+import RegisterIcon from '@mui/icons-material/Publish';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PetsIcon from "@mui/icons-material/Pets";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from "@mui/icons-material/Event";
 import CallIcon from "@mui/icons-material/Call";
 import InfoIcon from "@mui/icons-material/Info";
@@ -87,7 +89,7 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]}>
+                  <Typography variant="h4" color={colors.grey[100]} >
                     Pawfect
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -133,6 +135,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Animal Registration"
+                to="/AnimalRegistration"
+                icon={<RegisterIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -142,6 +151,13 @@ const Sidebar = () => {
                 Our Services
               </Typography>
               <Item
+                title="Home"
+                to="/Homepage"
+                icon={<HomeIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
                 title="About Us"
                 to="/AboutUs"
                 icon={<InfoIcon />}
@@ -150,7 +166,7 @@ const Sidebar = () => {
               />
               <Item
                 title="Adoption & Fostering"
-                to="/AdoptionAndFostering"
+                to="/AdoptionFostering"
                 icon={<PetsIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -269,7 +285,7 @@ const Sidebar = () => {
               />
               <Item
                 title="Adoption & Fostering"
-                to="/AdoptionAndFostering"
+                to="/AdoptionFostering"
                 icon={<PetsIcon />}
                 selected={selected}
                 setSelected={setSelected}

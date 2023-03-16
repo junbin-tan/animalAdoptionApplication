@@ -65,7 +65,7 @@ const LoginPage = () => {
                 method: "password",
                 emailOrUsername: data.email,
                 password: data.password,
-                redirect: "/",
+                redirect: "/Homepage",
               }).catch((error) => {
                 console.log(error.message);
                 data.error = error.message;
