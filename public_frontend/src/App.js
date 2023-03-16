@@ -13,10 +13,13 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import RegisterPage from "./pages/register/registerPage";
 import LoginPage from "./pages/login/loginPage";
+import Homepage from "./pages/Homepage/Homepage";
 import DonationPage from "./pages/Donation/donationPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 import AboutUsPage from "./pages/AboutUs/AboutUsPage";
+import AnimalRegistrationPage from "./pages/AnimalRegistration/AnimalRegistrationPage";
+import AdoptionFosteringPage from "./pages/Adoption_Fostering/AdoptionFosteringPage";
 import UserProvider from "./helpers/context/UserProvider";
 
 function App() {
@@ -35,9 +38,12 @@ function App() {
               <Route exact path="/" element={<Dashboard />} />
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
+              <Route exact path="/Homepage" element={<Homepage />} />
               <Route exact path="/AboutUs" element={<AboutUsPage />} />
+              <Route exact path="/AdoptionFostering" element={<AdoptionFosteringPage/>} />
               <Route exact path="/Donation" element={<DonationPage />} />
               <Route exact path="/Contact" element={<ContactUsPage />} />
+              <Route exact path="/AnimalRegistration" element={<AnimalRegistrationPage />} />
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />
