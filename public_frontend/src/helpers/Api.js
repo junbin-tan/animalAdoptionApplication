@@ -64,6 +64,15 @@ const Api = {
          method: "GET",
       });
     },
+    getAllTestimonials() { 
+      return fetch(`${SERVER_PREFIX}/testimonial`, {
+         headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+         },
+         method: "GET",
+      });
+    },
 };
 
 export default Api;

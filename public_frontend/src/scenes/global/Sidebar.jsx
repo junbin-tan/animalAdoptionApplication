@@ -74,7 +74,7 @@ const Sidebar = () => {
           },
         }}
       >
-        <ProSidebar collapsed={isCollapsed} style={{height: "100vh"}}>
+        <ProSidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
           <Menu iconShape="square">
             {/* Create logo and menu icons here */}
             <MenuItem
@@ -89,7 +89,7 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]} >
+                  <Typography variant="h4" color={colors.grey[100]}>
                     Pawfect
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -175,6 +175,13 @@ const Sidebar = () => {
                 title="Donation"
                 to="/Donation"
                 icon={<VolunteerActivismIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="View Testimonials"
+                to="/Testimonial"
+                icon={<CallIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
