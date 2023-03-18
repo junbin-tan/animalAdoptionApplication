@@ -5,20 +5,12 @@
  */
 package ejb.session.stateless;
 
-import entity.Animal;
 import entity.AnimalListing;
-import entity.ApplicationForm;
-import entity.Donation;
-import entity.EventListing;
-import entity.EventRegistration;
 import entity.Member;
-import entity.Review;
-import exception.AnimalNotFoundException;
 import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
 import exception.ListingNotFoundException;
-import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
@@ -41,15 +33,9 @@ import javax.validation.ValidatorFactory;
 @Stateless
 public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
 
-    @EJB(name = "AnimalSessionBeanLocal")
-    private AnimalSessionBeanLocal animalSessionBeanLocal;
-
     @EJB(name = "MemberSessionBeanLocal")
     private MemberSessionBeanLocal memberSessionBeanLocal;
 
-    
-    
-    
     @PersistenceContext(unitName = "AnimalAdoptionApplication-ejbPU")
     private EntityManager em;
 
@@ -66,22 +52,18 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
 
     
     @Override
-    public Long createAnimalListing(AnimalListing newListing, Member member, Animal animal) throws ListingExistException, UnknownPersistenceException, InputDataValidationException, AnimalNotFoundException, MemberNotFoundException
+    public Long createAnimalListing(AnimalListing newListing) throws ListingExistException, UnknownPersistenceException, InputDataValidationException, MemberNotFoundException
     {
         Set<ConstraintViolation<AnimalListing>>constraintViolations = validator.validate(newListing);
-        Animal thisAnimal = animalSessionBeanLocal.retrieveAnimalById(animal.getAnimalId());
-        Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+        Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(newListing.getMember().getMemberId());
         
         if(constraintViolations.isEmpty())
         {
             try
             {
                 //association
-                thisMember.getAnimalListings().add(newListing);
-                thisAnimal.setAnimalListing(newListing);
-                
+                thisMember.getAnimalListings().add(newListing);                
                 newListing.setMember(thisMember);
-                newListing.setAnimal(thisAnimal);
                 
                 em.persist(newListing);
                 em.flush();
@@ -115,7 +97,7 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
     
     
     @Override
-    public List<AnimalListing> retrieveAllMembers()
+    public List<AnimalListing> retrieveAllAnimalListings()
     {
         Query query = em.createQuery("SELECT l FROM AnimalListing l ORDER BY l.animalListingId ASC");
         
@@ -137,15 +119,12 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
         }               
     }
     
-     public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, AnimalNotFoundException, MemberNotFoundException
+     public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, MemberNotFoundException
     {
         AnimalListing toRemove = retrieveAnimalListingByAnimalListingId(id);
-        Animal thisAnimal = animalSessionBeanLocal.retrieveAnimalById(toRemove.getAnimal().getAnimalId());
         Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(toRemove.getMember().getMemberId());
         
         //Does not remove all the application form JUST FYI
-        
-        thisAnimal.setAnimalListing(null);
         thisMember.getAnimalListings().remove(toRemove);
      
         em.remove(toRemove);

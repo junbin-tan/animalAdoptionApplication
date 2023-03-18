@@ -3,156 +3,106 @@ import { useFormik } from "formik";
 import "./modal.css";
 
 const Modal = ({ setShowModal }) => {
-  /* const sleepArea = [
-    { name: "Indoor", code: "INDOOR" },
-    { name: "Outdoor", code: "OUTDOOR" },
-    { name: "Outdoor With Shelter", code: "OUTDOOR_WITH_SHELTER" },
-  ];
+  // const gender = [
+  //   { name: "MALE", code: "MALE" },
+  //   { name: "FEMALE", code: "FEMALE" },
+  // ];
 
-  const formType = [
-    { name: "Adoption only", code: "ADOPTION" },
-    { name: "Fostering Only", code: "FOSTERING" },
-    { name: "Adoption and Fostering", code: "ADOPTION_FOSTERING" },
-  ];
+  // const animalType = [
+  //   { name: "DOG", code: "DOG" },
+  //   { name: "CAT", code: "CAT" },
+  //   { name: "HAMSTER", code: "HAMSTER" },
+  //   { name: "RABBIT", code: "RABBIT" },
+  //   { name: "OTHERS", code: "OTHERS" },
+  // ];
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      isFirstTime: false,
-      hasOtherPets: false,
-      existingPetsOwned: "",
-      hasDailyExercise: false,
-      sleepArea: "",
-      petAloneTime: "",
-      reason: "",
-      applicationStatus: "SUBMITTED",
-      formType: "",
-    },
-     validate: (data) => {
-      let errors = {};
+  // const [showMessage, setShowMessage] = useState(false);
+  // const [formData, setFormData] = useState({});
 
-      if (!data.name) {
-        errors.name = "Name is required.";
-      }
+  // const formik = useFormik({
+  //   initialValues: {
+  //     image: "",
+  //     age: "",
+  //     name: "",
+  //     gender: "",
+  //     breed: "",
+  //     weight: "",
+  //     description: "",
+  //     animalType: "",
+  //     isNeutered: false,
+  //   },
+  //   validate: (data) => {
+  //     let errors = {};
 
-      if (!data.email) {
-        errors.email = "Email is required.";
-      } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
-      ) {
-        errors.email = "Invalid email address. E.g. example@email.com";
-      }
+  //     if (!data.image) {
+  //       errors.image = "Image is required.";
+  //     }
 
-      if (!data.password) {
-        errors.password = "Password is required.";
-      }
+  //     if (!data.age) {
+  //       errors.age = "Age is required.";
+  //     }
 
-      if (!data.phoneNumber) {
-        errors.phoneNumber = "Phone number is required.";
-      }
+  //     if (!data.name) {
+  //       errors.name = "Name is required.";
+  //     }
 
-      if (!data.location) {
-        errors.location = "Location is required";
-      }
+  //     if (!data.gender) {
+  //       errors.gender = "Gender is required.";
+  //     }
 
-      if (!data.occupation) {
-        errors.occupation = "Occupation is required";
-      }
+  //     if (!data.breed) {
+  //       errors.breed = "Breed is required";
+  //     }
 
-      if (!data.residentialType) {
-        errors.residentialType = "Residential Type is required.";
-      }
+  //     if (!data.weight) {
+  //       errors.weight = "Weight is required";
+  //     }
 
-      if (!data.accept) {
-        errors.accept = "You need to agree to the terms and conditions.";
-      }
+  //     if (!data.description) {
+  //       errors.description = "Description is required.";
+  //     }
 
-      return errors;
-    },
-    onSubmit: (data) => {
-      setFormData(data);
-      delete data.accept; // delete accept json property because we don't need to submit it to backend restful
-      data.residentialType = data.residentialType["name"]; //extract out residential type value (HDB, LANDED, CONDO)
-      console.log(data);
+  //     if (!data.animalType) {
+  //       errors.animalType= "Animal Type is required.";
+  //     }
 
-      Api.createMember(data)
-        .then((response) => {
-          if (response.ok) {
-            // response ok code 200 from java backend
-            const responseJson = response.json();
-            responseJson.then((responseJsonData) => {
-              Userfront.signup({
-                method: "password",
-                email: data.email,
-                password: data.password,
-                redirect: "/",
-                data: responseJsonData, // store member obj data from java into userfront auth library
-              })
-                .then((response) => {
-                  setShowMessage(true);
-                })
-                .catch((error) => {
-                  data.error = error.message;
-                  setFormData(data);
-                  setShowMessage(true);
-                });
-            });
-          } else {
-            const responseJson = response.json();
-            responseJson.then((responseJsonData) => {
-              if (responseJsonData.error) {
-                setFormData(responseJsonData);
-                setShowMessage(true);
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          // this error here caught when java server is not on or null pointer exception :(
-          console.log(error);
-          data.error =
-            "Our backend server is facing issues right now. Please try again later.";
-          setFormData(data);
-          setShowMessage(true);
-        });
+  //     if (!data.isNeutered) {
+  //       errors.isNeutered= "Please indicate whether the animal is neutered.";
+  //     }
 
-      formik.resetForm();
-    },
-  });
+  //     return errors;
+  //   },
+  //   onSubmit: (data) => {
+  //     setFormData(data);
+  //     delete data.accept;
+  //     data.gender = data.gender["name"];
+  //     data.animalType = data.animalType["name"];
+  //     Api.createAnimal(data).then((data) => setShowMessage(true));
+  //     formik.resetForm();
+  //   },
+  // });
 
-  const isFormFieldValid = (name) =>
-    !!(formik.touched[name] && formik.errors[name]);
-  const getFormErrorMessage = (name) => {
-    return (
-      isFormFieldValid(name) && (
-        <small className="p-error">{formik.errors[name]}</small>
-      )
-    );
-  };
+  // const isFormFieldValid = (name) =>
+  //   !!(formik.touched[name] && formik.errors[name]);
+  // const getFormErrorMessage = (name) => {
+  //   return (
+  //     isFormFieldValid(name) && (
+  //       <small className="p-error">{formik.errors[name]}</small>
+  //     )
+  //   );
+  // };
 
-  const dialogFooter = (
-    <div className="flex justify-content-center">
-      <Button
-        label="OK"
-        className="p-button-text"
-        autoFocus
-        onClick={() => setShowMessage(false)}
-      />
-    </div>
-  );
-  const passwordHeader = <h6>Pick a password</h6>;
-  const passwordFooter = (
-    <React.Fragment>
-      <Divider />
-      <p className="mt-2">Suggestions</p>
-      <ul className="pl-2 ml-2 mt-0" style={{ lineHeight: "1.5" }}>
-        <li>At least one lowercase</li>
-        <li>At least one uppercase</li>
-        <li>At least one numeric</li>
-        <li>Minimum 8 characters</li>
-      </ul>
-    </React.Fragment>
-  ); */
+  // const dialogFooter = (
+  //   <div className="flex justify-content-center">
+  //     <Button
+  //       label="OK"
+  //       className="p-button-text"
+  //       autoFocus
+  //       onClick={() => setShowMessage(false)}
+  //     />
+  //   </div>
+  // );
+
 
   return (
     <div className="modal__wrapper">
@@ -182,5 +132,6 @@ const Modal = ({ setShowModal }) => {
     </div>
   );
 };
+
 
 export default Modal;

@@ -5,10 +5,13 @@
  */
 package webservices.restful;
 
-import ejb.session.stateless.AnimalSessionBeanLocal;
-import entity.Animal;
-import exception.AnimalNotFoundException;
+import ejb.session.stateless.AnimalListingSessionBeanLocal;
+import entity.AnimalListing;
+import entity.Member;
 import exception.InputDataValidationException;
+import exception.ListingExistException;
+import exception.ListingNotFoundException;
+import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -26,26 +29,25 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author yijie
  */
-@Path("animal")
-public class AnimalResource {
+@Path("animalListing")
+public class AnimalListingResource {
     @EJB
-    private AnimalSessionBeanLocal animalSessionBeanLocal;
+    private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
 
     @Context
     private UriInfo context;
     
-    public AnimalResource() {
+    public AnimalListingResource() {
     }
     
     @POST
-    @Path("/createAnimal")
+    @Path("/createAnimalListing")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAnimal(Animal newAnimal) {
+    public Response createAnimalListing(AnimalListing newAnimalListing) {
         try {
-            Long animalId = animalSessionBeanLocal.createAnimal(newAnimal);
-            Animal a = animalSessionBeanLocal.retrieveAnimalById(animalId);
-            return Response.status(200).entity(a).build();
+            Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
+            return Response.status(204).build();
             
         } catch (UnknownPersistenceException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
@@ -55,7 +57,11 @@ public class AnimalResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (AnimalNotFoundException ex) {
+        } catch (ListingExistException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        
+        } catch (MemberNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }

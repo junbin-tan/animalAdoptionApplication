@@ -26,22 +26,31 @@ public class ApplicationForm implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationFormId;
+	
     @Column(nullable = false)
     @NotNull
     private Boolean isFirstTime;
+	
     @Column(nullable = false)
     @NotNull
     private Boolean hasOtherPets;
+	
     private Integer exisitngPetsOwned;
+	
     private Boolean hasDailyExercise;
+	
     private SleepAreaEnum sleepArea;
+	
     private Integer petAloneTime;
+	
     @Column(nullable = false)
     @NotNull
     private String reason;
+	
     @Column(nullable = false)
     @NotNull
     private ApplicationStatusEnum applicationStatus;
+	
     @Column(nullable = false)
     @NotNull
     private FormTypeEnum formType;
@@ -50,6 +59,7 @@ public class ApplicationForm implements Serializable {
     @JoinColumn(nullable = false)
     @NotNull
     private Member member;
+	
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull

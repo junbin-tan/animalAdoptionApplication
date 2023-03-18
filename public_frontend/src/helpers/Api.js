@@ -46,8 +46,8 @@ const Api = {
          body: JSON.stringify(data),
       });
     },
-    createAnimal(data) {
-      return fetch(`${SERVER_PREFIX}/animal/createAnimal`, {
+    createAnimalListing(data) {
+      return fetch(`${SERVER_PREFIX}/animalListing/createAnimalListing`, {
          headers: {
              Accept: "application/json",
              "Content-Type": "application/json",
@@ -56,6 +56,7 @@ const Api = {
          body: JSON.stringify(data),
       });
     },
+    
    getMember() { // get Actual member json object with all data like donations, testimonials, events, etc
       return fetch(`${SERVER_PREFIX}/member/getMember/${Auth.getUser().email}`, {
          headers: {

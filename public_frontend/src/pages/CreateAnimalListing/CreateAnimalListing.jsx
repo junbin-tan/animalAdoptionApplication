@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -6,10 +6,16 @@ import { Dropdown } from "primereact/dropdown";
 import { Checkbox } from "primereact/checkbox";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
-import "./AnimalRegistration.css";
+import { Calendar } from "primereact/calendar";
 import Api from "../../helpers/Api";
+import UserContext from "../../helpers/context/UserContext";
+import "./CreateAnimalListing.css";
 
-const AnimalRegistrationPage = () => {
+const CreateAnimalListing = () => {
+  const {currentActualUser} = useContext(UserContext);
+
+  const [showMessage, setShowMessage] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const gender = [
     { name: "MALE", code: "MALE" },
@@ -24,38 +30,47 @@ const AnimalRegistrationPage = () => {
     { name: "OTHERS", code: "OTHERS" },
   ];
 
-  const [showMessage, setShowMessage] = useState(false);
-  const [formData, setFormData] = useState({});
+  const m = {memberId: currentActualUser.memberId, name: currentActualUser.name, email: currentActualUser.email, password: currentActualUser.password, phoneNumber: currentActualUser.phoneNumber, 
+    openToFoster: currentActualUser.openToFoster, openToAdopt: currentActualUser.openToAdopt, location: currentActualUser.location, occupation: currentActualUser.occupation, 
+    residentialType: currentActualUser.residentialType, accountStatus: currentActualUser.accountStatus, reviewsReceived: currentActualUser.reviewsReceived,
+    eventListings: currentActualUser.eventListings, eventRegistrations: currentActualUser.eventRegistrations, animalListings: currentActualUser.animalListings,
+    applicationForms: currentActualUser.applicationForms, donations: currentActualUser.donations, notifications: currentActualUser.notifications}
 
   const formik = useFormik({
     initialValues: {
+      description: "",
       image: "",
       age: "",
       name: "",
       gender: "",
       breed: "",
       weight: "",
-      description: "",
       animalType: "",
       isNeutered: false,
+      isAdoption: false,
+      isFostering: false,
+      fosterStartDate: "",
+      fosterEndDate: "",
+      member: m,
+      
     },
     validate: (data) => {
       let errors = {};
 
       if (!data.image) {
-        errors.image = "Image is required.";
+        errors.image = "Image is required";
       }
 
       if (!data.age) {
-        errors.age = "Age is required.";
+        errors.age = "Age is required";
       }
 
       if (!data.name) {
-        errors.name = "Name is required.";
+        errors.name = "Name is required";
       }
 
       if (!data.gender) {
-        errors.gender = "Gender is required.";
+        errors.gender = "Gender is required";
       }
 
       if (!data.breed) {
@@ -67,26 +82,33 @@ const AnimalRegistrationPage = () => {
       }
 
       if (!data.description) {
-        errors.description = "Description is required.";
+        errors.description = "Description is required";
       }
 
       if (!data.animalType) {
-        errors.animalType= "Animal Type is required.";
+        errors.animalType= "Animal Type is required";
       }
 
       if (!data.isNeutered) {
-        errors.isNeutered= "Please indicate whether the animal is neutered.";
+        errors.isNeutered= "Please indicate whether the animal is neutered";
+      }
+
+      if (!data.description) {
+        errors.description = "Description is required.";
       }
 
       return errors;
     },
     onSubmit: (data) => {
-      setFormData(data);
-      delete data.accept;
-      data.gender = data.gender["name"];
-      data.animalType = data.animalType["name"];
-      Api.createAnimal(data).then((data) => setShowMessage(true));
-      formik.resetForm();
+        setFormData(data);
+        console.log(data);
+        delete data.accept;
+        data.gender = data.gender["name"];
+        data.animalType = data.animalType["name"];
+        data.fosterStartDate = data.fosterStartDate.toISOString();
+        data.fosterEndDate = data.fosterEndDate.toISOString();
+        Api.createAnimalListing(data).then((data) => setShowMessage(true));
+        formik.resetForm();
     },
   });
 
@@ -111,9 +133,10 @@ const AnimalRegistrationPage = () => {
     </div>
   );
 
+
   return (
     <>
-    <h2 className="text-center">Animal Registration</h2>
+    <h2 className="text-center">Create Animal Listing</h2>
       <div className="form-demo">
         <Dialog
           visible={showMessage}
@@ -133,7 +156,7 @@ const AnimalRegistrationPage = () => {
                   style={{ fontSize: "5rem", color: "var(--red-500)" }}
                 ></i>
 
-                <h5>Animal Registration Error!</h5>
+                <h5>Creation of Animal Listing Error!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
                   <b>{formData.error}</b>
                 </p>
@@ -147,17 +170,42 @@ const AnimalRegistrationPage = () => {
                   style={{ fontSize: "5rem", color: "var(--green-500)" }}
                 ></i>
 
-                <h5>Animal Registration Successful!</h5>
+                <h5>Creation of Animal Listing Successful!</h5>
               </>
             )}
           </div>
         </Dialog>
         <div className="flex justify-content-center">
           <div className="card">
-            
             <form onSubmit={formik.handleSubmit} className="p-fluid">
-              {/* Image textbox */}
+
+
+              {/* Description textbox */}
               <div className="field">
+                <span className="p-float-label">
+                  <InputText
+                    id="description"
+                    name="description"
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("description"),
+                    })}
+                  />
+                  <label
+                    htmlFor="description"
+                    className={classNames({
+                      "p-error": isFormFieldValid("description"),
+                    })}
+                  >
+                    Description*
+                  </label>
+                </span>
+                {getFormErrorMessage("description")}
+              </div>
+
+            {/* Image textbox */}
+            <div className="field">
                 <span className="p-float-label">
                   <InputText
                     id="image"
@@ -305,31 +353,6 @@ const AnimalRegistrationPage = () => {
                 {getFormErrorMessage("weight")}
               </div>
               
-              {/* Description textbox */}
-              <div className="field">
-                <span className="p-float-label">
-                  <InputText
-                    id="description"
-                    name="description"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("description"),
-                    })}
-                  />
-                  <label
-                    htmlFor="description"
-                    className={classNames({
-                      "p-error": isFormFieldValid("description"),
-                    })}
-                  >
-                    Description*
-                  </label>
-                </span>
-                {getFormErrorMessage("description")}
-              </div>
-
               {/* Animal Type dropdown list */}
               <div className="field">
                 <span className="p-float-label">
@@ -376,6 +399,100 @@ const AnimalRegistrationPage = () => {
                 </label>
               </div>
 
+              {/* Adoption checkbox */}
+              <div className="field-checkbox">
+                <Checkbox
+                  inputId="isAdoption"
+                  name="isAdoption"
+                  checked={formik.values.isAdoption}
+                  onChange={formik.handleChange}
+                  className={classNames({
+                    "p-invalid": isFormFieldValid("isAdoption"),
+                  })}
+                />
+                <label
+                  htmlFor="isAdoption"
+                  className={classNames({
+                    "p-error": isFormFieldValid("isAdoption"),
+                  })}
+                >
+                  Adoption
+                </label>
+              </div>
+
+              {/* Fostering checkbox */}
+              <div className="field-checkbox">
+                <Checkbox
+                  inputId="isFostering"
+                  name="isFostering"
+                  checked={formik.values.isFostering}
+                  onChange={formik.handleChange}
+                  className={classNames({
+                    "p-invalid": isFormFieldValid("isFostering"),
+                  })}
+                />
+                <label
+                  htmlFor="isFostering"
+                  className={classNames({
+                    "p-error": isFormFieldValid("isFostering"),
+                  })}
+                >
+                  Fostering
+                </label>
+              </div>
+
+              {/* Start date textbox (For fostering only) */}
+              <div className="field">
+                <span className="p-float-label">
+                  <Calendar
+                    id="fosterStartDate"
+                    name="fosterStartDate"
+                    value={formik.values.fosterStartDate}
+                    onChange={formik.handleChange}
+                    dateFormat="dd/mm/yy"
+                    autoFocus
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("fosterStartDate"),
+                    })}
+                  />
+                  <label
+                    htmlFor="fosterStartDate"
+                    className={classNames({
+                      "p-error": isFormFieldValid("fosterStartDate"),
+                    })}
+                  >
+                    Foster Start Date (For Fostering Only)
+                  </label>
+                </span>
+                {getFormErrorMessage("fosterStartDate")}
+              </div>
+
+              {/* End date textbox (For fostering only) */}
+              <div className="field">
+                <span className="p-float-label">
+                  <Calendar
+                    id="fosterEndDate"
+                    name="fosterEndDate"
+                    value={formik.values.fosterEndDate}
+                    onChange={formik.handleChange}
+                    dateFormat="dd/mm/yy"
+                    autoFocus
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("fosterEndDate"),
+                    })}
+                  />
+                  <label
+                    htmlFor="fosterEndDate"
+                    className={classNames({
+                      "p-error": isFormFieldValid("fosterEndDate"),
+                    })}
+                  >
+                    Foster End Date (For Fostering Only)
+                  </label>
+                </span>
+                {getFormErrorMessage("fosterEndDate")}
+              </div>
+
               {/* Submit button */}
               <Button type="submit" label="Submit" className="mt-2" />
             </form>
@@ -384,6 +501,7 @@ const AnimalRegistrationPage = () => {
       </div>
     </>
   );
-};
 
-export default AnimalRegistrationPage ;
+}
+
+export default CreateAnimalListing;
