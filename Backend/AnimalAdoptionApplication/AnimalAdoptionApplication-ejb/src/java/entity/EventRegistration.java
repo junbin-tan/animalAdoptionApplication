@@ -25,12 +25,14 @@ public class EventRegistration implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventRegistrationId;
+	
     private Boolean isActive;
     
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
     private Member member;
+	
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull

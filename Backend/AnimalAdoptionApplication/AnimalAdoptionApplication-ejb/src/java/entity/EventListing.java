@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -30,29 +32,38 @@ public class EventListing implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventListingId;
+	
     @Column(length = 64, nullable = false)
     @NotNull
     private String eventName;
+	
     @Column(nullable = false)
+	@Temporal(TemporalType.DATE)
     @NotNull
     private Date dateAndTime;
+	
     @Column(length = 128, nullable = false)
     @NotNull
     private String location;
+	
     @Column(nullable = false)
     @NotNull
     private Double capacity;
+	
     @Column(nullable = false)
     @NotNull
     private String description;
+	
     private String image;
     
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
     private Member member;
+	
     @OneToMany(mappedBy = "eventListing")
     private List<EventField> eventFields;
+	
     @OneToMany(mappedBy = "eventListing")
     private List<EventRegistration> eventRegistrations;
 

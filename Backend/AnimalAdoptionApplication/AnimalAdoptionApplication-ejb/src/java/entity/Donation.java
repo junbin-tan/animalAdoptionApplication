@@ -45,14 +45,8 @@ public class Donation implements Serializable {
     @Column(nullable = true)
     private PaymentModeEnum paymentMode;
 	
-    /*
-	@Column(nullable = true)
-    private Double amount;
-	*/
-	
     @Column(nullable = true)
     private DonationTypeEnum donationType;
-
     
     @ManyToOne
     @JoinColumn(nullable = true)
