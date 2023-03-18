@@ -6,7 +6,15 @@
 package webservices.restful;
 
 import ejb.session.stateless.MemberSessionBeanLocal;
+import entity.AnimalListing;
+import entity.ApplicationForm;
+import entity.Donation;
+import entity.EventField;
+import entity.EventListing;
+import entity.EventRegistration;
 import entity.Member;
+import entity.Notification;
+import entity.Review;
 import exception.InputDataValidationException;
 import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
@@ -79,8 +87,11 @@ public class MembersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(JsonObject o) {
         try {
-            Member m = memberSessionBeanLocal.memberLogin(o.getString("email"), o.getString("password"));
-            return Response.status(200).entity(m).build();
+            Member member = memberSessionBeanLocal.memberLogin(o.getString("email"), o.getString("password"));
+            //Nullifying relationships related to member
+            nullifyMemberRelationships(member);
+
+            return Response.status(200).entity(member).build();
         } catch (InvalidLoginCredentialException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
@@ -98,18 +109,21 @@ public class MembersResource {
         if (validToken) {
             msg = "User calling this is a verified Userfront user. YAY!";
             try {
-                Member mToNullify = memberSessionBeanLocal.retrieveMemberByEmail(email);
-                //Nullifying all relationship to member (this one got error)
-//                mToNullify.setReviewsCreated(null);
-//                mToNullify.setReviewsReceived(null);
-//                mToNullify.setEventListings(null);
-//                mToNullify.setEventRegistrations(null);
-//                mToNullify.setAnimalListings(null);
-//                mToNullify.setApplicationForms(null);
-//                mToNullify.setDonations(null);
-//                mToNullify.setNotifications(null); 
+                Member member = memberSessionBeanLocal.retrieveMemberByEmail(email);
+
+                //Nullifying relationships related to member
+                nullifyMemberRelationships(member);
+
+//                member.setReviewsCreated(null);
+//                member.setReviewsReceived(null);
+//                member.setEventListings(null);
+//                member.setEventRegistrations(null);
+//                member.setAnimalListings(null);
+//                member.setApplicationForms(null);
+//                member.setDonations(null);
+//                member.setNotifications(null); 
 //                
-                return Response.status(200).entity(mToNullify).build();
+                return Response.status(200).entity(member).build();
             } catch (MemberNotFoundException ex) {
                 JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
                 return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
@@ -118,6 +132,49 @@ public class MembersResource {
             msg = "Invalid Userfront user! Go away!";
             JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    // method to nullify member relationships
+    private void nullifyMemberRelationships(Member member) {
+        //Nullifying relationships related to member
+        List<AnimalListing> animalListingsToNullify = member.getAnimalListings();
+        for (AnimalListing aL : animalListingsToNullify) {
+            aL.setMember(null);
+        }
+        List<Review> reviewsCreatedToNullify = member.getReviewsCreated();
+        for (Review r : reviewsCreatedToNullify) {
+            r.setBelongedToMember(null);
+            r.setReviewedByMember(null);
+        }
+        List<Review> reviewsReceuvedToNullify = member.getReviewsReceived();
+        for (Review r : reviewsReceuvedToNullify) {
+            r.setBelongedToMember(null);
+            r.setReviewedByMember(null);
+        }
+        List<EventListing> eventListingToNullify = member.getEventListings();
+        for (EventListing e : eventListingToNullify) {
+            e.setMember(null);
+            for (EventField ef : e.getEventFields()) {
+                ef.setEventListing(null);
+            }
+        }
+        List<EventRegistration> eventRegistrationToNullify = member.getEventRegistrations();
+        for (EventRegistration e : eventRegistrationToNullify) {
+            e.setMember(null);
+        }
+        List<ApplicationForm> appFormsToNullify = member.getApplicationForms();
+        for (ApplicationForm aF : appFormsToNullify) {
+            aF.setMember(null);
+        }
+        List<Donation> donationsToNullify = member.getDonations();
+        for (Donation d : donationsToNullify) {
+            d.setMember(null);
+            d.getTestimonial().setDonation(null);
+        }
+        List<Notification> notificationsToNullify = member.getNotifications();
+        for (Notification n : notificationsToNullify) {
+            n.setMember(null);
         }
     }
 

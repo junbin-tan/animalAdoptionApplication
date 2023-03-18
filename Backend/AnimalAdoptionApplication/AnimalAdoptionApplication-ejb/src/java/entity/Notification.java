@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -27,13 +29,17 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
+	
     @Column(nullable = false)
     @NotNull
     private String title;
+	
     @Column(nullable = false)
     @NotNull
     private String message;
+	
     @Column(nullable = false)
+	@Temporal(TemporalType.DATE)
     @NotNull
     private Date dateTime;
     

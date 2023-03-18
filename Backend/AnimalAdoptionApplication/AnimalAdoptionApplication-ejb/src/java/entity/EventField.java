@@ -26,9 +26,11 @@ public class EventField implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventFieldId;
+	
     @Column(length = 64, nullable = false)
     @NotNull
     private String fieldName;
+	
     @Column(nullable = false)
     @NotNull
     private String fieldValue;
@@ -89,4 +91,18 @@ public class EventField implements Serializable {
     public void setFieldValue(String fieldValue) {
         this.fieldValue = fieldValue;
     }
+
+	/**
+	 * @return the eventListing
+	 */
+	public EventListing getEventListing() {
+		return eventListing;
+	}
+
+	/**
+	 * @param eventListing the eventListing to set
+	 */
+	public void setEventListing(EventListing eventListing) {
+		this.eventListing = eventListing;
+	}
 }

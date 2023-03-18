@@ -21,6 +21,7 @@ const DonationPage = () => {
   console.log("Getting current actual user at Donation Page");
   const currentUserDonations = currentActualUser && currentActualUser.donations;
   console.log(currentUserDonations);
+  console.log(currentActualUser && currentActualUser);
 
   // End: get valid current actual user with data like events created, donations, animal listings created etc
    
