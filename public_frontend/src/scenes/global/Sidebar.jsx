@@ -7,7 +7,6 @@ import { tokens } from "../../theme";
 import Auth from "../../helpers/Auth";
 
 // icon import
-import RegisterIcon from '@mui/icons-material/Publish';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PetsIcon from "@mui/icons-material/Pets";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
@@ -19,6 +18,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -74,7 +74,7 @@ const Sidebar = () => {
           },
         }}
       >
-        <ProSidebar collapsed={isCollapsed} style={{height: "100vh"}}>
+        <ProSidebar collapsed={isCollapsed} style={{height: "100%"}}>
           <Menu iconShape="square">
             {/* Create logo and menu icons here */}
             <MenuItem
@@ -136,9 +136,9 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Animal Registration"
-                to="/AnimalRegistration"
-                icon={<RegisterIcon />}
+                title="Create Animal Listing"
+                to="/CreateAnimalListing"
+                icon={<NoteAddIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

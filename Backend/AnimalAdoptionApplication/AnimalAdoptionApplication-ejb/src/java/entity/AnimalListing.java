@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -16,7 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -35,21 +37,43 @@ public class AnimalListing implements Serializable {
     private Double flatFee;
     @Column(nullable = false)
     @NotNull
-    private String reason;
+    private String description;
+    @Column(nullable = false)
+    @NotNull
+    private String image;
+    @Column(nullable = false)
+    @NotNull
+    private Integer age;
+    @Column(length = 64, nullable = false)
+    @NotNull
+    private String name;
+    @Column(nullable = false)
+    @NotNull
+    private GenderEnum gender;
+    @Column(length = 128, nullable = false)
+    @NotNull
+    private String breed;
+    @Column(nullable = false)
+    @NotNull
+    private Double weight;
+    @Column(nullable = false)
+    @NotNull
+    private AnimalTypeEnum animalType;
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isNeutered;
     @Column(nullable = false)
     @NotNull
     private Boolean isAdoption;
     @Column(nullable = false)
     @NotNull
     private Boolean isFostering;
+    @Temporal(TemporalType.DATE)
     private Date fosterStartDate;
+    @Temporal(TemporalType.DATE)
     private Date fosterEndDate;
     private Boolean isActive;
     
-    @OneToOne
-    @JoinColumn(nullable = false)
-    @NotNull
-    private Animal animal;
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
@@ -60,6 +84,8 @@ public class AnimalListing implements Serializable {
 
     public AnimalListing() {
         this.flatFee = 100.00;
+        this.isActive = true;
+        this.applicationForms = new ArrayList<ApplicationForm>();
     }
 
     @Override
@@ -103,12 +129,76 @@ public class AnimalListing implements Serializable {
         this.flatFee = flatFee;
     }
 
-    public String getReason() {
-        return reason;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public AnimalTypeEnum getAnimalType() {
+        return animalType;
+    }
+
+    public void setAnimalType(AnimalTypeEnum animalType) {
+        this.animalType = animalType;
+    }
+
+    public Boolean getIsNeutered() {
+        return isNeutered;
+    }
+
+    public void setIsNeutered(Boolean isNeutered) {
+        this.isNeutered = isNeutered;
     }
 
     public Boolean getIsAdoption() {
@@ -142,21 +232,13 @@ public class AnimalListing implements Serializable {
     public void setFosterEndDate(Date fosterEndDate) {
         this.fosterEndDate = fosterEndDate;
     }
-    
+
     public Boolean getIsActive() {
         return isActive;
     }
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
-    }
-
-    public Animal getAnimal() {
-        return animal;
-    }
-
-    public void setAnimal(Animal animal) {
-        this.animal = animal;
     }
 
     public Member getMember() {
@@ -175,6 +257,5 @@ public class AnimalListing implements Serializable {
         this.applicationForms = applicationForms;
     }
 
-    
     
 }

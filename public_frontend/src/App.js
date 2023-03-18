@@ -18,8 +18,8 @@ import DonationPage from "./pages/Donation/donationPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 import AboutUsPage from "./pages/AboutUs/AboutUsPage";
-import AnimalRegistrationPage from "./pages/AnimalRegistration/AnimalRegistrationPage";
 import AdoptionFosteringPage from "./pages/Adoption_Fostering/AdoptionFosteringPage";
+import CreateAnimalListingPage from "./pages/CreateAnimalListing/CreateAnimalListing";
 import UserProvider from "./helpers/context/UserProvider";
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
               <Route exact path="/AdoptionFostering" element={<AdoptionFosteringPage/>} />
               <Route exact path="/Donation" element={<DonationPage />} />
               <Route exact path="/Contact" element={<ContactUsPage />} />
-              <Route exact path="/AnimalRegistration" element={<AnimalRegistrationPage />} />
+              <Route exact path="/CreateAnimalListing" element={<CreateAnimalListingPage />} />
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />

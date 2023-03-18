@@ -98,8 +98,18 @@ public class MembersResource {
         if (validToken) {
             msg = "User calling this is a verified Userfront user. YAY!";
             try {
-                Member m = memberSessionBeanLocal.retrieveMemberByEmail(email);
-                return Response.status(200).entity(m).build();
+                Member mToNullify = memberSessionBeanLocal.retrieveMemberByEmail(email);
+                //Nullifying all relationship to member
+//                mToNullify.setReviewsCreated(null);
+//                mToNullify.setReviewsReceived(null);
+//                mToNullify.setEventListings(null);
+//                mToNullify.setEventRegistrations(null);
+//                mToNullify.setAnimalListings(null);
+//                mToNullify.setApplicationForms(null);
+//                mToNullify.setDonations(null);
+//                mToNullify.setNotifications(null); 
+//                
+                return Response.status(200).entity(mToNullify).build();
             } catch (MemberNotFoundException ex) {
                 JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
                 return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
