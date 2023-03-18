@@ -99,7 +99,7 @@ public class MembersResource {
             msg = "User calling this is a verified Userfront user. YAY!";
             try {
                 Member mToNullify = memberSessionBeanLocal.retrieveMemberByEmail(email);
-                //Nullifying all relationship to member
+                //Nullifying all relationship to member (this one got error)
 //                mToNullify.setReviewsCreated(null);
 //                mToNullify.setReviewsReceived(null);
 //                mToNullify.setEventListings(null);
