@@ -26,30 +26,39 @@ public class Animal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long animalId;
+	
     @Column(nullable = false)
     @NotNull
     private String image;
+
     @Column(nullable = false)
     @NotNull
     private Integer age;
+	
     @Column(length = 64, nullable = false)
     @NotNull
     private String name;
+	
     @Column(nullable = false)
     @NotNull
     private GenderEnum gender;
+	
     @Column(length = 128, nullable = false)
     @NotNull
     private String breed;
     @Column(nullable = false)
+
     @NotNull
     private Double weight;
+
     @Column(nullable = false)
     @NotNull
     private String description;
+
     @Column(nullable = false)
     @NotNull
     private AnimalTypeEnum animalType;
+
     @Column(nullable = false)
     @NotNull
     private Boolean isNeutered;

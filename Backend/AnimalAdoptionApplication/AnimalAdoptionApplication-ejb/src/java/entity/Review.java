@@ -29,16 +29,21 @@ public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
+	
     @Column(length = 64, nullable = false)
     @NotNull
     private String title;
+	
     @Column(nullable = false)
     @NotNull
     private String description;
+	
     private Boolean isRemoved;
+	
     @Column(nullable = false)
     @NotNull
     private Integer rating;
+	
     @Column(nullable = false)
 	@Temporal(TemporalType.DATE)
     @NotNull
@@ -48,6 +53,7 @@ public class Review implements Serializable {
     @JoinColumn(nullable = false)
     @NotNull
     private Member reviewedByMember;
+	
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull

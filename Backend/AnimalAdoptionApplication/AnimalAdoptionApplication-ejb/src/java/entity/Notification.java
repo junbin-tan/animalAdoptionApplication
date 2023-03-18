@@ -29,12 +29,15 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
+	
     @Column(nullable = false)
     @NotNull
     private String title;
+	
     @Column(nullable = false)
     @NotNull
     private String message;
+	
     @Column(nullable = false)
 	@Temporal(TemporalType.DATE)
     @NotNull

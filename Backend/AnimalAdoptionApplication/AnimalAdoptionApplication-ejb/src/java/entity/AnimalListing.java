@@ -32,15 +32,19 @@ public class AnimalListing implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long animalListingId;
+	
     @Column(nullable = false)
     @NotNull
     private Double flatFee;
+	
     @Column(nullable = false)
     @NotNull
     private String reason;
+	
     @Column(nullable = false)
     @NotNull
     private Boolean isAdoption;
+	
     @Column(nullable = false)
     @NotNull
     private Boolean isFostering;
@@ -57,13 +61,14 @@ public class AnimalListing implements Serializable {
     @JoinColumn(nullable = false)
     @NotNull
     private Animal animal;
+	
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
     private Member member;
+
     @OneToMany(mappedBy = "animalListing")
     private List<ApplicationForm> applicationForms;
-    
 
     public AnimalListing() {
         this.flatFee = 100.00;

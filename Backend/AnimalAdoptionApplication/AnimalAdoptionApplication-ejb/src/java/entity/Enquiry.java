@@ -24,16 +24,18 @@ public class Enquiry implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long enquiryId;
+	
     @Column(nullable = false)
     @NotNull
     private String name;
+	
     @Column(nullable = false)
     @NotNull
     private String email;
+	
     @Column(nullable = false)
     @NotNull
     private String message;
-
 
     @Override
     public int hashCode() {
