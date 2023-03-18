@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -34,6 +36,7 @@ public class EventListing implements Serializable {
     @NotNull
     private String eventName;
     @Column(nullable = false)
+	@Temporal(TemporalType.DATE)
     @NotNull
     private Date dateAndTime;
     @Column(length = 128, nullable = false)

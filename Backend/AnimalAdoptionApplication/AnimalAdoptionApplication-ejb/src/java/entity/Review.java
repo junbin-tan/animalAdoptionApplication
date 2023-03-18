@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -38,6 +40,7 @@ public class Review implements Serializable {
     @NotNull
     private Integer rating;
     @Column(nullable = false)
+	@Temporal(TemporalType.DATE)
     @NotNull
     private Date date;
     

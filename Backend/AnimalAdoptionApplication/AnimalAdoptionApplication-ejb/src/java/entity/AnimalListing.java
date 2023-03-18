@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -42,8 +44,13 @@ public class AnimalListing implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isFostering;
+
+	@Temporal(TemporalType.DATE)
     private Date fosterStartDate;
+
+	@Temporal(TemporalType.DATE)
     private Date fosterEndDate;
+	
     private Boolean isActive;
     
     @OneToOne

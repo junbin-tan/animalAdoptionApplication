@@ -5,6 +5,8 @@
  */
 package ejb.session.stateless;
 
+import entity.Donation;
+import entity.Enquiry;
 import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.TestimonialNotFoundException;
@@ -26,5 +28,9 @@ public interface TestimonialSessionBeanLocal {
     public List<Testimonial> retrieveTestimonialbyDonationId(Long donationId) throws TestimonialNotFoundException;
 
     public void deleteTestimonial(Testimonial testimonial) throws TestimonialNotFoundException;
+
+	public List<Testimonial> getAllTestimonial();
+
+
     
 }
