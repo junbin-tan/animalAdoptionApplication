@@ -41,10 +41,14 @@ public class TestimonialResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllTestimonial() {
-		List<Testimonial> l = testimonialSessionBeanLocal.getAllTestimonial();
-		GenericEntity<List<Testimonial>> e = new GenericEntity<List<Testimonial>>(l){};
-		return Response.status(200).entity(e).build();
+	public List<Testimonial> getAllTestimonial() {
+		List<Testimonial> listOfTestimonials = testimonialSessionBeanLocal.getAllTestimonial();
+
+		for (Testimonial t :listOfTestimonials) {
+			t.setDonation(null);
+		}
+
+		return listOfTestimonials;
 	}
 
 	
