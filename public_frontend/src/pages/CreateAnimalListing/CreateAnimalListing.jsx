@@ -136,6 +136,7 @@ const CreateAnimalListing = () => {
 
   return (
     <>
+    {/* If you have the login error, please remove line 140 - 502. */}
     <h2 className="text-center">Create Animal Listing</h2>
       <div className="form-demo">
         <Dialog
