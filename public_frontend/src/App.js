@@ -15,6 +15,7 @@ import RegisterPage from "./pages/register/registerPage";
 import LoginPage from "./pages/login/loginPage";
 import Homepage from "./pages/Homepage/Homepage";
 import DonationPage from "./pages/Donation/donationPage";
+import TestimonialPage from "./pages/Testimonial/testimonialPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 import AboutUsPage from "./pages/AboutUs/AboutUsPage";
@@ -42,6 +43,7 @@ function App() {
               <Route exact path="/AboutUs" element={<AboutUsPage />} />
               <Route exact path="/AdoptionFostering" element={<AdoptionFosteringPage/>} />
               <Route exact path="/Donation" element={<DonationPage />} />
+              <Route exact path="/Testimonial" element={<TestimonialPage />} />
               <Route exact path="/Contact" element={<ContactUsPage />} />
               <Route exact path="/CreateAnimalListing" element={<CreateAnimalListingPage />} />
 
