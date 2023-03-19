@@ -13,6 +13,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from "@mui/icons-material/Event";
 import CallIcon from "@mui/icons-material/Call";
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import InfoIcon from "@mui/icons-material/Info";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -181,7 +182,7 @@ const Sidebar = () => {
               <Item
                 title="View Testimonials"
                 to="/Testimonial"
-                icon={<CallIcon />}
+                icon={<LibraryBooksIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
