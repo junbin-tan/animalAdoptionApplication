@@ -2,9 +2,6 @@
 import AWS from "aws-sdk";
 import Auth from "./Auth";
 
-// IMPORTANT: PLEASE DO NOT SHARE THE FOLLOWING ACCESS AND SECRET KEY! It's confidential!!
-const AWS_ACCESS_KEY= 'AKIAZBCHWQCDCJJLCT7K';
-const AWS_SECRET_KEY= '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';
 const bucketRegion = "ap-southeast-1";
 
 const ImageUploaderCloud = {
@@ -13,8 +10,8 @@ const ImageUploaderCloud = {
     // Set AWS credentials
     AWS.config.update({
       region: bucketRegion,
-      accessKeyId: AWS_ACCESS_KEY,
-      secretAccessKey: AWS_SECRET_KEY,
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
     });
 
 
