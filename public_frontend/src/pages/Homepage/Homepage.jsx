@@ -26,7 +26,7 @@ const Homepage = () => {
                       <Link to="/AdoptionFostering">Adopt</Link>
                     </button>
                     <button className=" create__btn d-flex align-items-center gap-2">
-                      <i class="ri-ball-pen-line"></i>
+                      <i class="ri-money-dollar-box-line"></i>
                       <Link to="/Donation">Donate</Link>
                     </button>
                   </div>

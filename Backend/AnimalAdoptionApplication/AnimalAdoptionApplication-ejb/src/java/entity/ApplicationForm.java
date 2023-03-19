@@ -50,7 +50,7 @@ public class ApplicationForm implements Serializable {
     @Column(nullable = false)
     @NotNull
     private ApplicationStatusEnum applicationStatus;
-	
+    
     @Column(nullable = false)
     @NotNull
     private FormTypeEnum formType;

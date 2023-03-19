@@ -49,8 +49,8 @@ const CreateAnimalListing = () => {
       isNeutered: false,
       isAdoption: false,
       isFostering: false,
-      fosterStartDate: "",
-      fosterEndDate: "",
+      fosterStartDate: null,
+      fosterEndDate: null,
       member: m,
       
     },
@@ -105,8 +105,13 @@ const CreateAnimalListing = () => {
         delete data.accept;
         data.gender = data.gender["name"];
         data.animalType = data.animalType["name"];
-        data.fosterStartDate = data.fosterStartDate.toISOString();
-        data.fosterEndDate = data.fosterEndDate.toISOString();
+        if (data.fosterStartDate != null) {
+          data.fosterStartDate = data.fosterStartDate.toISOString();
+        }
+        if (data.fosterEndDate != null) {
+          data.fosterEndDate = data.fosterEndDate.toISOString();
+        }
+        
         Api.createAnimalListing(data).then((data) => setShowMessage(true));
         formik.resetForm();
     },
@@ -114,6 +119,7 @@ const CreateAnimalListing = () => {
 
   const isFormFieldValid = (name) =>
     !!(formik.touched[name] && formik.errors[name]);
+  
   const getFormErrorMessage = (name) => {
     return (
       isFormFieldValid(name) && (
@@ -136,7 +142,6 @@ const CreateAnimalListing = () => {
 
   return (
     <>
-    {/* If you have the login error, please remove line 140 - 502. */}
     <h2 className="text-center">Create Animal Listing</h2>
       <div className="form-demo">
         <Dialog
@@ -452,20 +457,13 @@ const CreateAnimalListing = () => {
                     onChange={formik.handleChange}
                     dateFormat="dd/mm/yy"
                     autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("fosterStartDate"),
-                    })}
                   />
                   <label
                     htmlFor="fosterStartDate"
-                    className={classNames({
-                      "p-error": isFormFieldValid("fosterStartDate"),
-                    })}
                   >
                     Foster Start Date (For Fostering Only)
                   </label>
                 </span>
-                {getFormErrorMessage("fosterStartDate")}
               </div>
 
               {/* End date textbox (For fostering only) */}
@@ -478,20 +476,13 @@ const CreateAnimalListing = () => {
                     onChange={formik.handleChange}
                     dateFormat="dd/mm/yy"
                     autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("fosterEndDate"),
-                    })}
                   />
                   <label
                     htmlFor="fosterEndDate"
-                    className={classNames({
-                      "p-error": isFormFieldValid("fosterEndDate"),
-                    })}
                   >
                     Foster End Date (For Fostering Only)
                   </label>
                 </span>
-                {getFormErrorMessage("fosterEndDate")}
               </div>
 
               {/* Submit button */}
