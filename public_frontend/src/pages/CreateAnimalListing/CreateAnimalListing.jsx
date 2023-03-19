@@ -7,15 +7,18 @@ import { Checkbox } from "primereact/checkbox";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
 import { Calendar } from "primereact/calendar";
+import { FileUpload } from "primereact/fileupload";
 import Api from "../../helpers/Api";
 import UserContext from "../../helpers/context/UserContext";
 import "./CreateAnimalListing.css";
+import ImageUploaderCloud from "../../helpers/ImageUploaderCloud";
 
 const CreateAnimalListing = () => {
-  const {currentActualUser} = useContext(UserContext);
+  const { currentActualUser } = useContext(UserContext);
 
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
+  const [animalImg, setAnimalImg] = useState();
 
   const gender = [
     { name: "MALE", code: "MALE" },
@@ -30,11 +33,42 @@ const CreateAnimalListing = () => {
     { name: "OTHERS", code: "OTHERS" },
   ];
 
-  const m = {memberId: currentActualUser.memberId, name: currentActualUser.name, email: currentActualUser.email, password: currentActualUser.password, phoneNumber: currentActualUser.phoneNumber, 
-    openToFoster: currentActualUser.openToFoster, openToAdopt: currentActualUser.openToAdopt, location: currentActualUser.location, occupation: currentActualUser.occupation, 
-    residentialType: currentActualUser.residentialType, accountStatus: currentActualUser.accountStatus, reviewsReceived: currentActualUser.reviewsReceived,
-    eventListings: currentActualUser.eventListings, eventRegistrations: currentActualUser.eventRegistrations, animalListings: currentActualUser.animalListings,
-    applicationForms: currentActualUser.applicationForms, donations: currentActualUser.donations, notifications: currentActualUser.notifications}
+  const m = {
+    memberId: currentActualUser.memberId,
+    name: currentActualUser.name,
+    email: currentActualUser.email,
+    password: currentActualUser.password,
+    phoneNumber: currentActualUser.phoneNumber,
+    openToFoster: currentActualUser.openToFoster,
+    openToAdopt: currentActualUser.openToAdopt,
+    location: currentActualUser.location,
+    occupation: currentActualUser.occupation,
+    residentialType: currentActualUser.residentialType,
+    accountStatus: currentActualUser.accountStatus,
+    reviewsReceived: currentActualUser.reviewsReceived,
+    eventListings: currentActualUser.eventListings,
+    eventRegistrations: currentActualUser.eventRegistrations,
+    animalListings: currentActualUser.animalListings,
+    applicationForms: currentActualUser.applicationForms,
+    donations: currentActualUser.donations,
+    notifications: currentActualUser.notifications,
+  };
+
+  const customBase64Uploader = async (event) => {
+        // convert file to base64 encoded
+        const file = event.files[0];
+        const reader = new FileReader();
+        let blob = await fetch(file.objectURL).then((r) => r.blob()); //blob:url
+
+        reader.readAsDataURL(blob);
+
+        reader.onloadend = function () {
+            const base64data = reader.result;
+            // setAnimalImg(base64data);
+        };
+
+        setAnimalImg(file);
+    };
 
   const formik = useFormik({
     initialValues: {
@@ -52,12 +86,15 @@ const CreateAnimalListing = () => {
       fosterStartDate: null,
       fosterEndDate: null,
       member: m,
-      
     },
     validate: (data) => {
       let errors = {};
 
-      if (!data.image) {
+
+      // if (!data.image) {
+      //   errors.image = "Image is required";
+      // }
+      if (!animalImg) {
         errors.image = "Image is required";
       }
 
@@ -86,11 +123,11 @@ const CreateAnimalListing = () => {
       }
 
       if (!data.animalType) {
-        errors.animalType= "Animal Type is required";
+        errors.animalType = "Animal Type is required";
       }
 
       if (!data.isNeutered) {
-        errors.isNeutered= "Please indicate whether the animal is neutered";
+        errors.isNeutered = "Please indicate whether the animal is neutered";
       }
 
       if (!data.description) {
@@ -100,26 +137,37 @@ const CreateAnimalListing = () => {
       return errors;
     },
     onSubmit: (data) => {
-        setFormData(data);
-        console.log(data);
-        delete data.accept;
-        data.gender = data.gender["name"];
-        data.animalType = data.animalType["name"];
-        if (data.fosterStartDate != null) {
-          data.fosterStartDate = data.fosterStartDate.toISOString();
+      setFormData(data);
+      console.log(data);
+      delete data.accept;
+      data.gender = data.gender["name"];
+      data.animalType = data.animalType["name"];
+      if (data.fosterStartDate != null) {
+        data.fosterStartDate = data.fosterStartDate.toISOString();
+      }
+      if (data.fosterEndDate != null) {
+        data.fosterEndDate = data.fosterEndDate.toISOString();
+      }
+
+      const animalImage = animalImg && animalImg;
+      // console.log(animalImage);
+      ImageUploaderCloud.uploadImgToCloud(animalImage).then((response) => {
+        if (response.Location) {
+          data.image = response.Location;
+          console.log(data);
+          Api.createAnimalListing(data).then((data) => setShowMessage(true));
         }
-        if (data.fosterEndDate != null) {
-          data.fosterEndDate = data.fosterEndDate.toISOString();
-        }
-        
-        Api.createAnimalListing(data).then((data) => setShowMessage(true));
-        formik.resetForm();
+      });
+      
+
+      
+      formik.resetForm();
     },
   });
 
   const isFormFieldValid = (name) =>
     !!(formik.touched[name] && formik.errors[name]);
-  
+
   const getFormErrorMessage = (name) => {
     return (
       isFormFieldValid(name) && (
@@ -139,10 +187,9 @@ const CreateAnimalListing = () => {
     </div>
   );
 
-
   return (
     <>
-    <h2 className="text-center">Create Animal Listing</h2>
+      <h2 className="text-center">Create Animal Listing</h2>
       <div className="form-demo">
         <Dialog
           visible={showMessage}
@@ -184,8 +231,6 @@ const CreateAnimalListing = () => {
         <div className="flex justify-content-center">
           <div className="card">
             <form onSubmit={formik.handleSubmit} className="p-fluid">
-
-
               {/* Description textbox */}
               <div className="field">
                 <span className="p-float-label">
@@ -210,10 +255,26 @@ const CreateAnimalListing = () => {
                 {getFormErrorMessage("description")}
               </div>
 
-            {/* Image textbox */}
-            <div className="field">
+              {/* Image textbox */}
+              <div className="field">
                 <span className="p-float-label">
-                  <InputText
+                  <FileUpload
+                    name="image"
+                    accept="image/*"
+                    mode="advanced"
+                    customUpload
+                    uploadHandler={customBase64Uploader}
+                    // cancelOptions={{style:{display: "none"}}}
+                    // uploadOptions={{style:{display: "none"}}}
+                    maxFileSize={1000000}
+                    emptyTemplate={
+                      <p className="m-0">
+                        Drag and drop files to here to upload.
+                      </p>
+                    }
+                  />
+
+                  {/* <InputText
                     id="image"
                     name="image"
                     value={formik.values.image}
@@ -222,7 +283,7 @@ const CreateAnimalListing = () => {
                     className={classNames({
                       "p-invalid": isFormFieldValid("image"),
                     })}
-                  />
+                  /> */}
                   <label
                     htmlFor="image"
                     className={classNames({
@@ -334,8 +395,8 @@ const CreateAnimalListing = () => {
                 {getFormErrorMessage("breed")}
               </div>
 
-                {/* Weight textbox */}
-                <div className="field">
+              {/* Weight textbox */}
+              <div className="field">
                 <span className="p-float-label">
                   <InputText
                     id="weight"
@@ -358,7 +419,7 @@ const CreateAnimalListing = () => {
                 </span>
                 {getFormErrorMessage("weight")}
               </div>
-              
+
               {/* Animal Type dropdown list */}
               <div className="field">
                 <span className="p-float-label">
@@ -458,9 +519,7 @@ const CreateAnimalListing = () => {
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
-                  <label
-                    htmlFor="fosterStartDate"
-                  >
+                  <label htmlFor="fosterStartDate">
                     Foster Start Date (For Fostering Only)
                   </label>
                 </span>
@@ -477,9 +536,7 @@ const CreateAnimalListing = () => {
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
-                  <label
-                    htmlFor="fosterEndDate"
-                  >
+                  <label htmlFor="fosterEndDate">
                     Foster End Date (For Fostering Only)
                   </label>
                 </span>
@@ -493,7 +550,6 @@ const CreateAnimalListing = () => {
       </div>
     </>
   );
-
-}
+};
 
 export default CreateAnimalListing;
