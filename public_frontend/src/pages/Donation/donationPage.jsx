@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -10,30 +10,24 @@ import "./donationPage.css";
 import Api from "../../helpers/Api";
 import logo from "./qrCode.png";
 import Auth from "../../helpers/Auth";
-
-const handleAnchorClick = event => {
-  // 👇️ use event.preventDefault() if you want to
-  // prevent navigation
-  // event.preventDefault();
-  <a
-  onClick={handleAnchorClick}
-  href="https://bobbyhadz.com"
-  target="_blank"
-  rel="noreferrer"
->
-  bobbyhadz.com
-</a>
-
-  console.log('Anchor element clicked');
-
-  // 👇️ refers to the link element
-  console.log(event.currentTarget);
-};
+import UserContext from "../../helpers/context/UserContext";
 
 const DonationPage = () => {
+
+  // Start: get valid current actual user with data like events created, donations, animal listings created etc
+
+  const {currentActualUser} = useContext(UserContext);
+
+  console.log("Getting current actual user at Donation Page");
+  const currentUserDonations = currentActualUser && currentActualUser.donations;
+  console.log(currentUserDonations);
+  console.log(currentActualUser && currentActualUser);
+
+  // End: get valid current actual user with data like events created, donations, animal listings created etc
+   
   const donationType = [
     { name: "Anonymous", code: "anonymous" },
-    { name: "Open", code: "Open" },
+    { name: "Open", code: "open" },
   ];
   //JSON format that will be parsed
 /*
@@ -50,12 +44,23 @@ const DonationPage = () => {
  //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
-  const [toNext, setToNext] = useState(false)
+  const [toNext, setToNext] = useState(false);
+
+  // get currrent user if authenticated
+  const currentUser = Auth.getUser();
+
+  let userFullName = "";
+  let userEmail = "";
+
+  if (currentUser) {
+    userFullName = currentUser.data.name;
+    userEmail = currentUser.email;
+  }
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
+      name: userFullName,
+      email: userEmail,
       donationType: "",
       testimonial: "",
       accept: false,
@@ -71,7 +76,7 @@ const DonationPage = () => {
         errors.email = "Invalid email address. E.g. example@email.com";
       }
       if (!data.donationType) {
-        errors.residentialType = "Donation Type is required.";
+        errors.donationType = "Donation Type is required.";
       }
 
       if (!data.accept) {
@@ -89,8 +94,6 @@ const DonationPage = () => {
       console.log(data);
       Api.createNewDonation(data).then((data) => setShowMessage(true));
       formik.resetForm();
-      setToNext(true)
-      
     },
   });
 
@@ -140,6 +143,7 @@ const DonationPage = () => {
       </div>
 
       <div className="form-demo">
+
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
@@ -160,6 +164,7 @@ const DonationPage = () => {
             </p>
           </div>
         </Dialog>
+        
         <div className="flex justify-content-center">
           <div className="card">
             <h5 className="text-center">Donate</h5>
@@ -225,7 +230,7 @@ const DonationPage = () => {
                     options={donationType}
                     optionLabel="name"
                     className={classNames({
-                      "p-invalid": isFormFieldValid("residentialType"),
+                      "p-invalid": isFormFieldValid("donationType"),
                     })}
                   />
                   <label
@@ -288,7 +293,7 @@ const DonationPage = () => {
               {/* Submit button */}
               <Button
                 type="submit"
-                label="Procede to Donate!"
+                label="Proceed to Donate!"
                 className="mt-2"
               />
             </form>

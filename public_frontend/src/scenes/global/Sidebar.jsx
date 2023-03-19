@@ -10,6 +10,7 @@ import Auth from "../../helpers/Auth";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PetsIcon from "@mui/icons-material/Pets";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from "@mui/icons-material/Event";
 import CallIcon from "@mui/icons-material/Call";
 import InfoIcon from "@mui/icons-material/Info";
@@ -17,6 +18,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -72,7 +74,7 @@ const Sidebar = () => {
           },
         }}
       >
-        <ProSidebar collapsed={isCollapsed} style={{ height: "100vh" }}>
+        <ProSidebar collapsed={isCollapsed} style={{height: "100%"}}>
           <Menu iconShape="square">
             {/* Create logo and menu icons here */}
             <MenuItem
@@ -133,6 +135,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Create Animal Listing"
+                to="/CreateAnimalListing"
+                icon={<NoteAddIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -142,6 +151,13 @@ const Sidebar = () => {
                 Our Services
               </Typography>
               <Item
+                title="Home"
+                to="/Homepage"
+                icon={<HomeIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
                 title="About Us"
                 to="/AboutUs"
                 icon={<InfoIcon />}
@@ -150,7 +166,7 @@ const Sidebar = () => {
               />
               <Item
                 title="Adoption & Fostering"
-                to="/AdoptionAndFostering"
+                to="/AdoptionFostering"
                 icon={<PetsIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -159,6 +175,13 @@ const Sidebar = () => {
                 title="Donation"
                 to="/Donation"
                 icon={<VolunteerActivismIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="View Testimonials"
+                to="/Testimonial"
+                icon={<CallIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -269,7 +292,7 @@ const Sidebar = () => {
               />
               <Item
                 title="Adoption & Fostering"
-                to="/AdoptionAndFostering"
+                to="/AdoptionFostering"
                 icon={<PetsIcon />}
                 selected={selected}
                 setSelected={setSelected}

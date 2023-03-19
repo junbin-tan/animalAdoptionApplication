@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -34,7 +36,8 @@ public class Testimonial implements Serializable {
     @NotNull
     private String message;
 	
-    @Column(nullable = false)
+	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
     @NotNull
     private Date date;
     
@@ -85,7 +88,7 @@ public class Testimonial implements Serializable {
         this.message = message;
     }
 
-    public Date getDate() {
+	public Date getDate() {
         return date;
     }
 
@@ -100,7 +103,5 @@ public class Testimonial implements Serializable {
     public void setDonation(Donation donation) {
         this.donation = donation;
     }
-    
-    
     
 }

@@ -5,10 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.Donation;
+import entity.Enquiry;
 import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.TestimonialNotFoundException;
 import exception.UnknownPersistenceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -89,6 +92,12 @@ public class TestimonialSessionBean implements TestimonialSessionBeanLocal {
             return testimonialToRetrieve;
         }
     }
+
+	@Override
+	public List<Testimonial> getAllTestimonial() {
+		Query q = em.createQuery("SELECT t FROM Testimonial t");
+		return q.getResultList();
+	}
     
     
     @Override

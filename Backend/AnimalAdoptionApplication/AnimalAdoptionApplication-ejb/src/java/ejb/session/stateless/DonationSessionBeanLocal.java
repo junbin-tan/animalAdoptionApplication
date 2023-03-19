@@ -6,9 +6,11 @@
 package ejb.session.stateless;
 
 import entity.Donation;
+import entity.Member;
 import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -23,5 +25,7 @@ public interface DonationSessionBeanLocal {
 	public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException;
 
 	public long setDonationToTestimonial(Long donationId, Long testId);
+
+	public List<Member> getMemberByEmail(String email);
 	
 }

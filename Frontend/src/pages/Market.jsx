@@ -86,9 +86,9 @@ const Market = () => {
             </Col>
 
             {ADOPTION_FOSTERING.map((item) => (
-              <Col lg="3" md="4" sm="6" className="mb-4" key={item.id}>
-                <NftCard item={item} />
-              </Col>
+            <Col lg="3" md="4" sm="6" className="mb-4" key={item.id}>
+              <NftCard item={item} />
+            </Col>
             ))}
           </Row>
         </Container>
