@@ -7,6 +7,7 @@ package webservices.restful;
 
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import ejb.session.stateless.ApplicationFormSessionBeanLocal;
+import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
 import entity.FormTypeEnum;
@@ -40,6 +41,9 @@ public class ApplicationFormResource {
     
     @EJB
     private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
+    
+    @EJB
+    private MemberSessionBeanLocal memberSessionBeanLocal;
 
     @Context
     private UriInfo context;
@@ -53,21 +57,6 @@ public class ApplicationFormResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createApplicationForm(ApplicationForm appForm) {
         try {
-//            ApplicationForm appForm = new ApplicationForm();
-//            appForm.setIsFirstTime(o.getBoolean("isFirstTime"));
-//            appForm.setHasOtherPets(o.getBoolean("hasOtherPets"));
-//            appForm.setExistingPetsOwned(o.getInt("existingPetsOwned"));
-//            appForm.setHasDailyExercise(o.getBoolean("hasDailyExercise"));
-//            String sleepAreaString = o.getString("sleepArea");
-//            SleepAreaEnum sleepArea = SleepAreaEnum.valueOf(sleepAreaString);
-//            appForm.setSleepArea(sleepArea);
-//            appForm.setPetAloneTime(o.getInt("petAloneTime"));
-//            appForm.setReason(o.getString("reason"));
-//            String formTypeString = o.getString("formType");
-//            FormTypeEnum formType = FormTypeEnum.valueOf(formTypeString);
-//            appForm.setFormType(formType);
-
-            
             Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
             
             return Response.status(204).build();

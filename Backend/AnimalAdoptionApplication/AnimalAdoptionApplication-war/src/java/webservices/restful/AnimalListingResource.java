@@ -7,11 +7,9 @@ package webservices.restful;
 
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import entity.AnimalListing;
-import entity.Member;
-import entity.Testimonial;
+import entity.ApplicationForm;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
-import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
@@ -22,7 +20,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -78,24 +75,14 @@ public class AnimalListingResource {
 
             for (AnimalListing al : allAnimalListings) {
                     al.getMember().setAnimalListings(null);
-                    al.setApplicationForms(null);
+                    
+                    for (ApplicationForm af : al.getApplicationForms()) {
+                        af.setAnimalListing(null);
+                        af.setMember(null);
+                    }
             }
 
             return allAnimalListings;
             
-    }
-    
-//    @GET
-//    @Path("/getAnimalListingById/{animalListingId}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public AnimalListing getAnimalListingById(@PathParam("animalListingId") Long animalListingId) {
-//        AnimalListing al = animalListingSessionBeanLocal.retrieveAnimalListingByAnimalListingId(animalListingId);
-//
-//        al.getMember().setAnimalListings(null);
-//        al.setApplicationForms(null);
-//
-//        return al;
-//    }
-    
+    } 
 }
