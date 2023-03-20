@@ -49,7 +49,7 @@ const AnimalListing= (props) => {
             <i class="ri-search-2-line"></i> Read More
           </button>
 
-          {showModal && <Modal setShowModal={setShowModal} description={description} animalListingId = {animalListingId} />}
+          {showModal && <Modal setShowModal={setShowModal} description={description} animalListing = {props.item} />}
 
         </div>
       </div>
