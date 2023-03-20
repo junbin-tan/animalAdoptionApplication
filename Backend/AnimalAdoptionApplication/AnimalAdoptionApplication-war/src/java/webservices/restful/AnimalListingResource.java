@@ -83,19 +83,5 @@ public class AnimalListingResource {
 
             return allAnimalListings;
             
-    }
-    
-//    @GET
-//    @Path("/getAnimalListingById/{animalListingId}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public AnimalListing getAnimalListingById(@PathParam("animalListingId") Long animalListingId) {
-//        AnimalListing al = animalListingSessionBeanLocal.retrieveAnimalListingByAnimalListingId(animalListingId);
-//
-//        al.getMember().setAnimalListings(null);
-//        al.setApplicationForms(null);
-//
-//        return al;
-//    }
-    
+    } 
 }
