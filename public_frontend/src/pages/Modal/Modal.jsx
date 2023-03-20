@@ -10,7 +10,7 @@ import Api from "../../helpers/Api";
 import UserContext from "../../helpers/context/UserContext";
 import "./modal.css";
 
-const Modal = ({ setShowModal, description, animalListingId }) => {
+const Modal = ({ setShowModal, description, animalListing }) => {
   const { currentActualUser } = useContext(UserContext);
 
   const [showMessage, setShowMessage] = useState(false);
@@ -53,14 +53,14 @@ const Modal = ({ setShowModal, description, animalListingId }) => {
     initialValues: {
       isFirstTime: false,
       hasOtherPets: false,
-      existingPetsOwned: null,
-      hasDailyExercise: null,
+      existingPetsOwned: 0,
+      hasDailyExercise: false,
       sleepArea: null,
-      petAloneTime: null,
+      petAloneTime: 0,
       reason: "",
       formType: "",
       member: m,
-      animalListingId: null,
+      animalListing: animalListing,
     },
     validate: (data) => {
       let errors = {};
