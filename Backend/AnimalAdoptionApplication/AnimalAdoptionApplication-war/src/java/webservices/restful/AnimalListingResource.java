@@ -8,15 +8,18 @@ package webservices.restful;
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import entity.AnimalListing;
 import entity.Member;
+import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
 import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -66,4 +69,20 @@ public class AnimalListingResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<AnimalListing> getAllAnimalListings() {
+            List<AnimalListing> allAnimalListings = animalListingSessionBeanLocal.retrieveAllAnimalListings();
+
+            for (AnimalListing al : allAnimalListings) {
+                    al.getMember().setAnimalListings(null);
+                    al.setApplicationForms(null);
+            }
+
+            return allAnimalListings;
+            
+    }
+    
+    
 }

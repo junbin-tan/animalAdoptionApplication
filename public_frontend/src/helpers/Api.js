@@ -74,6 +74,15 @@ const Api = {
          method: "GET",
       });
     },
+    getAllAnimalListings() { 
+      return fetch(`${SERVER_PREFIX}/animalListing`, {
+         headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+         },
+         method: "GET",
+      });
+    },
 };
 
 export default Api;
