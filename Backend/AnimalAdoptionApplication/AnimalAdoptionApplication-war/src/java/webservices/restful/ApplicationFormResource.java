@@ -60,41 +60,51 @@ public class ApplicationFormResource {
             for (Review r : member.getReviewsCreated()) {
                 r.setReviewedByMember(null);
             }
+            member.setReviewsCreated(null);
             
             for (Review r: member.getReviewsReceived()) {
                 r.setBelongedToMember(null);
             }
+            member.setReviewsReceived(null);
             
             for (EventListing el : member.getEventListings()) {
                 el.setMember(null);
             }
+            member.setEventListings(null);
             
             for (EventRegistration er : member.getEventRegistrations()) {
                 er.setMember(null);
             }
+            member.setEventRegistrations(null);
             
             for (AnimalListing al : member.getAnimalListings()) {
                 al.setMember(null);
             }
+            member.setAnimalListings(null);
             
             for (ApplicationForm af : member.getApplicationForms()) {
                 af.setMember(null);
             }
+            member.setApplicationForms(null);
             
             for (Donation d : member.getDonations()) {
                 d.setMember(null);
             }
+            member.setDonations(null);
             
             for (Notification n : member.getNotifications()) {
                 n.setMember(null);
             }
+            member.setNotifications(null);
             
             AnimalListing al = appForm.getAnimalListing();
             al.getMember().setAnimalListings(null);
+            al.setMember(null);
             
             for (ApplicationForm af : al.getApplicationForms()) {
                 af.setAnimalListing(null);
             }
+            al.setApplicationForms(null);
             
             Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, member, al);
             
