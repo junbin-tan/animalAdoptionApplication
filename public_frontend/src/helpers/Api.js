@@ -83,6 +83,28 @@ const Api = {
          method: "GET",
       });
     },
+
+   //  getAnimalListingById() {
+   //    return fetch(`${SERVER_PREFIX}/animalListing/getAnimalListingById`, {
+   //       headers: {
+   //           Accept: "application/json",
+   //           "Content-Type": "application/json",
+   //       },
+   //       method: "GET",
+   //       body: JSON.stringify(data),
+   //    });
+   //  },
+
+    createApplicationForm(data) {
+      return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
+         headers: {
+             Accept: "application/json",
+             "Content-Type": "application/json",
+         },
+         method: "POST",
+         body: JSON.stringify(data),
+      });
+    },
 };
 
 export default Api;

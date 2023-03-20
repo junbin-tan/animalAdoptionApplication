@@ -5,7 +5,7 @@ import Modal from "../Modal/Modal";
 
 const AnimalListing= (props) => {
   // const { title, creatorImg, imgUrl, creator } = props.item;
-  const { age, animalType, gender, image, member, isAdoption, isFostering, name, description } = props.item;
+  const { age, animalType, gender, image, member, isAdoption, isFostering, name, description, animalListingId } = props.item;
 
 
   const [showModal, setShowModal] = useState(false);
@@ -22,10 +22,6 @@ const AnimalListing= (props) => {
         </h5>
 
         <div className="creator__info-wrapper d-flex gap-3">
-          {/* <div className="creator__img">
-            <img src={creatorImg} alt="" className="w-100" />
-          </div> */}
-
           <div className="creator__info w-100 d-flex align-items-center justify-content-between">
             <div>
               <h6>Posted By</h6>
@@ -53,7 +49,7 @@ const AnimalListing= (props) => {
             <i class="ri-search-2-line"></i> Read More
           </button>
 
-          {showModal && <Modal setShowModal={setShowModal} description={description} />}
+          {showModal && <Modal setShowModal={setShowModal} description={description}/>}
 
         </div>
       </div>

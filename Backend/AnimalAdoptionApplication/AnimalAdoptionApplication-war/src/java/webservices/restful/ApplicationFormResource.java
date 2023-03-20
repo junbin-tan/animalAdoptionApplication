@@ -5,24 +5,19 @@
  */
 package webservices.restful;
 
-import ejb.session.stateless.AnimalListingSessionBeanLocal;
-import entity.AnimalListing;
-import entity.Member;
-import entity.Testimonial;
+import ejb.session.stateless.ApplicationFormSessionBeanLocal;
+import entity.ApplicationForm;
+import exception.ApplicationFormExistException;
 import exception.InputDataValidationException;
-import exception.ListingExistException;
 import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -33,24 +28,26 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author yijie
  */
-@Path("animalListing")
-public class AnimalListingResource {
+@Path("applicationForm")
+public class ApplicationFormResource {
     @EJB
-    private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
+    private ApplicationFormSessionBeanLocal applicationFormSessionBeanLocal;
 
     @Context
     private UriInfo context;
     
-    public AnimalListingResource() {
+    public ApplicationFormResource() {
     }
     
     @POST
-    @Path("/createAnimalListing")
+    @Path("/createApplicationForm")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAnimalListing(AnimalListing newAnimalListing) {
+    public Response createApplicationForm(ApplicationForm newApplicationForm) {
         try {
-            Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
+            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(newApplicationForm, 
+                    newApplicationForm.getMember(), newApplicationForm.getAnimalListing());
+            
             return Response.status(204).build();
             
         } catch (UnknownPersistenceException ex) {
@@ -61,7 +58,11 @@ public class AnimalListingResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (ListingExistException ex) {
+        } catch (ListingNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        
+        } catch (ApplicationFormExistException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         
@@ -70,32 +71,5 @@ public class AnimalListingResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<AnimalListing> getAllAnimalListings() {
-            List<AnimalListing> allAnimalListings = animalListingSessionBeanLocal.retrieveAllAnimalListings();
-
-            for (AnimalListing al : allAnimalListings) {
-                    al.getMember().setAnimalListings(null);
-                    al.setApplicationForms(null);
-            }
-
-            return allAnimalListings;
-            
-    }
-    
-//    @GET
-//    @Path("/getAnimalListingById/{animalListingId}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public AnimalListing getAnimalListingById(@PathParam("animalListingId") Long animalListingId) {
-//        AnimalListing al = animalListingSessionBeanLocal.retrieveAnimalListingByAnimalListingId(animalListingId);
-//
-//        al.getMember().setAnimalListings(null);
-//        al.setApplicationForms(null);
-//
-//        return al;
-//    }
     
 }
