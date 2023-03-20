@@ -63,7 +63,8 @@ const Sidebar = () => {
           color: "#6870fa !important",
         },
       }}
-    >
+      style={{ height: "100vh" }}
+   >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* Create logo and menu icons here */}
