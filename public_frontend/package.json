@@ -21,8 +21,11 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "@userfront/react": "^0.3.2",
+    "aws-sdk": "^2.1338.0",
     "bootstrap": "^5.2.3",
+    "dotenv": "^16.0.3",
     "emailjs-com": "^3.2.0",
+    "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "primeicons": "^6.0.1",
     "primereact": "^9.2.0",
@@ -42,10 +45,10 @@
     "yup": "^1.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "env-cmd -f .env.local react-scripts start",
+    "build": "env-cmd -f .env.local react-scripts build",
+    "test": "env-cmd -f .env.local react-scripts test",
+    "eject": "env-cmd -f .env.local react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
