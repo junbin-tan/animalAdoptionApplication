@@ -7,6 +7,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
 import Api from "../../helpers/Api";
+import Auth from "../../helpers/Auth";
 import UserContext from "../../helpers/context/UserContext";
 import "./modal.css";
 

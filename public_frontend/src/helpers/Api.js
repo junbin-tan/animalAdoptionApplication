@@ -84,17 +84,6 @@ const Api = {
       });
     },
 
-   //  getAnimalListingById() {
-   //    return fetch(`${SERVER_PREFIX}/animalListing/getAnimalListingById`, {
-   //       headers: {
-   //           Accept: "application/json",
-   //           "Content-Type": "application/json",
-   //       },
-   //       method: "GET",
-   //       body: JSON.stringify(data),
-   //    });
-   //  },
-
     createApplicationForm(data) {
       return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
          headers: {

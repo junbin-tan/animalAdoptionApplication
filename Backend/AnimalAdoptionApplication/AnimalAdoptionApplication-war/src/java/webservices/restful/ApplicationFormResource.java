@@ -7,14 +7,12 @@ package webservices.restful;
 
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import ejb.session.stateless.ApplicationFormSessionBeanLocal;
+import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
-import entity.Donation;
-import entity.EventListing;
-import entity.EventRegistration;
+import entity.FormTypeEnum;
 import entity.Member;
-import entity.Notification;
-import entity.Review;
+import entity.SleepAreaEnum;
 import exception.ApplicationFormExistException;
 import exception.InputDataValidationException;
 import exception.ListingNotFoundException;
@@ -43,6 +41,9 @@ public class ApplicationFormResource {
     
     @EJB
     private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
+    
+    @EJB
+    private MemberSessionBeanLocal memberSessionBeanLocal;
 
     @Context
     private UriInfo context;
@@ -56,57 +57,7 @@ public class ApplicationFormResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createApplicationForm(ApplicationForm appForm) {
         try {
-            Member member = appForm.getMember();
-            for (Review r : member.getReviewsCreated()) {
-                r.setReviewedByMember(null);
-            }
-            member.setReviewsCreated(null);
-            
-            for (Review r: member.getReviewsReceived()) {
-                r.setBelongedToMember(null);
-            }
-            member.setReviewsReceived(null);
-            
-            for (EventListing el : member.getEventListings()) {
-                el.setMember(null);
-            }
-            member.setEventListings(null);
-            
-            for (EventRegistration er : member.getEventRegistrations()) {
-                er.setMember(null);
-            }
-            member.setEventRegistrations(null);
-            
-            for (AnimalListing al : member.getAnimalListings()) {
-                al.setMember(null);
-            }
-            member.setAnimalListings(null);
-            
-            for (ApplicationForm af : member.getApplicationForms()) {
-                af.setMember(null);
-            }
-            member.setApplicationForms(null);
-            
-            for (Donation d : member.getDonations()) {
-                d.setMember(null);
-            }
-            member.setDonations(null);
-            
-            for (Notification n : member.getNotifications()) {
-                n.setMember(null);
-            }
-            member.setNotifications(null);
-            
-            AnimalListing al = appForm.getAnimalListing();
-            al.getMember().setAnimalListings(null);
-            al.setMember(null);
-            
-            for (ApplicationForm af : al.getApplicationForms()) {
-                af.setAnimalListing(null);
-            }
-            al.setApplicationForms(null);
-            
-            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, member, al);
+            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
             
             return Response.status(204).build();
             
