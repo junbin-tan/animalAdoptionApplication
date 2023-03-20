@@ -89,7 +89,15 @@ public class MembersResource {
         try {
             Member member = memberSessionBeanLocal.memberLogin(o.getString("email"), o.getString("password"));
             //Nullifying relationships related to member
-            nullifyMemberRelationships(member);
+//            nullifyMemberRelationships(member);
+            member.setReviewsCreated(null);
+            member.setReviewsReceived(null);
+            member.setEventListings(null);
+            member.setEventRegistrations(null);
+            member.setAnimalListings(null);
+            member.setApplicationForms(null);
+            member.setDonations(null);
+            member.setNotifications(null);
 
             return Response.status(200).entity(member).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -112,17 +120,16 @@ public class MembersResource {
                 Member member = memberSessionBeanLocal.retrieveMemberByEmail(email);
 
                 //Nullifying relationships related to member
-                nullifyMemberRelationships(member);
+//                nullifyMemberRelationships(member);
+                member.setReviewsCreated(null);
+                member.setReviewsReceived(null);
+                member.setEventListings(null);
+                member.setEventRegistrations(null);
+                member.setAnimalListings(null);
+                member.setApplicationForms(null);
+                member.setDonations(null);
+                member.setNotifications(null);
 
-//                member.setReviewsCreated(null);
-//                member.setReviewsReceived(null);
-//                member.setEventListings(null);
-//                member.setEventRegistrations(null);
-//                member.setAnimalListings(null);
-//                member.setApplicationForms(null);
-//                member.setDonations(null);
-//                member.setNotifications(null); 
-//                
                 return Response.status(200).entity(member).build();
             } catch (MemberNotFoundException ex) {
                 JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();

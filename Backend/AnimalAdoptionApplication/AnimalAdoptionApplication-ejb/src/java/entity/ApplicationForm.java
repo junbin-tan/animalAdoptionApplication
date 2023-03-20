@@ -59,7 +59,7 @@ public class ApplicationForm implements Serializable {
     @JoinColumn(nullable = false)
     @NotNull
     private Member member;
-	
+	 
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull

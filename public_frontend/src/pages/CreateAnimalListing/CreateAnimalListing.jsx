@@ -261,6 +261,7 @@ const CreateAnimalListing = () => {
                     accept="image/*"
                     mode="advanced"
                     customUpload
+                    auto={true}
                     uploadHandler={customBase64Uploader}
                     // cancelOptions={{style:{display: "none"}}}
                     // uploadOptions={{style:{display: "none"}}}

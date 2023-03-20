@@ -28,9 +28,10 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(webservices.restful.CORSFilter.class);
-        resources.add(webservices.restful.AnimalListingResource.class);
         resources.add(webservices.restful.AdminResource.class);
+        resources.add(webservices.restful.AnimalListingResource.class);
+        resources.add(webservices.restful.ApplicationFormResource.class);
+        resources.add(webservices.restful.CORSFilter.class);
         resources.add(webservices.restful.DonationResource.class);
         resources.add(webservices.restful.EnquiryResource.class);
         resources.add(webservices.restful.MembersResource.class);
