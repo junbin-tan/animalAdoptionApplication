@@ -158,9 +158,7 @@ const CreateAnimalListing = () => {
           Api.createAnimalListing(data).then((data) => setShowMessage(true));
         }
       });
-      
 
-      
       formik.resetForm();
     },
   });
@@ -266,7 +264,7 @@ const CreateAnimalListing = () => {
                     uploadHandler={customBase64Uploader}
                     // cancelOptions={{style:{display: "none"}}}
                     // uploadOptions={{style:{display: "none"}}}
-                    maxFileSize={1000000}
+                    maxFileSize={10000000}
                     emptyTemplate={
                       <p className="m-0">
                         Drag and drop files to here to upload.

@@ -1,40 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { ADOPTION_FOSTERING } from "../AnimalListing/data";
 import  AnimalListing from "../AnimalListing/AnimalListing";
+import Api from "../../helpers/Api";
 import "./AdoptionFosteringPage.css";
 
 const AdoptionFosteringPage = () => {
-    const [data, setData] = useState(ADOPTION_FOSTERING);
+    // const [data, setData] = useState(ADOPTION_FOSTERING);
+    const [data, setData] = useState([]);
     const handleCategory = () => {};
     const handleItems = () => {};
+    
 
-    // ====== SORTING DATA BY HIGH, MID, LOW RATE =========
-  const handleSort = (e) => {
-    const filterValue = e.target.value;
+    useEffect(() => { 
+        Api.getAllAnimalListings().then((data) => data.json()).then((data) => setData(data));
+    }, []);
 
-    if (filterValue === "high") {
-      const filterData = ADOPTION_FOSTERING.filter((item) => item.currentBid >= 6);
 
-      setData(filterData);
-    }
+    // ====== SORTING DATA BY NEWEST, OLDEST =========
 
-    if (filterValue === "mid") {
-      const filterData = ADOPTION_FOSTERING.filter(
-        (item) => item.currentBid >= 5.5 && item.currentBid < 6
-      );
+    const handleSort = (e) => {
+      const filterValue = e.target.value;
+      
+      if (filterValue === "newest") {
+        const filterData = data.sort((a,b) => b.animalListingId - a.animalListingId);
+        console.log(filterData);
 
-      setData(filterData);
-    }
+        setData([...filterData]);
+      }
 
-    if (filterValue === "low") {
-      const filterData = ADOPTION_FOSTERING.filter(
-        (item) => item.currentBid >= 4.89 && item.currentBid < 5.5
-      );
+      if (filterValue === "oldest") {
+          const filterData = data.sort((a,b) => a.animalListingId - b.animalListingId);
 
-      setData(filterData);
-    }
-  };
+        setData([...filterData]);
+      }
+    };
 
     return(
         <>
@@ -43,41 +43,18 @@ const AdoptionFosteringPage = () => {
         <Container>
             <Row>
                 <Col lg="12" className="mb-5">
-                <div className="market__product__filter d-flex align-items-center justify-content-between">
-                    <div className="filter__left d-flex align-items-center gap-5">
-                    <div className="all__category__filter">
-                        <select onChange={handleCategory}>
-                        <option>All Categories</option>
-                        <option value="art">Art</option>
-                        <option value="music">Music</option>
-                        <option value="domain-name">Domain Name</option>
-                        <option value="virtual-world">Virtual World</option>
-                        <option value="trending-card">Trending Cards</option>
-                        </select>
-                    </div>
-
-                    <div className="all__items__filter">
-                        <select onChange={handleItems}>
-                        <option>All Items</option>
-                        <option value="single-item">Single Item</option>
-                        <option value="bundle">Bundle</option>
-                        </select>
-                    </div>
-                    </div>
-
                     <div className="filter__right">
                     <select onChange={handleSort}>
                         <option>Sort By</option>
-                        <option value="high">High Rate</option>
-                        <option value="mid">Mid Rate</option>
-                        <option value="low">Low Rate</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
                     </select>
                     </div>
-                </div>
+                {/* </div> */}
                 </Col>
 
-                {ADOPTION_FOSTERING.map((item) => (
-                <Col lg="3" md="4" sm="6" className="mb-4" key={item.id}>
+                {data.map((item) => (
+                <Col lg="3" md="4" sm="6" className="mb-4" key={item.animalListingId}>
                     <AnimalListing item={item} />
                 </Col>
                 ))}
