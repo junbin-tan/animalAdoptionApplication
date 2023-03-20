@@ -9,9 +9,12 @@ import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import ejb.session.stateless.ApplicationFormSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
-import entity.FormTypeEnum;
+import entity.Donation;
+import entity.EventListing;
+import entity.EventRegistration;
 import entity.Member;
-import entity.SleepAreaEnum;
+import entity.Notification;
+import entity.Review;
 import exception.ApplicationFormExistException;
 import exception.InputDataValidationException;
 import exception.ListingNotFoundException;
@@ -53,22 +56,47 @@ public class ApplicationFormResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createApplicationForm(ApplicationForm appForm) {
         try {
-//            ApplicationForm appForm = new ApplicationForm();
-//            appForm.setIsFirstTime(o.getBoolean("isFirstTime"));
-//            appForm.setHasOtherPets(o.getBoolean("hasOtherPets"));
-//            appForm.setExistingPetsOwned(o.getInt("existingPetsOwned"));
-//            appForm.setHasDailyExercise(o.getBoolean("hasDailyExercise"));
-//            String sleepAreaString = o.getString("sleepArea");
-//            SleepAreaEnum sleepArea = SleepAreaEnum.valueOf(sleepAreaString);
-//            appForm.setSleepArea(sleepArea);
-//            appForm.setPetAloneTime(o.getInt("petAloneTime"));
-//            appForm.setReason(o.getString("reason"));
-//            String formTypeString = o.getString("formType");
-//            FormTypeEnum formType = FormTypeEnum.valueOf(formTypeString);
-//            appForm.setFormType(formType);
-
+            Member member = appForm.getMember();
+            for (Review r : member.getReviewsCreated()) {
+                r.setReviewedByMember(null);
+            }
             
-            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
+            for (Review r: member.getReviewsReceived()) {
+                r.setBelongedToMember(null);
+            }
+            
+            for (EventListing el : member.getEventListings()) {
+                el.setMember(null);
+            }
+            
+            for (EventRegistration er : member.getEventRegistrations()) {
+                er.setMember(null);
+            }
+            
+            for (AnimalListing al : member.getAnimalListings()) {
+                al.setMember(null);
+            }
+            
+            for (ApplicationForm af : member.getApplicationForms()) {
+                af.setMember(null);
+            }
+            
+            for (Donation d : member.getDonations()) {
+                d.setMember(null);
+            }
+            
+            for (Notification n : member.getNotifications()) {
+                n.setMember(null);
+            }
+            
+            AnimalListing al = appForm.getAnimalListing();
+            al.getMember().setAnimalListings(null);
+            
+            for (ApplicationForm af : al.getApplicationForms()) {
+                af.setAnimalListing(null);
+            }
+            
+            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, member, al);
             
             return Response.status(204).build();
             
