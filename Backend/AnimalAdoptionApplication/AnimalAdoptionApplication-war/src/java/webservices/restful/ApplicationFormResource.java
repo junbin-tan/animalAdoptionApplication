@@ -5,8 +5,13 @@
  */
 package webservices.restful;
 
+import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import ejb.session.stateless.ApplicationFormSessionBeanLocal;
+import entity.AnimalListing;
 import entity.ApplicationForm;
+import entity.FormTypeEnum;
+import entity.Member;
+import entity.SleepAreaEnum;
 import exception.ApplicationFormExistException;
 import exception.InputDataValidationException;
 import exception.ListingNotFoundException;
@@ -32,6 +37,9 @@ import javax.ws.rs.core.UriInfo;
 public class ApplicationFormResource {
     @EJB
     private ApplicationFormSessionBeanLocal applicationFormSessionBeanLocal;
+    
+    @EJB
+    private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
 
     @Context
     private UriInfo context;
@@ -43,10 +51,24 @@ public class ApplicationFormResource {
     @Path("/createApplicationForm")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createApplicationForm(ApplicationForm newApplicationForm) {
+    public Response createApplicationForm(ApplicationForm appForm) {
         try {
-            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(newApplicationForm, 
-                    newApplicationForm.getMember(), newApplicationForm.getAnimalListing());
+//            ApplicationForm appForm = new ApplicationForm();
+//            appForm.setIsFirstTime(o.getBoolean("isFirstTime"));
+//            appForm.setHasOtherPets(o.getBoolean("hasOtherPets"));
+//            appForm.setExistingPetsOwned(o.getInt("existingPetsOwned"));
+//            appForm.setHasDailyExercise(o.getBoolean("hasDailyExercise"));
+//            String sleepAreaString = o.getString("sleepArea");
+//            SleepAreaEnum sleepArea = SleepAreaEnum.valueOf(sleepAreaString);
+//            appForm.setSleepArea(sleepArea);
+//            appForm.setPetAloneTime(o.getInt("petAloneTime"));
+//            appForm.setReason(o.getString("reason"));
+//            String formTypeString = o.getString("formType");
+//            FormTypeEnum formType = FormTypeEnum.valueOf(formTypeString);
+//            appForm.setFormType(formType);
+
+            
+            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
             
             return Response.status(204).build();
             

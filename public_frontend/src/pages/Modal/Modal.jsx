@@ -10,9 +10,8 @@ import Api from "../../helpers/Api";
 import UserContext from "../../helpers/context/UserContext";
 import "./modal.css";
 
-const Modal = ({ setShowModal, description }) => {
+const Modal = ({ setShowModal, description, animalListing }) => {
   const { currentActualUser } = useContext(UserContext);
-  // const { currentAnimalListing } = Api.getAnimalListingById(animalListingId);
 
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
@@ -50,39 +49,18 @@ const Modal = ({ setShowModal, description }) => {
     notifications: currentActualUser.notifications,
   };
 
-  // const al = {
-  //   animalListingId: currentAnimalListing.animalListingId,
-  //   flatFee: currentAnimalListing.flatFee,
-  //   description: currentAnimalListing.description,
-  //   image: currentAnimalListing.image,
-  //   age: currentAnimalListing.age,
-  //   name: currentAnimalListing.name,
-  //   gender: currentAnimalListing.gender,
-  //   breed: currentAnimalListing.breed,
-  //   weight: currentAnimalListing.weight,
-  //   animalType: currentAnimalListing.animalType,
-  //   isNeutered: currentAnimalListing.isNeutered,
-  //   isAdoption: currentAnimalListing.isAdoption,
-  //   isFostering: currentAnimalListing.isFostering,
-  //   fosterStartDate: currentAnimalListing.fosterStartDate,
-  //   fosterEndDate: currentAnimalListing.fosterEndDate,
-  //   isActive: currentAnimalListing.isActive,
-  //   member: currentAnimalListing.member,
-  //   applicationForms: currentAnimalListing.applicationForms,
-  // };
-
   const formik = useFormik({
     initialValues: {
       isFirstTime: false,
       hasOtherPets: false,
-      existingPetsOwned: null,
-      hasDailyExercise: null,
+      existingPetsOwned: 0,
+      hasDailyExercise: false,
       sleepArea: null,
-      petAloneTime: null,
+      petAloneTime: 0,
       reason: "",
       formType: "",
       member: m,
-      // animalListing: al,
+      animalListing: animalListing,
     },
     validate: (data) => {
       let errors = {};

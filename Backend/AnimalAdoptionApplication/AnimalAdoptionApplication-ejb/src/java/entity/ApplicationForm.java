@@ -35,7 +35,7 @@ public class ApplicationForm implements Serializable {
     @NotNull
     private Boolean hasOtherPets;
 	
-    private Integer exisitngPetsOwned;
+    private Integer existingPetsOwned;
 	
     private Boolean hasDailyExercise;
 	
@@ -118,12 +118,12 @@ public class ApplicationForm implements Serializable {
         this.hasOtherPets = hasOtherPets;
     }
 
-    public Integer getExisitngPetsOwned() {
-        return exisitngPetsOwned;
+    public Integer getExistingPetsOwned() {
+        return existingPetsOwned;
     }
 
-    public void setExisitngPetsOwned(Integer exisitngPetsOwned) {
-        this.exisitngPetsOwned = exisitngPetsOwned;
+    public void setExistingPetsOwned(Integer existingPetsOwned) {
+        this.existingPetsOwned = existingPetsOwned;
     }
 
     public Boolean getHasDailyExercise() {
