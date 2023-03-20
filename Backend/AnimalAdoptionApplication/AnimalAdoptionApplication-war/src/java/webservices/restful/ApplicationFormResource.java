@@ -45,51 +45,51 @@ public class ApplicationFormResource {
     public ApplicationFormResource() {
     }
     
-    @POST
-    @Path("/createApplicationForm")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createApplicationForm(JsonObject o) {
-        try {
-            ApplicationForm appForm = new ApplicationForm();
-            appForm.setIsFirstTime(o.getBoolean("isFirstTime"));
-            appForm.setHasOtherPets(o.getBoolean("hasOtherPets"));
-            appForm.setExistingPetsOwned(o.getInt("existingPetsOwned"));
-            appForm.setHasDailyExercise(o.getBoolean("hasDailyExercise"));
-            String sleepAreaString = o.getString("sleepArea");
-            SleepAreaEnum sleepArea = SleepAreaEnum.valueOf(sleepAreaString);
-            appForm.setSleepArea(sleepArea);
-            appForm.setPetAloneTime(o.getInt("petAloneTime"));
-            appForm.setReason(o.getString("reason"));
-            String formTypeString = o.getString("formType");
-            FormTypeEnum formType = FormTypeEnum.valueOf(formTypeString);
-            appForm.setFormType(formType);
-
-            
-            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, m, al);
-            
-            return Response.status(204).build();
-            
-        } catch (UnknownPersistenceException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-
-        } catch (InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-
-        } catch (ListingNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        
-        } catch (ApplicationFormExistException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        
-        } catch (MemberNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        }
-    }
-    
+//    @POST
+//    @Path("/createApplicationForm")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response createApplicationForm(JsonObject o) {
+//        try {
+//            ApplicationForm appForm = new ApplicationForm();
+//            appForm.setIsFirstTime(o.getBoolean("isFirstTime"));
+//            appForm.setHasOtherPets(o.getBoolean("hasOtherPets"));
+//            appForm.setExistingPetsOwned(o.getInt("existingPetsOwned"));
+//            appForm.setHasDailyExercise(o.getBoolean("hasDailyExercise"));
+//            String sleepAreaString = o.getString("sleepArea");
+//            SleepAreaEnum sleepArea = SleepAreaEnum.valueOf(sleepAreaString);
+//            appForm.setSleepArea(sleepArea);
+//            appForm.setPetAloneTime(o.getInt("petAloneTime"));
+//            appForm.setReason(o.getString("reason"));
+//            String formTypeString = o.getString("formType");
+//            FormTypeEnum formType = FormTypeEnum.valueOf(formTypeString);
+//            appForm.setFormType(formType);
+//
+//            
+//            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, m, al);
+//            
+//            return Response.status(204).build();
+//            
+//        } catch (UnknownPersistenceException ex) {
+//            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
+//            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+//
+//        } catch (InputDataValidationException ex) {
+//            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
+//            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+//
+//        } catch (ListingNotFoundException ex) {
+//            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+//            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+//        
+//        } catch (ApplicationFormExistException ex) {
+//            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+//            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+//        
+//        } catch (MemberNotFoundException ex) {
+//            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+//            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+//        }
+//    }
+//    
 }
