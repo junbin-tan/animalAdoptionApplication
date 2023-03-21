@@ -178,6 +178,7 @@ const dialogFooter = (
                 />
                 <label
                   htmlFor="isFirstTime"
+                  style={{color: "black"}}
                 >
                   Is this your first time owning a pet? (Tick for true)
                 </label>
@@ -194,6 +195,7 @@ const dialogFooter = (
                 />
                 <label
                   htmlFor="hasOtherPets"
+                  style={{color: "black"}}
                 >
                   Do you have other pets? (Tick for true)
                 </label>

@@ -180,41 +180,4 @@
   font-weight: 500;
 }
 
-.bid__btn {
-  border: none;
-  outline: none;
-  padding: 5px 22px;
-  background: transparent;
-  border: 1px solid #5142fc;
-  font-size: 0.9rem;
-  color: #fff;
-  border-radius: 50px;
-  transition: 0.3s;
-  background: #5142fc;
-}
 
-.bid__btn:hover {
-  background: #fff;
-  color: #5142fc;
-}
-
-.history__link a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.772);
-
-  font-size: 0.9rem;
-}
-
-.history__link a:hover {
-  color: #fff;
-}
-
-.live__auction__top h3 {
-  color: #fff;
-}
-
-.live__auction__top span a {
-  text-decoration: none;
-  color: #fff;
-  border-bottom: 1px solid #5142fc;
-}

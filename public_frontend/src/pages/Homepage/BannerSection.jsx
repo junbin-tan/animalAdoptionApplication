@@ -22,11 +22,9 @@ const Homepage = () => {
     
                   <div className="banner__btns d-flex align-items-center gap-4">
                     <button className=" explore__btn d-flex align-items-center gap-2">
-                      <i class="ri-rocket-line"></i>{" "}
                       <Link to="/AdoptionFostering">Adopt</Link>
                     </button>
                     <button className=" create__btn d-flex align-items-center gap-2">
-                      <i class="ri-money-dollar-box-line"></i>
                       <Link to="/Donation">Donate</Link>
                     </button>
                   </div>
