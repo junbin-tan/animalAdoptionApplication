@@ -278,6 +278,13 @@ const Sidebar = () => {
                 Our Services
               </Typography>
               <Item
+                title="Home"
+                to="/Homepage"
+                icon={<HomeIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
                 title="About Us"
                 to="/AboutUs"
                 icon={<InfoIcon />}

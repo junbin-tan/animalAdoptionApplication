@@ -34,19 +34,14 @@
   
   .explore__btn i,
   .create__btn i {
-    color: #fff;
     font-size: 1rem;
   }
   
   .explore__btn a,
   .create__btn a {
     text-decoration: none;
-    color: #fff;
   }
   
-.banner__btns button a:hover {
-    color: #fff;
-  }
   
 .banner__img {
     width: 500px;
@@ -93,5 +88,61 @@
       margin: auto;
       margin-top: 50px;
     }
+  }
+  
+
+  .single__animallisting__card {
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .animallisting__img img {
+    border-radius: 10px;
+  }
+  
+  .animallisting__img {
+    margin-bottom: 15px;
+  }
+  
+  .animallisting__title {
+    margin-bottom: 15px;
+  }
+  
+  .animallisting__title a {
+    font-size: 1rem;
+    text-decoration: none;
+  }
+  
+  
+  
+  .creator__img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .creator__info h6 {
+    font-size: 0.7rem;
+  
+    margin-bottom: 0;
+    font-weight: 300;
+  }
+  
+  .creator__info p {
+    font-size: 0.9rem;
+  
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+  
+  .adoption__section__top {
+    margin-top: 50px;
+  }
+  
+  .adoption__section__top h3{
+    text-align: center;
+  }
+  
+  .adoption__section__top span a {
+    text-decoration: none;
   }
   

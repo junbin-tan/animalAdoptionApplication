@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.AnimalListing;
 import entity.Member;
+import exception.AnimalListingHasApplicationFormException;
 import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
@@ -26,9 +27,11 @@ public interface AnimalListingSessionBeanLocal {
     public Long createAnimalListing(AnimalListing newListing) throws ListingExistException, UnknownPersistenceException, InputDataValidationException, MemberNotFoundException;
 
     public List<AnimalListing> retrieveAllAnimalListings();
+    
+    public List<AnimalListing> retrieveAnimalListingByMemberEmail(String emailAddress);
 
     public AnimalListing retrieveAnimalListingByAnimalListingId(Long id) throws ListingNotFoundException;
 
-    public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, MemberNotFoundException;
+    public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, MemberNotFoundException, AnimalListingHasApplicationFormException;
     
 }

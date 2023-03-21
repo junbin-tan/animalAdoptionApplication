@@ -122,6 +122,7 @@ const DonationPage = () => {
 
   return (
     <>
+    <h2 style={{textAlign: "center"}}> Donation</h2>
       <div
         style={{
           margin: "5px",

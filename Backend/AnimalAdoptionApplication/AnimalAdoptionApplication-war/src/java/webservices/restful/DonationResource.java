@@ -69,7 +69,19 @@ public class DonationResource {
 			newDonation.setEmail(anon);
 			newDonation.setMember(null);
 			newDonation.setName(anon);
+		} else {
+			Member member = donationSessionBeanLocal.getMemberByEmail(newDonation.getEmail()).get(0);
+			member.setReviewsCreated(null);
+			member.setReviewsReceived(null);
+			member.setEventListings(null);
+			member.setEventRegistrations(null);
+			member.setAnimalListings(null);
+			member.setApplicationForms(null);
+			member.setDonations(null);
+			member.setNotifications(null);
+			newDonation.setMember(member);
 		}
+
 		
 		newDonation.setDate(currentDate);
 		newDonation.getTestimonial().setDate(currentDate);
