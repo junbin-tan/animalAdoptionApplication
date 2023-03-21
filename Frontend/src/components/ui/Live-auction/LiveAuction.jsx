@@ -8,6 +8,7 @@ import { MOST_VIEWED } from "../../../assets/data/data.js";
 import "./live-auction.css";
 
 const LiveAuction = () => {
+  
   return (
     <section>
       <Container>

@@ -95,3 +95,65 @@
     }
   }
   
+
+  .single__animallisting__card {
+    padding: 20px;
+    background: #343444;
+    border-radius: 10px;
+  }
+  
+  .animallisting__img img {
+    border-radius: 10px;
+  }
+  
+  .animallisting__img {
+    margin-bottom: 15px;
+  }
+  
+  .animallisting__title {
+    margin-bottom: 15px;
+  }
+  
+  .animallisting__title a {
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+  
+  .animallisting__title a:hover {
+    color: #fff;
+  }
+  
+  .creator__img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .creator__info h6 {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.772);
+  
+    margin-bottom: 0;
+    font-weight: 300;
+  }
+  
+  .creator__info p {
+    font-size: 0.9rem;
+    color: #fff;
+  
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+  
+  .adoption__section__top {
+    margin-top: 50px;
+  }
+  
+  .adoption__section__top h3{
+    text-align: center;
+  }
+  
+  .adoption__section__top span a {
+    text-decoration: none;
+  }
+  
