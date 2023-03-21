@@ -27,12 +27,15 @@ export default function TestimonialPage() {
     */
        
     return (
+        <>
+        <h2 style={{textAlign: "center"}}> Testimonials</h2>
         <div className="card">
             <DataTable value={testimonial} showGridlines tableStyle={{ minWidth: '50rem' }}>
                 <Column field="date" header="Date Published"></Column>
                 <Column field="message" header="Testimonial"></Column>
             </DataTable>
         </div>
+        </>
     );
 }
         

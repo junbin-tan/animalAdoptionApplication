@@ -1,3 +1,7 @@
+.p-dropdown-panel {
+  z-index: 888888 !important;
+}
+
 .modal__wrapper {
   position: fixed;
   top: 0;
@@ -5,7 +9,7 @@
   width: 100%;
   height: 100%;
   background: #14141f8a;
-  z-index: 0;
+  z-index: 444444;
 }
 
 .single__modal {
@@ -18,7 +22,7 @@
   background: #343444 !important;
   border-radius: 5px;
   padding: 30px;
-  z-index: 0 !important;
+  z-index: 5555555 !important;
   cursor: pointer;
 }
 
@@ -68,7 +72,7 @@
   position: absolute;
   top: -2px;
   right: -2px;
-  z-index: 0;
+  z-index: 666666;
 }
 
 .close__modal i {

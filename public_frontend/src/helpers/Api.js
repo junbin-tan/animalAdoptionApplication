@@ -94,6 +94,16 @@ const Api = {
          body: JSON.stringify(data),
       });
     },
+
+    getAnimalListingByMemberEmail() { 
+      return fetch(`${SERVER_PREFIX}/animalListing/getAnimalListingByMemberEmail/${Auth.getUser().email}`, {
+         headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+         },
+         method: "GET",
+      });
+    },
 };
 
 export default Api;

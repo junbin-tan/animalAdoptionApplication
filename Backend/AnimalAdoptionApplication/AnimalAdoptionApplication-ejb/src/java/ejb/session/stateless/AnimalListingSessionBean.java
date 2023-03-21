@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.AnimalListing;
 import entity.Member;
+import exception.AnimalListingHasApplicationFormException;
 import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
@@ -105,6 +106,17 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
     }
     
     @Override
+    public List<AnimalListing> retrieveAnimalListingByMemberEmail(String emailAddress)
+    {
+        Query query = em.createQuery("SELECT l FROM AnimalListing l WHERE l.member.email = :emailAddress");
+        
+        query.setParameter("emailAddress", emailAddress);
+        
+        return query.getResultList();
+    }
+    
+    
+    @Override
     public AnimalListing retrieveAnimalListingByAnimalListingId(Long id) throws ListingNotFoundException
     {
         AnimalListing al = em.find(AnimalListing.class, id);
@@ -119,15 +131,18 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
         }               
     }
     
-     public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, MemberNotFoundException
+     public void deleteAnimalListing(Long id) throws ListingNotFoundException, DeleteAnimalListingException, MemberNotFoundException, AnimalListingHasApplicationFormException
     {
         AnimalListing toRemove = retrieveAnimalListingByAnimalListingId(id);
-        Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(toRemove.getMember().getMemberId());
+        if (toRemove.getApplicationForms().size() == 0) {
+            Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(toRemove.getMember().getMemberId());
+            //Does not remove all the application form JUST FYI
+            thisMember.getAnimalListings().remove(toRemove);
+            em.remove(toRemove);
         
-        //Does not remove all the application form JUST FYI
-        thisMember.getAnimalListings().remove(toRemove);
-     
-        em.remove(toRemove);
+        } else {
+            throw new AnimalListingHasApplicationFormException("Animal listing has application forms associated to it and cannot be deleted!");
+        }
         
        
     }

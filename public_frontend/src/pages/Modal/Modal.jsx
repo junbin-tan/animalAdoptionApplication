@@ -66,14 +66,6 @@ const Modal = ({ setShowModal, description, animalListing }) => {
     validate: (data) => {
       let errors = {};
 
-      if (!data.isFirstTime) {
-        errors.isFirstTime = "You must indicate whether this is your first time having a pet!";
-      }
-
-      if (!data.hasOtherPets) {
-        errors.hasOtherPets = "You must indicate if you have other pet(s)!";
-      }
-
       if (!data.reason) {
         errors.reason = "Reason is required";
       }
@@ -89,7 +81,9 @@ const Modal = ({ setShowModal, description, animalListing }) => {
       setFormData(data);
       console.log(data);
       delete data.accept;
-      data.sleepArea = data.sleepArea["name"];
+      if (data.sleepArea != null) {
+        data.sleepArea = data.sleepArea["name"];
+      }
       data.formType= data.formType["name"];
       Api.createApplicationForm(data).then((data) => setShowMessage(true));
       formik.resetForm();
@@ -133,16 +127,16 @@ const dialogFooter = (
         </h6>
         
         <div className="form-demo">
-        <Dialog
+        <Dialog //Error: Dialog box not showing.
           visible={showMessage}
           onHide={() => setShowMessage(false)}
-          position="top"
+          position="absolute"
           footer={dialogFooter}
           showHeader={false}
           breakpoints={{ "960px": "80vw" }}
-          style={{ width: "30vw" }}
+          style={{ width: "30vw"}}
         >
-          <div className="flex align-items-center flex-column pt-6 px-3">
+          <div className="flex align-items-center flex-column pt-6 px-3" >
             {/* when got error, show error message for register */}
             {formData.error && (
               <>
@@ -152,7 +146,7 @@ const dialogFooter = (
                 ></i>
 
                 <h5>Error! Application form not submitted!</h5>
-                <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
+                <p style={{ lineHeight: 1.5, textIndent: "1rem"}}>
                   <b>{formData.error}</b>
                 </p>
               </>
@@ -162,7 +156,7 @@ const dialogFooter = (
               <>
                 <i
                   className="pi pi-check-circle"
-                  style={{ fontSize: "5rem", color: "var(--green-500)" }}
+                  style={{ fontSize: "5rem", color: "var(--green-500)", zIndex: 999999}}
                 ></i>
 
                 <h5>Submitted application form successfully!</h5>
@@ -181,17 +175,12 @@ const dialogFooter = (
                   name="isFirstTime"
                   checked={formik.values.isFirstTime}
                   onChange={formik.handleChange}
-                  className={classNames({
-                    "p-invalid": isFormFieldValid("isFirstTime"),
-                  })}
                 />
                 <label
                   htmlFor="isFirstTime"
-                  className={classNames({
-                    "p-error": isFormFieldValid("isFirstTime"),
-                  })}
+                  style={{color: "black"}}
                 >
-                  Is this your first time owning a pet?*
+                  Is this your first time owning a pet? (Tick for true)
                 </label>
                 
               </div>
@@ -203,22 +192,17 @@ const dialogFooter = (
                   name="hasOtherPets"
                   checked={formik.values.hasOtherPets}
                   onChange={formik.handleChange}
-                  className={classNames({
-                    "p-invalid": isFormFieldValid("hasOtherPets"),
-                  })}
                 />
                 <label
                   htmlFor="hasOtherPets"
-                  className={classNames({
-                    "p-error": isFormFieldValid("hasOtherPets"),
-                  })}
+                  style={{color: "black"}}
                 >
-                  Do you have other pets?*
+                  Do you have other pets? (Tick for true)
                 </label>
               </div>
 
               {/* Existing Pets Owned textbox */}
-              <div className="field">
+              <div className="field" style={{marginTop: "30px"}}>
                 <span className="p-float-label">
                   <InputText
                     id="existingPetsOwned"
@@ -250,8 +234,8 @@ const dialogFooter = (
               </div>
 
               {/* Sleep Area dropdown list */}
-              <div className="field">
-                <span className="p-float-label">
+              <div className="field" style={{marginTop: "30px"}}>
+                <span className="p-float-label" >
                   <Dropdown
                     id="sleepArea"
                     name="sleepArea"
