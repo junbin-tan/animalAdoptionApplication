@@ -1,8 +1,12 @@
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
-import { useEffect, useState, useContext } from "react";
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 import UserContext from "../../helpers/context/UserContext";
 import "../../index.css";
 
@@ -13,55 +17,181 @@ const Dashboard = () => {
   const currentUser = Auth.getUser();
   const userData = currentUser && JSON.stringify(currentUser, null, 2); // get user data
 
-  const [animalListing, setAnimalListing] = useState([]);
+  const [animalListings, setAnimalListings] = useState([]);
 
-    useEffect(() => {
-        Api.getAnimalListingByMemberEmail().then(data => data.json())
-            .then(data => setAnimalListing(data));
-    }, []);
-
+  useEffect(() => {
+    Api.getAnimalListingByMemberEmail()
+      .then((data) => data.json())
+      .then((data) => setAnimalListings(data));
+  }, []);
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
 
-  const {currentActualUser} = useContext(UserContext);
+  const { currentActualUser } = useContext(UserContext);
 
   console.log(currentActualUser);
 
-  // const [actualUser, setActualUser] = useState();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await Auth.getActualUser();
-  //     const data = await response.json();
-  //     setActualUser(data);
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // const userDonations = actualUser && actualUser.donations; // <-- Alwin, this is how you retrieve latest donations data for current user
-  // console.log(userDonations);
-
   // END: Code to retrieve latest actual Member Data from Java Backend Restful Server
-  
 
-  
+  let emptyAnimalListing = {
+    animalListingId: null,
+    name: "",
+    description: "",
+  };
+
+  const [animalListing, setAnimalListing] = useState(emptyAnimalListing);
+  const [deleteAnimalListingDialog, setDeleteAnimalListingDialog] =
+    useState(false);
+  const [selectedAnimalListings, setSelectedAnimalListings] = useState(null);
+  const toast = useRef(null);
+  const dt = useRef(null);
+  const [globalFilter, setGlobalFilter] = useState(null);
+
+  const hideDeleteAnimalListingDialog = () => {
+    setDeleteAnimalListingDialog(false);
+  };
+
+  const confirmDeleteAnimalListing = (animalListing) => {
+    setAnimalListing(animalListing);
+    setDeleteAnimalListingDialog(true);
+  };
+
+  const deleteAnimalListing = () => {
+    Api.deleteAnimalListingByAnimalListingId(
+      animalListing.animalListingId
+    ).then((response) => {
+      if (response.status === 204) {
+        // HTTP code when success deletion
+        // have to manually filter away the deleted item because the item is deleted on database
+        let _animalListings = animalListings.filter(
+          (val) => val.animalListingId !== animalListing.animalListingId
+        );
+        setAnimalListings(_animalListings);
+        setDeleteAnimalListingDialog(false);
+        setAnimalListing(emptyAnimalListing);
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Animal Listing Deleted",
+          life: 3000,
+        });
+      } else {
+        setDeleteAnimalListingDialog(false);
+        response.json().then((responseJSON) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: responseJSON.error,
+            life: 3000,
+          });
+        });
+      }
+    });
+  };
+
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteAnimalListing(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const header = (
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+      <h4 className="m-0">Manage your Animal Listings</h4>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  );
+
+  const deleteAnimalListingDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteAnimalListingDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteAnimalListing}
+      />
+    </React.Fragment>
+  );
+
   return (
     <>
-    <h2 style={{textAlign: "center"}}> Manage Account</h2>
-    
-    <div className="animalListingSection">
+      <h2 style={{ textAlign: "center" }}> Manage Account</h2>
+
+      <div className="animalListingSection">
         <h5>View List Of Animal Listing</h5>
-      
-        <div className="card" >
-            <DataTable value={animalListing} showGridlines tableStyle={{ minWidth: '40rem' }}>
-                <Column field="animalListingId" header="ID"></Column>
-                <Column field="name" header="Animal's Name"></Column>
-                <Column field="description" header="Description"></Column>
-                <Column header="Option"></Column>
-            </DataTable>
+        <Toast ref={toast} />
+        <div className="card">
+          <DataTable
+            ref={dt}
+            value={animalListings}
+            selection={selectedAnimalListings}
+            onSelectionChange={(e) => setSelectedAnimalListings(e.value)}
+            dataKey="animalListingId"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} animal listings"
+            globalFilter={globalFilter}
+            header={header}
+            showGridlines
+            tableStyle={{ minWidth: "40rem" }}
+          >
+            <Column field="animalListingId" header="ID"></Column>
+            <Column field="name" header="Animal's Name"></Column>
+            <Column field="description" header="Description"></Column>
+            <Column
+              field="options" header="Options"
+              body={actionBodyTemplate}
+              exportable={false}
+              style={{ minWidth: "12rem" }}
+            ></Column>
+          </DataTable>
         </div>
-    </div>
-  </>
+        <Dialog
+          visible={deleteAnimalListingDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Confirm"
+          modal
+          footer={deleteAnimalListingDialogFooter}
+          onHide={hideDeleteAnimalListingDialog}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {animalListing && (
+              <span>
+                Are you sure you want to delete <b>{animalListing.name}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
+      </div>
+    </>
   );
 };
 

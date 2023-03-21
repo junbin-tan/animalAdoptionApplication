@@ -104,6 +104,11 @@ const Api = {
          method: "GET",
       });
     },
+    deleteAnimalListingByAnimalListingId(animalListingId) { 
+      return fetch(`${SERVER_PREFIX}/animalListing/deleteAnimalListing/${animalListingId}`, {
+         method: "DELETE",
+      });
+    },
 };
 
 export default Api;

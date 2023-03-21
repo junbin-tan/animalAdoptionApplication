@@ -8,11 +8,16 @@ package webservices.restful;
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
+import exception.AnimalListingHasApplicationFormException;
+import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
 import exception.ListingExistException;
+import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -34,15 +39,16 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("animalListing")
 public class AnimalListingResource {
+
     @EJB
     private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
 
     @Context
     private UriInfo context;
-    
+
     public AnimalListingResource() {
     }
-    
+
     @POST
     @Path("/createAnimalListing")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -51,7 +57,7 @@ public class AnimalListingResource {
         try {
             Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
             return Response.status(204).build();
-            
+
         } catch (UnknownPersistenceException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
@@ -63,44 +69,59 @@ public class AnimalListingResource {
         } catch (ListingExistException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-        
+
         } catch (MemberNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalListing> getAllAnimalListings() {
-            List<AnimalListing> allAnimalListings = animalListingSessionBeanLocal.retrieveAllAnimalListings();
+        List<AnimalListing> allAnimalListings = animalListingSessionBeanLocal.retrieveAllAnimalListings();
 
-            for (AnimalListing al : allAnimalListings) {
-                    al.getMember().setAnimalListings(null);
-                    
-                    for (ApplicationForm af : al.getApplicationForms()) {
-                        af.setAnimalListing(null);
-                        af.setMember(null);
-                    }
+        for (AnimalListing al : allAnimalListings) {
+            al.getMember().setAnimalListings(null);
+
+            for (ApplicationForm af : al.getApplicationForms()) {
+                af.setAnimalListing(null);
+                af.setMember(null);
             }
+        }
 
-            return allAnimalListings;
-            
-    } 
-    
+        return allAnimalListings;
+
+    }
+
     @GET
     @Path("/getAnimalListingByMemberEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalListing> getAnimalListingByMemberEmail(@PathParam("email") String emailAddress) {
-            List<AnimalListing> animalListings = animalListingSessionBeanLocal.retrieveAnimalListingByMemberEmail(emailAddress);
+        List<AnimalListing> animalListings = animalListingSessionBeanLocal.retrieveAnimalListingByMemberEmail(emailAddress);
 
-            for (AnimalListing al : animalListings) {
-                    al.setMember(null);
-                    al.setApplicationForms(null);
-            }
+        for (AnimalListing al : animalListings) {
+            al.setMember(null);
+            al.setApplicationForms(null);
+        }
 
-            return animalListings;
-            
-    } 
-    
+        return animalListings;
+
+    }
+
+    @DELETE
+    @Path("/deleteAnimalListing/{animalListingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteAnimalListingById(@PathParam("animalListingId") Long animalListingId) {
+        try {
+            animalListingSessionBeanLocal.deleteAnimalListing(animalListingId);
+            return Response.status(204).build();
+        } catch (AnimalListingHasApplicationFormException | ListingNotFoundException | DeleteAnimalListingException | MemberNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    } //end deleteField
+
 }
