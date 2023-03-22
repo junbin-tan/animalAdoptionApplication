@@ -59,8 +59,15 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
             try {
 
                 Member managedMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+                
                 AnimalListing managedAnimalListing = animalListingSessionBeanLocal.retrieveAnimalListingByAnimalListingId(animalListing.getAnimalListingId());
 
+                for (ApplicationForm af : managedAnimalListing.getApplicationForms()) {
+                    if (af.getMember().getMemberId() == managedMember.getMemberId()) {
+                        throw new ApplicationFormExistException("Member has already submitted an application form for this animal listing!");
+                    }
+                }
+                
                 newAppForm.setMember(managedMember);
                 managedMember.getApplicationForms().add(newAppForm);
 
@@ -71,6 +78,8 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
                 em.flush();
 
                 return newAppForm.getApplicationFormId();
+                
+                
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
@@ -81,7 +90,11 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
                 } else {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
+                
+            } catch (ListingNotFoundException ex) {
+                throw new ListingNotFoundException(ex.getMessage());
             }
+            
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
