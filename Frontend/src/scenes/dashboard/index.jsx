@@ -15,10 +15,14 @@ import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import { fontWeight } from "@mui/system";
 import { Email } from "@mui/icons-material";
+import Auth from "../../helpers/Auth";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // redirect admin to login page if he/she is not logged in
+  Auth.redirectIfLoggedOut('/login');
 
   return (
     <Box m="20px">

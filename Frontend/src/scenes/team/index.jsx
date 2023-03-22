@@ -8,10 +8,14 @@ import Header from "../../components/AdminHeader";
 
 // importing data should change later
 import { mockDataTeam } from "../../assets/data/mockData";
+import Auth from "../../helpers/Auth";
 
 const Team = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+  // redirect admin to login page if he/she is not logged in
+  Auth.redirectIfLoggedOut('/login');
 
     // make the column for the data
     //flex will grow to 1 fractiion of the size of flex , no flex wont grow

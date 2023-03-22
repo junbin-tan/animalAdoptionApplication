@@ -18,6 +18,14 @@ import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
 import Calendar from "./scenes/calendar";
+import LoginPage from "./pages/login/loginPage";
+
+//theme
+import "primereact/resources/themes/lara-light-blue/theme.css";   
+//core
+import "primereact/resources/primereact.min.css";
+//icons
+import "primeicons/primeicons.css";  
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -42,6 +50,7 @@ function App() {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/geography" element={<Geography />} />
                 <Route path="/calendar" element={<Calendar />} />
+                <Route path="/login" element={<LoginPage />} />
               </Routes>
             </main>
 

@@ -1,18 +1,20 @@
 import { Box } from "@mui/material";
 import Header from "../../components/AdminHeader";
 import LineChart from "../../components/LineChart";
+import Auth from "../../helpers/Auth";
 
 const Line = () => {
+  // redirect admin to login page if he/she is not logged in
+  Auth.redirectIfLoggedOut("/login");
 
-    return (
-        <Box m="20px">
-            <Header title = "Line Chart" subtitle="Simple Line Chart"/>
-            <Box height = "75vh"> 
-                <LineChart/>
-            </Box>
-        </Box>
-    )
-
-}
+  return (
+    <Box m="20px">
+      <Header title="Line Chart" subtitle="Simple Line Chart" />
+      <Box height="75vh">
+        <LineChart />
+      </Box>
+    </Box>
+  );
+};
 
 export default Line;
