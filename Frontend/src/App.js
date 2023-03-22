@@ -56,8 +56,6 @@ function App() {
 
         </div>
       </ThemeProvider>
-      {/* Once you comment out Layout below, you will see the home page of the website */}
-      <Layout /> 
     </ColorModeContext.Provider>
   );
 }
