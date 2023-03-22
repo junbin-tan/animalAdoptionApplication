@@ -142,6 +142,40 @@ public class MembersResource {
         }
     }
 
+    @GET
+    @Path("/getAllMembers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMembers(@Context HttpHeaders headers) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            List<Member> members = memberSessionBeanLocal.retrieveAllMembers();
+
+            // nullify relationships
+            for (Member member : members) {
+                member.setReviewsCreated(null);
+                member.setReviewsReceived(null);
+                member.setEventListings(null);
+                member.setEventRegistrations(null);
+                member.setAnimalListings(null);
+                member.setApplicationForms(null);
+                member.setDonations(null);
+                member.setNotifications(null);
+            }
+
+            return Response.status(200).entity(members).build();
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+
     // method to nullify member relationships
     private void nullifyMemberRelationships(Member member) {
         //Nullifying relationships related to member
