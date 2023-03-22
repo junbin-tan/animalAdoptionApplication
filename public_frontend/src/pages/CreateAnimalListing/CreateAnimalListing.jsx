@@ -12,8 +12,12 @@ import Api from "../../helpers/Api";
 import UserContext from "../../helpers/context/UserContext";
 import "./CreateAnimalListing.css";
 import ImageUploaderCloud from "../../helpers/ImageUploaderCloud";
+import Auth from "../../helpers/Auth";
 
 const CreateAnimalListing = () => {
+  // redirect user to login page if they never login yet
+  Auth.redirectIfLoggedOut('/login');
+
   const { currentActualUser } = useContext(UserContext);
 
   const [showMessage, setShowMessage] = useState(false);
