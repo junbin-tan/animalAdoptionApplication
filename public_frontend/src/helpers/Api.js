@@ -109,6 +109,21 @@ const Api = {
          method: "DELETE",
       });
     },
+
+    getApplicationFormByMemberEmail() { 
+      return fetch(`${SERVER_PREFIX}/applicationForm/getApplicationFormByMemberEmail/${Auth.getUser().email}`, {
+         headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+         },
+         method: "GET",
+      });
+    },
+    deleteApplicationFormByApplicationFormId(applicationFormId) { 
+      return fetch(`${SERVER_PREFIX}/applicationForm/deleteApplicationForm/${applicationFormId}`, {
+         method: "DELETE",
+      });
+    },
 };
 
 export default Api;

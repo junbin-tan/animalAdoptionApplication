@@ -28,6 +28,8 @@ public interface ApplicationFormSessionBeanLocal {
     public Long createNewApplication(ApplicationForm newAppForm, Member member, AnimalListing animalListing) throws UnknownPersistenceException, InputDataValidationException, MemberNotFoundException, ListingNotFoundException, ApplicationFormExistException;
 
     public List<ApplicationForm> retrieveAllApplicationForms();
+    
+    public List<ApplicationForm> retrieveApplicationFormsByMemberEmail(String emailAddress) ;
 
     public ApplicationForm retrieveApplicationFormById(Long appFormId) throws ApplicationNotFoundException;
 

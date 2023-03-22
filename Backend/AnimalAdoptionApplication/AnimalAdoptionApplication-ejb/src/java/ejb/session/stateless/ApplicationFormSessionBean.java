@@ -93,6 +93,13 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
 
         return query.getResultList();
     }
+    
+    @Override
+    public List<ApplicationForm> retrieveApplicationFormsByMemberEmail(String emailAddress) {
+        Query query = em.createQuery("SELECT a FROM ApplicationForm a WHERE a.member.email = :emailAddress");
+        query.setParameter("emailAddress", emailAddress);
+        return query.getResultList();
+    }
 
     @Override
     public ApplicationForm retrieveApplicationFormById(Long appFormId) throws ApplicationNotFoundException {
@@ -132,10 +139,10 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
         Member member = appFormToRemove.getMember();
         AnimalListing animalListing = appFormToRemove.getAnimalListing();
 
-        appFormToRemove.setMember(null);
+//        appFormToRemove.setMember(null);
         member.getApplicationForms().remove(appFormToRemove);
         
-        appFormToRemove.setAnimalListing(null);
+//        appFormToRemove.setAnimalListing(null);
         animalListing.getApplicationForms().remove(appFormToRemove);
 
         em.remove(appFormToRemove);
