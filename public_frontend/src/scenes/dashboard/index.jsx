@@ -18,6 +18,7 @@ const Dashboard = () => {
   const userData = currentUser && JSON.stringify(currentUser, null, 2); // get user data
 
   const [animalListings, setAnimalListings] = useState([]);
+  const [applicationForms, setApplicationForms] = useState([]);
 
   useEffect(() => {
     Api.getAnimalListingByMemberEmail()
@@ -25,14 +26,19 @@ const Dashboard = () => {
       .then((data) => setAnimalListings(data));
   }, []);
 
+  useEffect(() => {
+    Api.getApplicationFormByMemberEmail()
+      .then((data) => data.json())
+      .then((data) => setApplicationForms(data));
+  }, []);
+  console.log(applicationForms);
+
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
-
   const { currentActualUser } = useContext(UserContext);
-
   console.log(currentActualUser);
-
   // END: Code to retrieve latest actual Member Data from Java Backend Restful Server
 
+  //-------------------------Start of Manage your Animal Listing------------------------- 
   let emptyAnimalListing = {
     animalListingId: null,
     name: "",
@@ -133,13 +139,118 @@ const Dashboard = () => {
       />
     </React.Fragment>
   );
+  //-------------------------End of Manage your Animal Listing-------------------------
+
+
+  //-------------------------Start of Manage your Application Form-------------------------
+  let emptyApplicationForm = {
+    applicationFormId: null,
+    reason: "",
+  };
+
+  const [applicationForm, setApplicationForm] = useState(emptyApplicationForm);
+  const [deleteApplicationFormDialog, setDeleteApplicationFormDialog] =
+    useState(false);
+  const [selectedApplicationForms, setSelectedApplicationForms] = useState(null);
+  const dtForApplicationForm = useRef(null);
+  const [globalFilterForApplicationForm, setGlobalFilterForApplicationForm] = useState(null);
+
+  const hideDeleteApplicationFormDialog = () => {
+    setDeleteApplicationFormDialog(false);
+  };
+
+  const confirmDeleteApplicationForm = (applicationForm => {
+    setApplicationForm(applicationForm);
+    setDeleteApplicationFormDialog(true);
+  });
+
+  const deleteApplicationForm = () => {
+    Api.deleteApplicationFormByApplicationFormId(
+      applicationForm.applicationFormId
+    ).then((response) => {
+      if (response.status === 204) {
+        // HTTP code when success deletion
+        // have to manually filter away the deleted item because the item is deleted on database
+        let _applicationForms = applicationForms.filter(
+          (val) => val.applicationFormId !== applicationForm.applicationFormId
+        );
+        setApplicationForms(_applicationForms);
+        setDeleteApplicationFormDialog(false);
+        setApplicationForm(emptyApplicationForm);
+        toast.current.show({ //using the same toast as animal listing
+          severity: "success",
+          summary: "Successful",
+          detail: "Application Form Deleted",
+          life: 3000,
+        });
+
+      } else {
+        setDeleteApplicationFormDialog(false);
+        response.json().then((responseJSON) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: responseJSON.error,
+            life: 3000,
+          });
+        });
+      }
+    });
+  };
+
+  const actionBodyTemplateForApplicationForm = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteApplicationForm(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const headerForApplicationForm = (
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+      <h4 className="m-0">Manage your Application Forms</h4>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilterForApplicationForm(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  );
+
+  const deleteApplicationFormDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteApplicationFormDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteApplicationForm}
+      />
+    </React.Fragment>
+  );
+  //-------------------------End of Manage your Application Form-------------------------
+
 
   return (
     <>
       <h2 style={{ textAlign: "center" }}> Manage Account</h2>
-
+      
+      {/* -------------------------Start of Manage your Animal Listing------------------------- */}
       <div className="animalListingSection">
-        <h5>View List Of Animal Listing</h5>
         <Toast ref={toast} />
         <div className="card">
           <DataTable
@@ -191,6 +302,62 @@ const Dashboard = () => {
           </div>
         </Dialog>
       </div>
+      {/* -------------------------End of Manage your Animal Listing------------------------- */}
+
+      {/* -------------------------Start of Manage your Application Forms------------------------- */}
+      <div className="applicationFormSection">
+        <Toast ref={toast} />
+        <div className="card">
+          <DataTable
+            ref={dtForApplicationForm}
+            value={applicationForms}
+            selection={selectedApplicationForms}
+            onSelectionChange={(e) => setSelectedApplicationForms(e.value)}
+            dataKey="applicationFormId"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} application forms"
+            globalFilter={globalFilterForApplicationForm}
+            header={headerForApplicationForm}
+            showGridlines
+            tableStyle={{ minWidth: "40rem" }}
+          >
+            <Column field="applicationFormId" header="Application Form ID"></Column>
+            <Column field="reason" header="Description"></Column>
+            <Column
+              field="options" header="Options"
+              body={actionBodyTemplateForApplicationForm}
+              exportable={false}
+              style={{ minWidth: "12rem" }}
+            ></Column>
+          </DataTable>
+        </div>
+        <Dialog
+          visible={deleteApplicationFormDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Confirm"
+          modal
+          footer={deleteApplicationFormDialogFooter}
+          onHide={hideDeleteApplicationFormDialog}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {applicationForm && (
+              <span>
+                Are you sure you want to delete Application Form <b>{applicationForm.applicationFormId}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
+      </div>
+      {/* -------------------------End of Manage your Application Forms------------------------- */}
+
     </>
   );
 };

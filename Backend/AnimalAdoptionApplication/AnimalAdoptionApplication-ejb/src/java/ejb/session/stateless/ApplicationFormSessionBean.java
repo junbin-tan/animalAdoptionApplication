@@ -59,8 +59,15 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
             try {
 
                 Member managedMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+                
                 AnimalListing managedAnimalListing = animalListingSessionBeanLocal.retrieveAnimalListingByAnimalListingId(animalListing.getAnimalListingId());
 
+                for (ApplicationForm af : managedAnimalListing.getApplicationForms()) {
+                    if (af.getMember().getMemberId() == managedMember.getMemberId()) {
+                        throw new ApplicationFormExistException("Member has already submitted an application form for this animal listing!");
+                    }
+                }
+                
                 newAppForm.setMember(managedMember);
                 managedMember.getApplicationForms().add(newAppForm);
 
@@ -71,6 +78,8 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
                 em.flush();
 
                 return newAppForm.getApplicationFormId();
+                
+                
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
@@ -81,7 +90,11 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
                 } else {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
+                
+            } catch (ListingNotFoundException ex) {
+                throw new ListingNotFoundException(ex.getMessage());
             }
+            
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
@@ -91,6 +104,13 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
     public List<ApplicationForm> retrieveAllApplicationForms() {
         Query query = em.createQuery("SELECT a FROM ApplicationForm a ORDER BY a.applicationFormId ASC");
 
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<ApplicationForm> retrieveApplicationFormsByMemberEmail(String emailAddress) {
+        Query query = em.createQuery("SELECT a FROM ApplicationForm a WHERE a.member.email = :emailAddress");
+        query.setParameter("emailAddress", emailAddress);
         return query.getResultList();
     }
 
@@ -132,10 +152,10 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
         Member member = appFormToRemove.getMember();
         AnimalListing animalListing = appFormToRemove.getAnimalListing();
 
-        appFormToRemove.setMember(null);
+//        appFormToRemove.setMember(null);
         member.getApplicationForms().remove(appFormToRemove);
         
-        appFormToRemove.setAnimalListing(null);
+//        appFormToRemove.setAnimalListing(null);
         animalListing.getApplicationForms().remove(appFormToRemove);
 
         em.remove(appFormToRemove);
