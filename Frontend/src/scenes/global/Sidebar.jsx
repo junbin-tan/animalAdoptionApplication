@@ -53,9 +53,10 @@ const Sidebar = () => {
 
   // get currrent user if authenticated
   const currentUser = Auth.getUser();
+  const isAdmin = Auth.isAdmin(currentUser);
 
   //!important will overidee the background
-  if (currentUser) {
+  if (isAdmin) {
     return (
       <Box
         sx={{
