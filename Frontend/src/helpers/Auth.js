@@ -3,13 +3,21 @@ import Userfront from "@userfront/core";
 Userfront.init("5nx5q8vb");
 
 const Auth = {
-    // returns user object if authenticated
+  // returns user object if authenticated
   getUser() {
     // this is not our actual user from java backend, only use it to get data like user's email
     if (Userfront.tokens.accessToken) {
       return Userfront.user;
     }
     return null;
+  },
+  isAdmin(currentUser) {
+    return (
+      currentUser &&
+      currentUser.data &&
+      currentUser.data.role &&
+      currentUser.data.role === "admin"
+    );
   },
   logout() {
     Userfront.logout();
@@ -25,6 +33,6 @@ const Auth = {
   getAccessToken() {
     return Userfront.tokens.accessToken;
   },
-}
+};
 
 export default Auth;

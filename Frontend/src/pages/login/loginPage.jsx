@@ -7,14 +7,15 @@ import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
 import Userfront from "@userfront/core";
 import "./loginPage.css";
-import { useNavigate } from "react-router-dom";
 import Auth from "../../helpers/Auth";
 // Initialize Userfront Core JS
 Userfront.init("5nx5q8vb");
 
 const LoginPage = () => {
   // redirect user to dashboard page if user is already logged in
-  Auth.redirectIfLoggedIn("/");
+  if (Auth.isAdmin(Auth.getUser())) {
+    Auth.redirectIfLoggedIn("/");
+  }
 
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
@@ -49,14 +50,28 @@ const LoginPage = () => {
         method: "password",
         emailOrUsername: data.email,
         password: data.password,
-        redirect: "/",
-      }).catch((error) => {
-        console.log(error.message);
-        data.error = error.message;
-        setFormData(data);
-        setShowMessage(true);
-      });
-
+        redirect: false,
+        // redirect: "/",
+      })
+        .then((response) => {
+          if (response.message === "OK" && response.tokens) {
+            console.log(Auth.getUser().data.role);
+            if (Auth.isAdmin(Auth.getUser())) {
+              Auth.redirectIfLoggedIn("/");
+            } else {
+              data.error = "Unauthorised access!";
+              setFormData(data);
+              setShowMessage(true);
+              Auth.logout();
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+          data.error = error.message;
+          setFormData(data);
+          setShowMessage(true);
+        });
 
       formik.resetForm();
     },
