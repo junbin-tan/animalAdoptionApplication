@@ -21,6 +21,10 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // to prevent other userfront non admin logged in in admin
+  if (!Auth.isAdmin(Auth.getUser())) {
+    Auth.redirectIfLoggedIn('/login');
+  }
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut('/login');
 
