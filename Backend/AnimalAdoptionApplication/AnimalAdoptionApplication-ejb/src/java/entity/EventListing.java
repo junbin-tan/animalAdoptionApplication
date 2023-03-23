@@ -38,7 +38,7 @@ public class EventListing implements Serializable {
     private String eventName;
 	
     @Column(nullable = false)
-	@Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @NotNull
     private Date dateAndTime;
 	
@@ -53,7 +53,12 @@ public class EventListing implements Serializable {
     @Column(nullable = false)
     @NotNull
     private String description;
-	
+    
+    
+    @Column(nullable = false)
+    @NotNull
+    private EventTypeEnum eventType;
+    
     private String image;
     
     @ManyToOne
@@ -177,4 +182,11 @@ public class EventListing implements Serializable {
         this.eventRegistrations = eventRegistrations;
     }
 
+    public EventTypeEnum getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventTypeEnum eventType) {
+        this.eventType = eventType;
+    }
 }

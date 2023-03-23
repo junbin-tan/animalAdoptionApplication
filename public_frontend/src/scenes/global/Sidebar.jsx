@@ -143,6 +143,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Create Event Listing"
+                to="/CreateEventListing"
+                icon={<NoteAddIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
