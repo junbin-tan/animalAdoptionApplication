@@ -83,6 +83,7 @@ public class AnimalListingResource {
 
         for (AnimalListing al : allAnimalListings) {
             al.getMember().setAnimalListings(null);
+            al.getMember().setDonations(null);
 
             for (ApplicationForm af : al.getApplicationForms()) {
                 af.setAnimalListing(null);
