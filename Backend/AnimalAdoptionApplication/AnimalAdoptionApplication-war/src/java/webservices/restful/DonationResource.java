@@ -6,10 +6,17 @@
 package webservices.restful;
 
 import ejb.session.stateless.DonationSessionBeanLocal;
+import entity.AnimalListing;
+import entity.ApplicationForm;
 import entity.Donation;
 import entity.DonationTypeEnum;
+import entity.EventField;
+import entity.EventListing;
+import entity.EventRegistration;
 import entity.Member;
+import entity.Notification;
 import entity.PaymentModeEnum;
+import entity.Review;
 import entity.Testimonial;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
@@ -71,7 +78,7 @@ public class DonationResource {
 			newDonation.setName(anon);
 		} else {
 			Member member = donationSessionBeanLocal.getMemberByEmail(newDonation.getEmail()).get(0);
-			member.setReviewsCreated(null);
+			member.getReviewsCreated();
 			member.setReviewsReceived(null);
 			member.setEventListings(null);
 			member.setEventRegistrations(null);
@@ -79,22 +86,20 @@ public class DonationResource {
 			member.setApplicationForms(null);
 			member.setDonations(null);
 			member.setNotifications(null);
+                        
 			newDonation.setMember(member);
 		}
-
-		
 		newDonation.setDate(currentDate);
 		newDonation.getTestimonial().setDate(currentDate);
 		newDonation.setPaymentMode(PaymentModeEnum.CREDITCARD); //only supports credit card as of now, may support paynow etc in the future
 		
-		Testimonial newTestimonial = newDonation.getTestimonial();
+                Testimonial newTestimonial = newDonation.getTestimonial();
 
-		long testId = donationSessionBeanLocal.createNewTestimonial(newDonation.getTestimonial());
+		long testId = donationSessionBeanLocal.createNewTestimonial(newTestimonial);
 		newDonation.setTestimonial(newTestimonial);
 		long donationId = donationSessionBeanLocal.createNewDonation(newDonation);
 		donationSessionBeanLocal.setDonationToTestimonial(donationId, testId);
 		return newDonation;
 	} 
-
 	
 }

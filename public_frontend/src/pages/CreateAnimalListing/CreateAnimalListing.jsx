@@ -94,10 +94,6 @@ const CreateAnimalListing = () => {
     validate: (data) => {
       let errors = {};
 
-
-      // if (!data.image) {
-      //   errors.image = "Image is required";
-      // }
       if (!animalImg) {
         errors.image = "Image is required";
       }
