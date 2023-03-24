@@ -1,7 +1,6 @@
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
@@ -20,7 +19,6 @@ const Dashboard = () => {
 
   const [animalListings, setAnimalListings] = useState([]);
   const [applicationForms, setApplicationForms] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     Api.getAnimalListingByMemberEmail()
@@ -34,7 +32,6 @@ const Dashboard = () => {
       .then((data) => setApplicationForms(data));
   }, []);
   console.log(applicationForms);
-
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
   const { currentActualUser } = useContext(UserContext);
@@ -63,10 +60,6 @@ const Dashboard = () => {
   const confirmDeleteAnimalListing = (animalListing) => {
     setAnimalListing(animalListing);
     setDeleteAnimalListingDialog(true);
-  };
-
-  const redirectToManageApplicationForms= (animalListing) => {
-    navigate("/ManageApplicationForm");
   };
 
   const deleteAnimalListing = () => {
@@ -111,14 +104,6 @@ const Dashboard = () => {
           outlined
           severity="danger"
           onClick={() => confirmDeleteAnimalListing(rowData)}
-        />
-        <Button
-          icon="pi pi-file"
-          label="View More"
-          rounded
-          outlined
-          severity="info"
-          onClick={() => redirectToManageApplicationForms(rowData)}
         />
       </React.Fragment>
     );
