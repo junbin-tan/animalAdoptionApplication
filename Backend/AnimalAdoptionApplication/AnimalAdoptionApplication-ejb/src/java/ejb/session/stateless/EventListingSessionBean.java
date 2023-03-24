@@ -52,10 +52,10 @@ public class EventListingSessionBean implements EventListingSessionBeanLocal {
     }
 
     @Override
-    public Long createEventListing(EventListing eventListing, Member member) throws MemberNotFoundException, UnknownPersistenceException, InputDataValidationException {
+    public Long createEventListing(EventListing eventListing) throws MemberNotFoundException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<EventListing>> constraintViolations = validator.validate(eventListing);
 
-        Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+       Member thisMember = memberSessionBeanLocal.retrieveMemberByMemberId(eventListing.getMember().getMemberId());
 
         if (constraintViolations.isEmpty()) {
             try {
