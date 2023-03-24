@@ -10,9 +10,6 @@ const EventsAndMarketingPage = () => {
     const [data, setData] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
 
-    const handleSort = () => { };
-
-
     useEffect(() => {
         Api.getAllEventListings().then((data) => data.json()).then((data) => setData(data));
     }, []);
@@ -51,14 +48,13 @@ const EventsAndMarketingPage = () => {
         }
     }; */
 
-    /* ====== SORTING DATA BY NEWEST, OLDEST =========
+    // ====== SORTING DATA BY NEWEST, OLDEST =========
 
     const handleSort = (e) => {
         const sortValue = e.target.value;
         
         if (sortValue === "newest") {
           const sortData = data.sort((a,b) => b.eventListingId - a.eventListingId);
-          console.log(sortData);
   
           setData([...sortData]);
         }
@@ -68,7 +64,7 @@ const EventsAndMarketingPage = () => {
   
           setData([...sortData]);
         }
-      };*/
+      };
 
 
     return (
