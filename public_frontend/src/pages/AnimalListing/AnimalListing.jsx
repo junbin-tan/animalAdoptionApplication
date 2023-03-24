@@ -46,7 +46,7 @@ const AnimalListing= (props) => {
             className="bid__btn d-flex align-items-center gap-1"
             onClick={() => setShowModal(true)}
           >
-            <i class="ri-search-2-line"></i> Read More
+            <i className="ri-search-2-line"></i> Read More
           </button>
 
           {showModal && <Modal setShowModal={setShowModal} description={description} animalListing = {props.item} />}
