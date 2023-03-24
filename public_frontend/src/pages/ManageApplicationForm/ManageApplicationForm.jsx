@@ -14,7 +14,10 @@ const ManageApplicationForm = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const { state } = useLocation();
   const currentAnimalListing = state;
-  const memberApplicationForms = state.applicationForms;
+  // const memberApplicationForms = state.applicationForms;
+  const [memberApplicationForms, setMemberApplicationForms] = useState(
+    state.applicationForms
+  );
   // console.log(memberApplicationForms);
 
   let emptyAppForm = {
@@ -51,7 +54,7 @@ const ManageApplicationForm = () => {
 
   const viewAppForm = (appForm) => {
     appForm.submittedBy = appForm.member.name;
-    console.log(appForm);
+    // console.log(appForm);
     setAppForm({ ...appForm });
     setAppFormDialog(true);
   };
@@ -61,11 +64,70 @@ const ManageApplicationForm = () => {
     setAppFormDialog(false);
   };
 
+  const updateApplicationFormStatus = (newApplicationFormStatus) => {
+    const applicationFormId = appForm.applicationFormId;
+    appForm.applicationStatus = newApplicationFormStatus;
+    appForm.animalListing = currentAnimalListing;
+    console.log(`app form id: ${applicationFormId}`);
+    console.log(appForm);
+
+    Api.updateAppFormStatus(applicationFormId, appForm).then((response) => {
+      if (response.status === 204) {
+        // refresh data table without retrieving updated data from backend
+        for (var i = 0; i < memberApplicationForms.length; i++) {
+          if (
+            memberApplicationForms[i].applicationFormId === applicationFormId
+          ) {
+            memberApplicationForms[i] = appForm;
+          } else if (memberApplicationForms[i].applicationStatus === 'SUBMITTED' && newApplicationFormStatus === 'ACCEPTED') {
+            memberApplicationForms[i].applicationStatus = 'REJECTED';
+          } 
+        }
+        setMemberApplicationForms([...memberApplicationForms]);
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: `Application form updated to ${newApplicationFormStatus}!`,
+          life: 3000,
+        });
+      } else {
+        response.json().then((responseJSON) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: responseJSON.error,
+            life: 3000,
+          });
+        });
+      }
+    });
+
+    delete appForm.animalListing; // need to delete animalListing this after updating, if not will kena Cylic Ref problem in REACT, not Jakarta EE as animalListing are not supposed to be inside appform json, but for the sake of passing the complete app form json object to jakarta, had to do this.
+
+    setAppFormDialog(false);
+  };
+
   const appFormDialogFooter = (
     <React.Fragment>
-      <Button label="Reject" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Accept" icon="pi pi-check" />
-      <Button label="Mark As Completed" icon="pi pi-check" />
+      <Button
+        label="Reject"
+        icon="pi pi-times"
+        outlined
+        disabled={appForm.applicationStatus !== 'SUBMITTED' || appForm.applicationStatus === 'ACCEPTED'}
+        onClick={() => updateApplicationFormStatus("REJECTED")}
+      />
+      <Button
+        label="Accept"
+        icon="pi pi-check"
+        disabled={appForm.applicationStatus !== 'SUBMITTED' || appForm.applicationStatus === 'REJECTED'}
+        onClick={() => updateApplicationFormStatus("ACCEPTED")}
+      />
+      <Button
+        label="Mark As Completed"
+        icon="pi pi-check"
+        disabled={appForm.applicationStatus !== 'ACCEPTED'}
+        onClick={() => updateApplicationFormStatus("COMPLETED")}
+      />
     </React.Fragment>
   );
 
@@ -88,9 +150,11 @@ const ManageApplicationForm = () => {
     <>
       <h2 style={{ textAlign: "center" }}>
         {" "}
-        Manage Incoming Application Forms for Animal Listing {currentAnimalListing.name}{" "}
+        Manage Incoming Application Forms for Animal Listing{" "}
+        {currentAnimalListing.name}{" "}
       </h2>
       <div className="applicationFormSection">
+        <Toast ref={toast} />
         <div className="card">
           <DataTable
             value={memberApplicationForms}
@@ -107,7 +171,10 @@ const ManageApplicationForm = () => {
             <Column field="applicationFormId" header="ID"></Column>
             <Column field="formType" header="Adoption/Fostering"></Column>
             <Column field="reason" header="Reason"></Column>
-            <Column field="applicationStatus" header="Application Status"></Column>
+            <Column
+              field="applicationStatus"
+              header="Application Status"
+            ></Column>
             <Column
               field="options"
               header="Options"
@@ -129,23 +196,17 @@ const ManageApplicationForm = () => {
           onHide={hideDialog}
         >
           <div className="field">
-            <label className="font-bold">
-              Submitted by:
-            </label>
+            <label className="font-bold">Submitted by:</label>
             <p>{appForm.submittedBy}</p>
           </div>
 
           <div className="field">
-            <label className="font-bold">
-              Status:
-            </label>
+            <label className="font-bold">Status:</label>
             <p>{appForm.applicationStatus}</p>
           </div>
 
           <div className="field">
-            <label className="font-bold">
-              Application Type:
-            </label>
+            <label className="font-bold">Application Type:</label>
             <p>{appForm.formType}</p>
           </div>
 
@@ -153,8 +214,8 @@ const ManageApplicationForm = () => {
             <label className="font-bold">
               Is applicant first time having pets?
             </label>
-            {appForm.isFirstTime && (<p>Yes</p>)}
-            {!appForm.isFirstTime && (<p>No</p>)}
+            {appForm.isFirstTime && <p>Yes</p>}
+            {!appForm.isFirstTime && <p>No</p>}
           </div>
 
           <div className="field">
@@ -175,16 +236,16 @@ const ManageApplicationForm = () => {
             <label className="font-bold">
               Does the applicant have other pets?
             </label>
-            {appForm.hasOtherPets && (<p>Yes</p>)}
-            {!appForm.hasOtherPets && (<p>No</p>)}
+            {appForm.hasOtherPets && <p>Yes</p>}
+            {!appForm.hasOtherPets && <p>No</p>}
           </div>
 
           <div className="field">
             <label className="font-bold">
               Does the applicant's pet have daily exercise?
             </label>
-            {appForm.hasOtherPets && (<p>Yes</p>)}
-            {!appForm.hasOtherPets && (<p>No</p>)}
+            {appForm.hasOtherPets && <p>Yes</p>}
+            {!appForm.hasOtherPets && <p>No</p>}
           </div>
 
           <div className="field">
@@ -195,12 +256,9 @@ const ManageApplicationForm = () => {
           </div>
 
           <div className="field">
-            <label className="font-bold">
-              Reason for {appForm.formType}
-            </label>
+            <label className="font-bold">Reason for {appForm.formType}</label>
             <p>{appForm.reason}</p>
           </div>
-
         </Dialog>
       </div>
     </>
