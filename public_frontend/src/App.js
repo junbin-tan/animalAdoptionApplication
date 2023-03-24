@@ -23,6 +23,7 @@ import AboutUsPage from "./pages/AboutUs/AboutUsPage";
 import AdoptionFosteringPage from "./pages/Adoption_Fostering/AdoptionFosteringPage";
 import CreateAnimalListingPage from "./pages/CreateAnimalListing/CreateAnimalListing";
 import CreateEventListingPage from "./pages/CreateEventListing/CreateEventListing";
+import ManageApplicationFormPage from "./pages/ManageApplicationForm/ManageApplicationForm";
 import UserProvider from "./helpers/context/UserProvider";
 
 
@@ -40,6 +41,7 @@ function App() {
             <Topbar />
             <Routes>
               <Route exact path="/" element={<Dashboard />} />
+              <Route exact path="/ManageApplicationForm" element={<ManageApplicationFormPage />} />
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
               <Route exact path="/Homepage" element={<Homepage />} />
