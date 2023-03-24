@@ -292,7 +292,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("eventName"),
                     })}
                   >
-                    eventName*
+                    Event Name*
                   </label>
                 </span>
                 {getFormErrorMessage("eventName")}
@@ -344,7 +344,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("location"),
                     })}
                   >
-                    location*
+                    Event Location*
                   </label>
                 </span>
                 {getFormErrorMessage("location")}
@@ -369,7 +369,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("capacity"),
                     })}
                   >
-                    capacity*
+                    Event Capacity*
                   </label>
                 </span>
                 {getFormErrorMessage("capacity")}
@@ -392,7 +392,7 @@ const CreateEventListing = () => {
                     autoFocus
                   />
                   <label htmlFor="dateAndTime">
-                    Date And Time 
+                    Date and Time 
                   </label>
                 </span>
               </div>
