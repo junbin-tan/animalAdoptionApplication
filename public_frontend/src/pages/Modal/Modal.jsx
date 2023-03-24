@@ -13,7 +13,6 @@ import Auth from "../../helpers/Auth";
 import UserContext from "../../helpers/context/UserContext";
 import "./modal.css";
 
-
 const Modal = ({ setShowModal, description, animalListing }) => {
   const { currentActualUser } = useContext(UserContext);
 
@@ -21,17 +20,26 @@ const Modal = ({ setShowModal, description, animalListing }) => {
   const [formData, setFormData] = useState({});
   const toast = useRef(null);
 
+
   const sleepArea = [
     { name: "INDOOR", code: "INDOOR" },
     { name: "OUTDOOR", code: "OUTDOOR" },
     { name: "OUTDOOR_SHELTER", code: "OUTDOOR_SHELTER" },
   ];
 
-  const formType = [
+
+  // form type(s) will be displayed accordingly
+  var formType = [
     { name: "ADOPTION", code: "ADOPTION" },
     { name: "FOSTERING", code: "FOSTERING" },
     { name: "ADOPTION_FOSTERING", code: "ADOPTION_FOSTERING" },
   ];
+
+  if (animalListing.isAdoption && !animalListing.isFostering) {
+    formType = [{ name: "ADOPTION", code: "ADOPTION" }];
+  } else if (!animalListing.isAdoption && animalListing.isFostering) {
+    formType = [{ name: "FOSTERING", code: "FOSTERING" }];
+  }
 
   const m = currentActualUser && {
     memberId: currentActualUser.memberId,
@@ -133,17 +141,16 @@ const Modal = ({ setShowModal, description, animalListing }) => {
     </div>
   );
 
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
 
   // used to let user navigate to login page when then try to access app form without login yet
-  const navigateToLoginPage = () => {
-    let loginPath = '/login';
-    navigate(loginPath);
-  } 
+  const navigateToSpecifiedPage = (path) => {
+    navigate(path);
+  };
 
   return (
     <>
-    {/* Show login button and tell user to login if user is not logged in */}
+      {/* Show login button and tell user to login if user is not logged in */}
       {!currentActualUser && (
         <>
           <div className="modal__wrapper">
@@ -162,7 +169,10 @@ const Modal = ({ setShowModal, description, animalListing }) => {
               <div className="form-demo">
                 <div className="flex justify-content-center">
                   <div className="card">
-                    <Button label="Proceed to login" onClick={navigateToLoginPage} />
+                    <Button
+                      label="Proceed to login"
+                      onClick={() => navigateToSpecifiedPage('/login')}
+                    />
                   </div>
                 </div>
               </div>
@@ -170,9 +180,41 @@ const Modal = ({ setShowModal, description, animalListing }) => {
           </div>
         </>
       )}
-      
+
+      {/* Tell user that you can't register your own animal listings lol */}
+      {currentActualUser && currentActualUser.email === animalListing.member.email && (
+        <>
+          <div className="modal__wrapper">
+            <div className="single__modal">
+              <span className="close__modal">
+                <i
+                  class="ri-close-line"
+                  onClick={() => setShowModal(false)}
+                ></i>
+              </span>
+              <h6 className="text-center text-light">Oops!</h6>
+              <h6 className="text-center text-light">
+                <p>You are not allowed to submit an application form for your own animal listing. </p>
+                <p>We know you are excited about your pets receiving new loves, so please click the button below to view the application forms submitted for your animal listing.</p>
+              </h6>
+              <Toast ref={toast} />
+              <div className="form-demo">
+                <div className="flex justify-content-center">
+                  <div className="card">
+                    <Button
+                      label="Proceed to view application forms for this animal listing"
+                      onClick={() => navigateToSpecifiedPage('/')}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/*  Show application form if user is logged in */}
-      {currentActualUser && (
+      {currentActualUser && currentActualUser.email !== animalListing.member.email && (
         <>
           <div className="modal__wrapper">
             <div className="single__modal">
@@ -183,7 +225,13 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                 ></i>
               </span>
               <h6 className="text-center text-light">Description</h6>
-              <p className="text-center text-light" style={{ textAlign: "justify", overflowWrap: "break-word" }}> {description} </p>
+              <p
+                className="text-center text-light"
+                style={{ textAlign: "justify", overflowWrap: "break-word" }}
+              >
+                {" "}
+                {description}{" "}
+              </p>
               <h6 className="text-center text-light">
                 Fill up the form below!
               </h6>

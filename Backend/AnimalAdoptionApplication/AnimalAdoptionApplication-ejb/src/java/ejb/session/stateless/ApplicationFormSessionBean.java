@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.AnimalListing;
 import entity.ApplicationForm;
+import entity.ApplicationStatusEnum;
 import entity.Member;
 import exception.ApplicationFormExistException;
 import exception.ApplicationNotFoundException;
@@ -113,6 +114,13 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
         query.setParameter("emailAddress", emailAddress);
         return query.getResultList();
     }
+    
+    @Override
+    public List<ApplicationForm> retrieveApplicationFormsByAnimalListingId(Long animalListingId) {
+        Query query = em.createQuery("SELECT a FROM ApplicationForm a WHERE a.animalListing.animalListingId = :animalListingId");
+        query.setParameter("animalListingId", animalListingId);
+        return query.getResultList();
+    }
 
     @Override
     public ApplicationForm retrieveApplicationFormById(Long appFormId) throws ApplicationNotFoundException {
@@ -135,6 +143,14 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
 
                 if (appFormToUpdate.getApplicationFormId().equals(appForm.getApplicationFormId())) {
                     appFormToUpdate.setApplicationStatus(appForm.getApplicationStatus());
+                    
+                    // update the rest of the application forms of selected animal listing to rejected if this accepted 1 application form for this animal listing
+                    List<ApplicationForm> appFormsByAnimalListing = retrieveApplicationFormsByAnimalListingId(appFormToUpdate.getAnimalListing().getAnimalListingId());
+                    for (ApplicationForm af : appFormsByAnimalListing) {
+                        if (!af.getApplicationFormId().equals(appFormToUpdate.getApplicationFormId()) && appForm.getApplicationStatus().equals(ApplicationStatusEnum.ACCEPTED)) {
+                            af.setApplicationStatus(ApplicationStatusEnum.REJECTED);
+                        }
+                    }
                 } else {
                     throw new UpdateApplicationFormException("Id of Application form record to be updated does not match the existing record");
                 }

@@ -36,5 +36,7 @@ public interface ApplicationFormSessionBeanLocal {
     public void updateApplicationForm(ApplicationForm appForm) throws ApplicationNotFoundException, UpdateApplicationFormException, InputDataValidationException;
 
     public void deleteApplicationForm(Long appFormId) throws ApplicationNotFoundException;
+
+    public List<ApplicationForm> retrieveApplicationFormsByAnimalListingId(Long animalListingId);
     
 }

@@ -112,6 +112,11 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
         
         query.setParameter("emailAddress", emailAddress);
         
+        List<AnimalListing> animalListings = query.getResultList();
+        for (AnimalListing al : animalListings) {
+            al.getApplicationForms().size(); // lazy loading to get application forms for each animal listing
+        }
+        
         return query.getResultList();
     }
     
