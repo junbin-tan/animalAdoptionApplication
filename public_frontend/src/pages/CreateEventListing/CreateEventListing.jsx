@@ -28,7 +28,7 @@ const CreateEventListing = () => {
     { name: "COMPETITION", code: "COMPETITION" },
   ];
 
-  const m = {
+  const m = currentActualUser && {
     memberId: currentActualUser.memberId,
     name: currentActualUser.name,
     email: currentActualUser.email,
