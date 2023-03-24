@@ -157,7 +157,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
             <div className="single__modal">
               <span className="close__modal">
                 <i
-                  class="ri-close-line"
+                  className="ri-close-line"
                   onClick={() => setShowModal(false)}
                 ></i>
               </span>
@@ -188,7 +188,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
             <div className="single__modal">
               <span className="close__modal">
                 <i
-                  class="ri-close-line"
+                  className="ri-close-line"
                   onClick={() => setShowModal(false)}
                 ></i>
               </span>
@@ -220,7 +220,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
             <div className="single__modal">
               <span className="close__modal">
                 <i
-                  class="ri-close-line"
+                  className="ri-close-line"
                   onClick={() => setShowModal(false)}
                 ></i>
               </span>

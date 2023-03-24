@@ -21,7 +21,7 @@ const Dashboard = () => {
   const [animalListings, setAnimalListings] = useState([]);
   const [applicationForms, setApplicationForms] = useState([]);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     Api.getAnimalListingByMemberEmail()
       .then((data) => data.json())
@@ -34,7 +34,6 @@ const Dashboard = () => {
       .then((data) => setApplicationForms(data));
   }, []);
   console.log(applicationForms);
-
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
   const { currentActualUser } = useContext(UserContext);

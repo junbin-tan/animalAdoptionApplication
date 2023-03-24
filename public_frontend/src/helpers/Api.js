@@ -97,6 +97,16 @@ const Api = {
     });
   },
 
+  getAllEventListings() {
+    return fetch(`${SERVER_PREFIX}/eventListing`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    });
+  },
+
   createApplicationForm(data) {
     return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
       headers: {
@@ -154,14 +164,17 @@ const Api = {
     );
   },
   updateAppFormStatus(applicationFormId, data) {
-    return fetch(`${SERVER_PREFIX}/applicationForm/updateApplicationFormStatus/${applicationFormId}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
+    return fetch(
+      `${SERVER_PREFIX}/applicationForm/updateApplicationFormStatus/${applicationFormId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify(data),
+      }
+    );
   },
 };
 
