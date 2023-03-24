@@ -37,7 +37,7 @@ const CreateAnimalListing = () => {
     { name: "OTHERS", code: "OTHERS" },
   ];
 
-  const m = {
+  const m = currentActualUser && {
     memberId: currentActualUser.memberId,
     name: currentActualUser.name,
     email: currentActualUser.email,
