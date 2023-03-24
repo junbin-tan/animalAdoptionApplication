@@ -15,7 +15,6 @@ import exception.UnknownPersistenceException;
 import exception.UpdateEventListingException;
 import java.util.List;
 import javax.ejb.Local;
-import org.w3c.dom.events.EventException;
 
 /**
  *
