@@ -6,8 +6,11 @@
 package webservices.restful;
 
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
+import ejb.session.stateless.EventListingSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
+import entity.EventListing;
+import entity.Member;
 import exception.AnimalListingHasApplicationFormException;
 import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
@@ -37,25 +40,25 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author yijie
  */
-@Path("animalListing")
-public class AnimalListingResource {
+@Path("eventListing")
+public class EventListingResource {
 
     @EJB
-    private AnimalListingSessionBeanLocal animalListingSessionBeanLocal;
+    private EventListingSessionBeanLocal eventListingSessionBeanLocal;
 
     @Context
     private UriInfo context;
 
-    public AnimalListingResource() {
+    public EventListingResource() {
     }
 
     @POST
-    @Path("/createAnimalListing")
+    @Path("/createEventListing")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAnimalListing(AnimalListing newAnimalListing) {
+    public Response createEventListing(EventListing newEventListing) {
         try {
-            Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
+            Long eventListingId = eventListingSessionBeanLocal.createEventListing(newEventListing);
             return Response.status(204).build();
 
         } catch (UnknownPersistenceException ex) {
@@ -66,16 +69,13 @@ public class AnimalListingResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (ListingExistException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
-
-        } catch (MemberNotFoundException ex) {
+        }  catch (MemberNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-
+    
+/*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<AnimalListing> getAllAnimalListings() {
@@ -84,11 +84,6 @@ public class AnimalListingResource {
         for (AnimalListing al : allAnimalListings) {
             al.getMember().setAnimalListings(null);
             al.getMember().setDonations(null);
-            al.getMember().setEventListings(null);
-            al.getMember().setEventRegistrations(null);
-            al.getMember().setNotifications(null);
-            al.getMember().setReviewsCreated(null);
-            al.getMember().setReviewsReceived(null);
 
             for (ApplicationForm af : al.getApplicationForms()) {
                 af.setAnimalListing(null);
@@ -129,5 +124,5 @@ public class AnimalListingResource {
             return Response.status(404).entity(exception).build();
         }
     } //end deleteField
-
+*/
 }

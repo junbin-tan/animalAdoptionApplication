@@ -59,3 +59,5 @@ public_frontend/yarn-error.log*
 /Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/nbproject/private/
 /Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/dist/
 /Backend/AnimalAdoptionApplication/AnimalAdoptionApplication-war/build/
+/public_frontend/nbproject/private/
+/Frontend/nbproject/private/

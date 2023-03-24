@@ -15,7 +15,6 @@ import exception.UnknownPersistenceException;
 import exception.UpdateEventListingException;
 import java.util.List;
 import javax.ejb.Local;
-import org.w3c.dom.events.EventException;
 
 /**
  *
@@ -24,7 +23,7 @@ import org.w3c.dom.events.EventException;
 @Local
 public interface EventListingSessionBeanLocal {
     
-    public Long createEventListing(EventListing eventListing, Member member) throws MemberNotFoundException, UnknownPersistenceException, InputDataValidationException;
+   // public Long createEventListing(EventListing eventListing, Member member) throws MemberNotFoundException, UnknownPersistenceException, InputDataValidationException;
     
     public List<EventListing> retrieveAllEventListings();
     
@@ -37,5 +36,7 @@ public interface EventListingSessionBeanLocal {
     public void updateEventListing(EventListing eventListing) throws EventListingNotFoundException, UpdateEventListingException, InputDataValidationException;
     
     public void deleteEventListing(Long eventListingId) throws EventListingNotFoundException, MemberNotFoundException, DeleteEventListingException;
+
+    public Long createEventListing(EventListing eventListing) throws MemberNotFoundException, UnknownPersistenceException, InputDataValidationException;
     
 }

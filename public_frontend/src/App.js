@@ -22,6 +22,7 @@ import ContactUsPage from "./pages/ContactUs/ContactUsPage";
 import AboutUsPage from "./pages/AboutUs/AboutUsPage";
 import AdoptionFosteringPage from "./pages/Adoption_Fostering/AdoptionFosteringPage";
 import CreateAnimalListingPage from "./pages/CreateAnimalListing/CreateAnimalListing";
+import CreateEventListingPage from "./pages/CreateEventListing/CreateEventListing";
 import UserProvider from "./helpers/context/UserProvider";
 
 
@@ -49,6 +50,7 @@ function App() {
               <Route exact path='/EventsAndMarketing' element={<EventsAndMarketingPage/>} />
               <Route exact path="/Contact" element={<ContactUsPage />} />
               <Route exact path="/CreateAnimalListing" element={<CreateAnimalListingPage />} />
+              <Route exact path="/CreateEventListing" element={<CreateEventListingPage />} />
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />

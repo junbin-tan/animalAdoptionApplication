@@ -25,6 +25,8 @@ public interface DonationSessionBeanLocal {
 	public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException;
 
 	public long setDonationToTestimonial(Long donationId, Long testId);
+        
+        public void setTestimonialToDonation(Long donationId, Long testId);
 
 	public List<Member> getMemberByEmail(String email);
 	

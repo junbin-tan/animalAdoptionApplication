@@ -10,31 +10,22 @@ import { Calendar } from "primereact/calendar";
 import { FileUpload } from "primereact/fileupload";
 import Api from "../../helpers/Api";
 import UserContext from "../../helpers/context/UserContext";
-import "./CreateAnimalListing.css";
+import "./CreateEventListing.css";
 import ImageUploaderCloud from "../../helpers/ImageUploaderCloud";
-import Auth from "../../helpers/Auth";
 
-const CreateAnimalListing = () => {
-  // redirect user to login page if they never login yet
-  Auth.redirectIfLoggedOut('/login');
-
+const CreateEventListing = () => {
   const { currentActualUser } = useContext(UserContext);
 
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
-  const [animalImg, setAnimalImg] = useState();
+  const [eventImg, setEventImg] = useState();
 
-  const gender = [
-    { name: "MALE", code: "MALE" },
-    { name: "FEMALE", code: "FEMALE" },
-  ];
-
-  const animalType = [
-    { name: "DOG", code: "DOG" },
-    { name: "CAT", code: "CAT" },
-    { name: "HAMSTER", code: "HAMSTER" },
-    { name: "RABBIT", code: "RABBIT" },
-    { name: "OTHERS", code: "OTHERS" },
+  const eventType = [
+    { name: "GATHERING", code: "GATHERING" },
+    { name: "PET_TRAINING", code: "PET TRAINING" },
+    { name: "EXPO", code: "EXPO" },
+    { name: "CHARITY", code: "CHARITY" },
+    { name: "COMPETITION", code: "COMPETITION" },
   ];
 
   const m = {
@@ -68,70 +59,57 @@ const CreateAnimalListing = () => {
 
         reader.onloadend = function () {
             const base64data = reader.result;
-            // setAnimalImg(base64data);
+            // setEventImg(base64data);
         };
 
-        setAnimalImg(file);
+        setEventImg(file);
     };
 
   const formik = useFormik({
     initialValues: {
+      eventName: "",
+      dateAndTime: null,
+      location: "",
+      capacity: 0,
       description: "",
+      eventType: "",
       image: "",
-      age: "",
-      name: "",
-      gender: "",
-      breed: "",
-      weight: "",
-      animalType: "",
-      isNeutered: false,
-      isAdoption: false,
-      isFostering: false,
-      fosterStartDate: null,
-      fosterEndDate: null,
+      
       member: m,
     },
     validate: (data) => {
       let errors = {};
 
-      if (!animalImg) {
+
+      // if (!data.image) {
+      //   errors.image = "Image is required";
+      // }
+      if (!eventImg) {
         errors.image = "Image is required";
       }
 
-      if (!data.age) {
-        errors.age = "Age is required";
+      if (!data.eventName) {
+        errors.eventName = "Event Name is required";
       }
 
-      if (!data.name) {
-        errors.name = "Name is required";
+      if (!data.location) {
+        errors.location = "Location is required";
       }
 
-      if (!data.gender) {
-        errors.gender = "Gender is required";
+      if (!data.capacity) {
+        errors.capacity = "Capacity is required";
       }
-
-      if (!data.breed) {
-        errors.breed = "Breed is required";
-      }
-
-      if (!data.weight) {
-        errors.weight = "Weight is required";
+      
+      if (!data.eventType) {
+        errors.eventType = "Event Type is required";
       }
 
       if (!data.description) {
         errors.description = "Description is required";
       }
-
-      if (!data.animalType) {
-        errors.animalType = "Animal Type is required";
-      }
-
-      if (!data.isNeutered) {
-        errors.isNeutered = "Please indicate whether the animal is neutered";
-      }
-
-      if (!data.description) {
-        errors.description = "Description is required.";
+      
+      if (!data.dateAndTime) {
+        errors.description = "Date And Time is required";
       }
 
       return errors;
@@ -140,8 +118,7 @@ const CreateAnimalListing = () => {
       setFormData(data);
       console.log(data);
       delete data.accept;
-      data.gender = data.gender["name"];
-      data.animalType = data.animalType["name"];
+      data.eventType = data.eventType["name"];
       if (data.fosterStartDate != null) {
         data.fosterStartDate = data.fosterStartDate.toISOString();
       }
@@ -149,13 +126,13 @@ const CreateAnimalListing = () => {
         data.fosterEndDate = data.fosterEndDate.toISOString();
       }
 
-      const animalImage = animalImg && animalImg;
+      const eventImage = eventImg && eventImg;
       // console.log(animalImage);
-      ImageUploaderCloud.uploadImgToCloud(animalImage).then((response) => {
+      ImageUploaderCloud.uploadImgToCloud(eventImage).then((response) => {
         if (response.Location) {
           data.image = response.Location;
           console.log(data);
-          Api.createAnimalListing(data).then((data) => setShowMessage(true));
+          Api.createEventListing(data).then((data) => setShowMessage(true));
         }
       });
 
@@ -187,7 +164,7 @@ const CreateAnimalListing = () => {
 
   return (
     <>
-      <h2 className="text-center">Create Animal Listing</h2>
+      <h2 className="text-center">Create Event Listing</h2>
       <div className="form-demo">
         <Dialog
           visible={showMessage}
@@ -207,7 +184,7 @@ const CreateAnimalListing = () => {
                   style={{ fontSize: "5rem", color: "var(--red-500)" }}
                 ></i>
 
-                <h5>Creation of Animal Listing Error!</h5>
+                <h5>Creation of Event Listing Error!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
                   <b>{formData.error}</b>
                 </p>
@@ -221,7 +198,7 @@ const CreateAnimalListing = () => {
                   style={{ fontSize: "5rem", color: "var(--green-500)" }}
                 ></i>
 
-                <h5>Creation of Animal Listing Successful!</h5>
+                <h5>Creation of Event Listing Successful!</h5>
               </>
             )}
           </div>
@@ -295,252 +272,132 @@ const CreateAnimalListing = () => {
                 {getFormErrorMessage("Image")}
               </div>
 
-              {/* Age textbox */}
-              <div className="field">
-                <span className="p-float-label">
-                  <InputText
-                    id="age"
-                    name="age"
-                    value={formik.values.age}
-                    onChange={formik.handleChange}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("age"),
-                    })}
-                  />
-                  <label
-                    htmlFor="age"
-                    className={classNames({
-                      "p-error": isFormFieldValid("age"),
-                    })}
-                  >
-                    Age*
-                  </label>
-                </span>
-                {getFormErrorMessage("age")}
-              </div>
 
               {/* Name textbox */}
               <div className="field">
                 <span className="p-float-label">
                   <InputText
-                    id="name"
-                    name="name"
-                    value={formik.values.name}
+                    id="eventName"
+                    name="eventName"
+                    value={formik.values.eventName}
                     onChange={formik.handleChange}
                     autoFocus
                     className={classNames({
-                      "p-invalid": isFormFieldValid("name"),
+                      "p-invalid": isFormFieldValid("eventName"),
                     })}
                   />
                   <label
-                    htmlFor="name"
+                    htmlFor="eventName"
                     className={classNames({
-                      "p-error": isFormFieldValid("name"),
+                      "p-error": isFormFieldValid("eventName"),
                     })}
                   >
-                    Name*
+                    eventName*
                   </label>
                 </span>
-                {getFormErrorMessage("name")}
+                {getFormErrorMessage("eventName")}
               </div>
 
-              {/* Gender dropdown list */}
+
+              {/* Animal Type dropdown list */}
               <div className="field">
                 <span className="p-float-label">
                   <Dropdown
-                    id="gender"
-                    name="gender"
-                    value={formik.values.gender}
+                    id="eventType"
+                    name="eventType"
+                    value={formik.values.eventType}
                     onChange={formik.handleChange}
-                    options={gender}
+                    options={eventType}
                     optionLabel="name"
                     className={classNames({
-                      "p-invalid": isFormFieldValid("gender"),
+                      "p-invalid": isFormFieldValid("eventType"),
                     })}
                   />
                   <label
-                    htmlFor="gender"
+                    htmlFor="eventType"
                     className={classNames({
-                      "p-error": isFormFieldValid("gender"),
+                      "p-error": isFormFieldValid("eventType"),
                     })}
                   >
-                    Gender
+                    Type of Event*
                   </label>
                 </span>
               </div>
+
 
               {/* Breed textbox */}
               <div className="field">
                 <span className="p-float-label">
                   <InputText
-                    id="breed"
-                    name="breed"
-                    value={formik.values.breed}
+                    id="location"
+                    name="location"
+                    value={formik.values.location}
                     onChange={formik.handleChange}
                     autoFocus
                     className={classNames({
-                      "p-invalid": isFormFieldValid("breed"),
+                      "p-invalid": isFormFieldValid("location"),
                     })}
                   />
                   <label
-                    htmlFor="breed"
+                    htmlFor="location"
                     className={classNames({
-                      "p-error": isFormFieldValid("breed"),
+                      "p-error": isFormFieldValid("location"),
                     })}
                   >
-                    Breed*
+                    location*
                   </label>
                 </span>
-                {getFormErrorMessage("breed")}
+                {getFormErrorMessage("location")}
               </div>
 
               {/* Weight textbox */}
               <div className="field">
                 <span className="p-float-label">
                   <InputText
-                    id="weight"
-                    name="weight"
-                    value={formik.values.weight}
+                    id="capacity"
+                    name="capacity"
+                    value={formik.values.capacity}
                     onChange={formik.handleChange}
                     autoFocus
                     className={classNames({
-                      "p-invalid": isFormFieldValid("weight"),
+                      "p-invalid": isFormFieldValid("capacity"),
                     })}
                   />
                   <label
-                    htmlFor="weight"
+                    htmlFor="capacity"
                     className={classNames({
-                      "p-error": isFormFieldValid("weight"),
+                      "p-error": isFormFieldValid("capacity"),
                     })}
                   >
-                    Weight*
+                    capacity*
                   </label>
                 </span>
-                {getFormErrorMessage("weight")}
+                {getFormErrorMessage("capacity")}
               </div>
 
-              {/* Animal Type dropdown list */}
-              <div className="field">
-                <span className="p-float-label">
-                  <Dropdown
-                    id="animalType"
-                    name="animalType"
-                    value={formik.values.animalType}
-                    onChange={formik.handleChange}
-                    options={animalType}
-                    optionLabel="name"
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("animalType"),
-                    })}
-                  />
-                  <label
-                    htmlFor="animalType"
-                    className={classNames({
-                      "p-error": isFormFieldValid("animalType"),
-                    })}
-                  >
-                    Type of Animal*
-                  </label>
-                </span>
-              </div>
 
-              {/* Neuteured checkbox */}
-              <div className="field-checkbox">
-                <Checkbox
-                  inputId="isNeutered"
-                  name="isNeutered"
-                  checked={formik.values.isNeutered}
-                  onChange={formik.handleChange}
-                  className={classNames({
-                    "p-invalid": isFormFieldValid("isNeutered"),
-                  })}
-                />
-                <label
-                  htmlFor="isNeutered"
-                  className={classNames({
-                    "p-error": isFormFieldValid("isNeutered"),
-                  })}
-                >
-                  Is the animal neuteured?*
-                </label>
-              </div>
+             
 
-              {/* Adoption checkbox */}
-              <div className="field-checkbox">
-                <Checkbox
-                  inputId="isAdoption"
-                  name="isAdoption"
-                  checked={formik.values.isAdoption}
-                  onChange={formik.handleChange}
-                  className={classNames({
-                    "p-invalid": isFormFieldValid("isAdoption"),
-                  })}
-                />
-                <label
-                  htmlFor="isAdoption"
-                  className={classNames({
-                    "p-error": isFormFieldValid("isAdoption"),
-                  })}
-                >
-                  Adoption
-                </label>
-              </div>
-
-              {/* Fostering checkbox */}
-              <div className="field-checkbox">
-                <Checkbox
-                  inputId="isFostering"
-                  name="isFostering"
-                  checked={formik.values.isFostering}
-                  onChange={formik.handleChange}
-                  className={classNames({
-                    "p-invalid": isFormFieldValid("isFostering"),
-                  })}
-                />
-                <label
-                  htmlFor="isFostering"
-                  className={classNames({
-                    "p-error": isFormFieldValid("isFostering"),
-                  })}
-                >
-                  Fostering
-                </label>
-              </div>
+             
 
               {/* Start date textbox (For fostering only) */}
               <div className="field">
                 <span className="p-float-label">
                   <Calendar
-                    id="fosterStartDate"
-                    name="fosterStartDate"
-                    value={formik.values.fosterStartDate}
+                    id="dateAndTime"
+                    name="dateAndTime"
+                    value={formik.values.dateAndTime}
                     onChange={formik.handleChange}
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
-                  <label htmlFor="fosterStartDate">
-                    Foster Start Date (For Fostering Only)
+                  <label htmlFor="dateAndTime">
+                    Date And Time 
                   </label>
                 </span>
               </div>
 
-              {/* End date textbox (For fostering only) */}
-              <div className="field">
-                <span className="p-float-label">
-                  <Calendar
-                    id="fosterEndDate"
-                    name="fosterEndDate"
-                    value={formik.values.fosterEndDate}
-                    onChange={formik.handleChange}
-                    dateFormat="dd/mm/yy"
-                    autoFocus
-                  />
-                  <label htmlFor="fosterEndDate">
-                    Foster End Date (For Fostering Only)
-                  </label>
-                </span>
-              </div>
-
+           
               {/* Submit button */}
               <Button type="submit" label="Submit" className="mt-2" />
             </form>
@@ -551,4 +408,4 @@ const CreateAnimalListing = () => {
   );
 };
 
-export default CreateAnimalListing;
+export default CreateEventListing;

@@ -112,13 +112,21 @@ public class DonationSessionBean implements DonationSessionBeanLocal {
         }
     }
 
-	public long setDonationToTestimonial(Long donationId, Long testId) {
-		Donation d = entityManager.find(Donation.class, donationId);
-		Testimonial test = entityManager.find(Testimonial.class, testId);
-		test.setDonation(d);
-		entityManager.flush();
-		return test.getTestimonialId();
-	}
+    public long setDonationToTestimonial(Long donationId, Long testId) {
+            Donation d = entityManager.find(Donation.class, donationId);
+            Testimonial test = entityManager.find(Testimonial.class, testId);
+            test.setDonation(d);
+            entityManager.flush();
+            return test.getTestimonialId();
+    }
+
+    public void setTestimonialToDonation(Long donationId, Long testId) {
+            Donation d = entityManager.find(Donation.class, donationId);
+            Testimonial test = entityManager.find(Testimonial.class, testId);
+            d.setTestimonial(test);
+            entityManager.flush();
+    }
+
 
 	 private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Donation>>constraintViolations) {
         String msg = "Input data validation error!:";
