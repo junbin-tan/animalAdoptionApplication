@@ -6,6 +6,7 @@
 package webservices.restful;
 
 import ejb.session.stateless.EventListingSessionBeanLocal;
+import entity.ApplicationForm;
 import entity.EventListing;
 import exception.InputDataValidationException;
 import exception.MemberNotFoundException;
@@ -76,6 +77,7 @@ public class EventListingResource {
             el.getMember().setNotifications(null);
             el.getMember().setReviewsCreated(null);
             el.getMember().setReviewsReceived(null);
+            el.getMember().setApplicationForms(null);
         }
 
         return allEventListings;
