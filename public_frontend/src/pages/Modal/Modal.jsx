@@ -183,7 +183,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                 ></i>
               </span>
               <h6 className="text-center text-light">Description</h6>
-              <p style={{ textAlign: "justify" }}> {description} </p>
+              <p className="text-center text-light" style={{ textAlign: "justify", overflowWrap: "break-word" }}> {description} </p>
               <h6 className="text-center text-light">
                 Fill up the form below!
               </h6>
