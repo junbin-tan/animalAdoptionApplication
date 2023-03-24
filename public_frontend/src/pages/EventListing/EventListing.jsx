@@ -3,7 +3,8 @@ import "./EventListing.css";
 import Modal from "../Modal/Modal";
 
 const EventListing= (props) => {
-    const { title, creatorImg, image, creator } = props.item;
+    //const { title, creatorImg, image, creator } = props.item;
+    const { image, member, name, description, capacity, dateAndTime} = props.item;
   
     const [showModal, setShowModal] = useState(false);
   
@@ -15,23 +16,19 @@ const EventListing= (props) => {
   
         <div className="eventlisting__content">
           <h5 className="eventlisting__title">
-            {title}
+            {name}
           </h5>
   
           <div className="creator__info-wrapper d-flex gap-3">
-            <div className="creator__img">
-              <img src={creatorImg} alt="" className="w-100" />
-            </div>
-  
             <div className="creator__info w-100 d-flex align-items-center justify-content-between">
               <div>
                 <h6>Posted By</h6>
-                <p>{creator}</p>
+                <p>{member.name}</p>
               </div>
   
               <div>
                 <h6>Published On</h6>
-                <p>28 Febuary 2023</p>
+                <p>{dateAndTime}</p> 
               </div>
             </div>
           </div>
@@ -44,7 +41,7 @@ const EventListing= (props) => {
               <i class="ri-search-2-line"></i> Read More
             </button>
   
-            {showModal && <Modal setShowModal={setShowModal} />}
+            {showModal && <Modal setShowModal={setShowModal} description={description} eventListing = {props.item} />}
   
           </div>
         </div>

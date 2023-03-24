@@ -94,7 +94,15 @@ const Api = {
          method: "GET",
       });
     },
-
+    getAllEventListings() { 
+      return fetch(`${SERVER_PREFIX}/eventListing`, {
+         headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+         },
+         method: "GET",
+      });
+    },
     createApplicationForm(data) {
       return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
          headers: {
