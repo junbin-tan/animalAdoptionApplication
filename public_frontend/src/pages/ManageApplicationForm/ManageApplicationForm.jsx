@@ -107,6 +107,7 @@ const ManageApplicationForm = () => {
             <Column field="applicationFormId" header="ID"></Column>
             <Column field="formType" header="Adoption/Fostering"></Column>
             <Column field="reason" header="Reason"></Column>
+            <Column field="applicationStatus" header="Application Status"></Column>
             <Column
               field="options"
               header="Options"
