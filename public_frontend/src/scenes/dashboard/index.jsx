@@ -66,7 +66,8 @@ const Dashboard = () => {
   };
 
   const redirectToManageApplicationForms= (animalListing) => {
-    navigate("/ManageApplicationForm");
+    // console.log(animalListing);
+    navigate("/ManageApplicationForm", {state: animalListing});
   };
 
   const deleteAnimalListing = () => {
@@ -114,7 +115,7 @@ const Dashboard = () => {
         />
         <Button
           icon="pi pi-file"
-          label="View More"
+          label="View Application Forms"
           rounded
           outlined
           severity="info"

@@ -16,6 +16,9 @@ body {
     margin: 10px;
     margin-bottom: 20px;
   }
-  
+ 
+  .field .font-bold {
+      font-weight: bold;
+  }
   
   
