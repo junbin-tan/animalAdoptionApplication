@@ -168,7 +168,6 @@ const DonationPage = () => {
         
         <div className="flex justify-content-center">
           <div className="card">
-            <h5 className="text-center">Donate</h5>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Name textbox */}
               <div className="field">

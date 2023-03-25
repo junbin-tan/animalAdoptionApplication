@@ -36,7 +36,7 @@ function App() {
         <CssBaseline />
         <UserProvider>
         <div className="app" style={{ display: "flex" }}>
-          <Sidebar/>
+          <Sidebar style={{height: "100vh"}}/>
           <main className="content" style={{ flex: "1 auto" }}>
             <Topbar />
             <Routes>

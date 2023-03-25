@@ -228,9 +228,9 @@ const CreateAnimalListing = () => {
         </Dialog>
         <div className="flex justify-content-center">
           <div className="card">
-            <form onSubmit={formik.handleSubmit} className="p-fluid">
+            <form onSubmit={formik.handleSubmit} className="p-fluid" >
               {/* Description textbox */}
-              <div className="field">
+              <div className="field" >
                 <span className="p-float-label">
                   <InputText
                     id="description"
@@ -268,31 +268,12 @@ const CreateAnimalListing = () => {
                     maxFileSize={10000000}
                     emptyTemplate={
                       <p className="m-0">
-                        Drag and drop files to here to upload.
+                        Drag and drop image to here to upload (Upload 1 image)*
+                        {getFormErrorMessage("Image")}
                       </p>
                     }
                   />
-
-                  {/* <InputText
-                    id="image"
-                    name="image"
-                    value={formik.values.image}
-                    onChange={formik.handleChange}
-                    autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("image"),
-                    })}
-                  /> */}
-                  <label
-                    htmlFor="image"
-                    className={classNames({
-                      "p-error": isFormFieldValid("image"),
-                    })}
-                  >
-                    Image*
-                  </label>
                 </span>
-                {getFormErrorMessage("Image")}
               </div>
 
               {/* Age textbox */}
@@ -460,6 +441,7 @@ const CreateAnimalListing = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("isNeutered"),
                   })}
+                  style={{color: "black"}}
                 >
                   Is the animal neuteured?*
                 </label>
@@ -481,6 +463,7 @@ const CreateAnimalListing = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("isAdoption"),
                   })}
+                  style={{color: "black"}}
                 >
                   Adoption
                 </label>
@@ -502,6 +485,7 @@ const CreateAnimalListing = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("isFostering"),
                   })}
+                  style={{color: "black"}}
                 >
                   Fostering
                 </label>
