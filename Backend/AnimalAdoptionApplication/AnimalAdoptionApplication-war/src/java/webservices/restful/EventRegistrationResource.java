@@ -6,10 +6,16 @@
 package webservices.restful;
 
 import ejb.session.stateless.EventListingSessionBeanLocal;
+import ejb.session.stateless.EventRegistrationSessionBeanLocal;
+import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.ApplicationForm;
 import entity.EventListing;
 import entity.EventRegistration;
+import exception.ApplicationFormExistException;
+import exception.EventListingNotFoundException;
+import exception.EventRegistrationExistsException;
 import exception.InputDataValidationException;
+import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.util.List;
@@ -28,27 +34,34 @@ import javax.ws.rs.core.UriInfo;
 
 /**
  *
- * @author yijie
+ * @author wkwk
  */
-@Path("eventListing")
-public class EventListingResource {
+@Path("eventRegistration")
+public class EventRegistrationResource {
 
     @EJB
     private EventListingSessionBeanLocal eventListingSessionBeanLocal;
+    
+    @EJB
+    private EventRegistrationSessionBeanLocal eventRegistrationSessionBeanLocal;
+    
+    @EJB
+    private MemberSessionBeanLocal memberSessionBeanLocal;
 
     @Context
     private UriInfo context;
 
-    public EventListingResource() {
+    public EventRegistrationResource() {
     }
 
     @POST
-    @Path("/createEventListing")
+    @Path("/createEventRegistration")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEventListing(EventListing newEventListing) {
+    public Response createEventRegistration(EventRegistration eventRegistration) {
         try {
-            Long eventListingId = eventListingSessionBeanLocal.createEventListing(newEventListing);
+            Long applicationFormId = eventRegistrationSessionBeanLocal.createEventRegistration(eventRegistration, eventRegistration.getEventListing(), eventRegistration.getMember());
+
             return Response.status(204).build();
 
         } catch (UnknownPersistenceException ex) {
@@ -59,38 +72,20 @@ public class EventListingResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        }  catch (MemberNotFoundException ex) {
+        } catch (EventListingNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+        } catch (EventRegistrationExistsException ex) {
+            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+        } catch (MemberNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<EventListing> getAllEventListings() {
-        List<EventListing> allEventListings = eventListingSessionBeanLocal.retrieveAllEventListings();
 
-        for (EventListing el : allEventListings) {
-            el.getMember().setEventListings(null);
-            el.getMember().setDonations(null);
-            el.getMember().setAnimalListings(null);
-            el.getMember().setEventRegistrations(null);
-            el.getMember().setNotifications(null);
-            el.getMember().setReviewsCreated(null);
-            el.getMember().setReviewsReceived(null);
-            el.getMember().setApplicationForms(null);
-            
-            for (EventRegistration er : el.getEventRegistrations()) {
-                er.setEventListing(null);
-                er.setMember(null);   
-            }
-        }
-        
-
-
-        return allEventListings;
-
-    }
     
 
 }
