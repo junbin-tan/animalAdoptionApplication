@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./EventListing.css";
-import Modal from "../Modal/Modal";
+import Modal from "../ModalEvent/ModalEvent";
 
 const EventListing= (props) => {
     //const { title, creatorImg, image, creator } = props.item;
