@@ -100,7 +100,7 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
     @Override
     public List<AnimalListing> retrieveAllAnimalListings()
     {
-        Query query = em.createQuery("SELECT l FROM AnimalListing l ORDER BY l.animalListingId ASC");
+        Query query = em.createQuery("SELECT l FROM AnimalListing l ORDER BY l.animalListingId DESC");
         
         return query.getResultList();
     }

@@ -19,8 +19,11 @@ import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -87,6 +90,12 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         {
             try
             {
+                //adding the creation date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+                TimeZone tz = TimeZone.getTimeZone("Asia/Singapore");
+                sdf.setTimeZone(tz);
+                java.util.Date date = new java.util.Date();
+                newMember.setCreateDate(date);
                 em.persist(newMember);
                 em.flush();
 
