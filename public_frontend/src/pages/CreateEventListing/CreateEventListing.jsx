@@ -245,31 +245,11 @@ const CreateEventListing = () => {
                     maxFileSize={10000000}
                     emptyTemplate={
                       <p className="m-0">
-                        Drag and drop files to here to upload.
+                        Drag and drop image to here to upload (Upload 1 image)*
                       </p>
                     }
                   />
-
-                  {/* <InputText
-                    id="image"
-                    name="image"
-                    value={formik.values.image}
-                    onChange={formik.handleChange}
-                    autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("image"),
-                    })}
-                  /> */}
-                  <label
-                    htmlFor="image"
-                    className={classNames({
-                      "p-error": isFormFieldValid("image"),
-                    })}
-                  >
-                    Image*
-                  </label>
                 </span>
-                {getFormErrorMessage("Image")}
               </div>
 
 

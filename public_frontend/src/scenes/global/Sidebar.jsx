@@ -4,6 +4,7 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
+import Logo from "../../images/Pawfect_Logo.png";
 import Auth from "../../helpers/Auth";
 
 // icon import
@@ -74,6 +75,7 @@ const Sidebar = () => {
             color: "#6870fa !important",
           },
         }}
+        style={{ height: "100vh" }}
       >
         <ProSidebar collapsed={isCollapsed} style={{height: "100%"}}>
           <Menu iconShape="square">
@@ -90,9 +92,24 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]}>
+                  <Link to="/Homepage"> 
+                    <img
+                      alt="logo"
+                      src={Logo}
+                      width="100px"
+                      height="100px"
+                      style={{
+                        cursor: "pointer",
+                        borderRadius: "80%",
+                        width: "150px",
+                        height: "50px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Link>
+                  {/* <Typography variant="h4" color={colors.grey[100]}>
                     Pawfect
-                  </Typography>
+                  </Typography> */}
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
                   </IconButton>
@@ -257,9 +274,19 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]}>
-                    Pawfect
-                  </Typography>
+                  <img
+                    alt="logo"
+                    src={Logo}
+                    width="100px"
+                    height="100px"
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: "80%",
+                      width: "300px",
+                      height: "50px",
+                      objectFit: "cover",
+                    }}
+                  />
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
                   </IconButton>
