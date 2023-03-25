@@ -8,7 +8,10 @@ package ejb.session.stateless;
 import entity.Enquiry;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +43,12 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         Set<ConstraintViolation<Enquiry>>constraintViolations = validator.validate(newEnquiry);
         if (constraintViolations.isEmpty()) {
             try {
+                //adding the creation date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+                TimeZone tz = TimeZone.getTimeZone("Asia/Singapore");
+                sdf.setTimeZone(tz);
+                java.util.Date date = new java.util.Date();
+                newEnquiry.setCreateDate(date);
                 em.persist(newEnquiry);
                 em.flush();
 

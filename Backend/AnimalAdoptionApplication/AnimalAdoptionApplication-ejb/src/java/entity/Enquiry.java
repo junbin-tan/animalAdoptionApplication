@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -36,6 +39,10 @@ public class Enquiry implements Serializable {
     @Column(nullable = false)
     @NotNull
     private String message;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date createDate;
 
     @Override
     public int hashCode() {
@@ -93,6 +100,16 @@ public class Enquiry implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    
+    
 
     
 }

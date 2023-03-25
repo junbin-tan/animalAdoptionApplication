@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -67,6 +70,10 @@ public class Member implements Serializable {
     @Column(nullable = false)
     @NotNull
     private AccountStatusEnum accountStatus;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date createDate;
     
     @OneToMany(mappedBy = "reviewedByMember")
     private List<Review> reviewsCreated;
@@ -199,6 +206,14 @@ public class Member implements Serializable {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public ResidentialTypeEnum getResidentialType() {
