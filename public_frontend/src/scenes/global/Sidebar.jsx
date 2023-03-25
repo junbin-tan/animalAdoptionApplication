@@ -110,8 +110,8 @@ const Sidebar = () => {
                   {/* <Typography variant="h4" color={colors.grey[100]}>
                     Pawfect
                   </Typography> */}
-                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                    <MenuOutlinedIcon />
+                  <IconButton >
+                    <MenuOutlinedIcon onClick={() => setIsCollapsed(!isCollapsed)}/>
                   </IconButton>
                 </Box>
               )}
