@@ -68,6 +68,17 @@ const Api = {
       body: JSON.stringify(data),
     });
   },
+  
+  createEventRegistration(data) {
+    return fetch(`${SERVER_PREFIX}/eventRegistration/createEventRegistration`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
 
   getMember() {
     // get Actual member json object with all data like donations, testimonials, events, etc
@@ -117,6 +128,7 @@ const Api = {
       body: JSON.stringify(data),
     });
   },
+  
 
   getAnimalListingByMemberEmail() {
     return fetch(
