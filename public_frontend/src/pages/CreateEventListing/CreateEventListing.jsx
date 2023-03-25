@@ -380,12 +380,13 @@ const CreateEventListing = () => {
 
              
 
-              {/* Start date textbox (For fostering only) */}
+              {/* Start date textbox */}
               <div className="field">
                 <span className="p-float-label">
                   <Calendar
                     id="dateAndTime"
                     name="dateAndTime"
+                    showTime hourFormat="24"
                     value={formik.values.dateAndTime}
                     onChange={formik.handleChange}
                     dateFormat="dd/mm/yy"

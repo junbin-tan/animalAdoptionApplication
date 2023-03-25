@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+//import { format, parseISO } from "date-fns";
 import "./EventListing.css";
 import Modal from "../Modal/Modal";
 
 const EventListing= (props) => {
     //const { title, creatorImg, image, creator } = props.item;
     const { image, member, name, description, capacity, dateAndTime} = props.item;
+    //const formattedDate = format((dateAndTime), 'do MMMM Y');
   
     const [showModal, setShowModal] = useState(false);
   
@@ -27,7 +29,7 @@ const EventListing= (props) => {
               </div>
   
               <div>
-                <h6>Published On</h6>
+                <h6>Event Date</h6>
                 <p>{dateAndTime}</p> 
               </div>
             </div>
