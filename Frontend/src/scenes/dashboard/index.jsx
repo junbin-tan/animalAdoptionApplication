@@ -16,6 +16,9 @@ import ProgressCircle from "../../components/ProgressCircle";
 import { fontWeight } from "@mui/system";
 import { Email } from "@mui/icons-material";
 import Auth from "../../helpers/Auth";
+import React, { useState, useEffect } from "react";
+import Api from "../../helpers/Api";
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -27,6 +30,32 @@ const Dashboard = () => {
   }
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut('/login');
+
+
+  const [members, setMembers] = useState([]);
+
+  // get members from java restful backend
+  useEffect(() => {
+    Api.getAllMembers()
+      .then((data) => data.json())
+      .then((data) => setMembers(data));
+  }, []);
+
+  // map members data to compatible data format for datagrid below
+  var tempActualMembers = [];
+  members &&
+    members.map((data) => {
+      const member = {
+        id: data.memberId,
+        name: data.name,
+        phone: data.phoneNumber,
+        email: data.email,
+        access: "user",
+      };
+      tempActualMembers.push(member);
+    });
+
+  const countMemberString = tempActualMembers.length;
 
   return (
     <Box m="20px">
