@@ -11,6 +11,7 @@ import Api from "../../helpers/Api";
 import { Toast } from "primereact/toast";
 import Auth from "../../helpers/Auth";
 import UserContext from "../../helpers/context/UserContext";
+import moment from 'moment-timezone';
 import "./modalevent.css";
 
 const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
@@ -19,6 +20,9 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
   const toast = useRef(null);
+
+  const date = eventListing.dateAndTime;
+  const formattedDate = moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY, h:mm a');
 
   const m = currentActualUser && {
     memberId: currentActualUser.memberId,
@@ -203,7 +207,7 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
                 {description}{" "}
                 </h2>             
 
-                <h6>Date and Time : {eventListing.dateAndTime}{" "} </h6>
+                <h6>Date and Time : {formattedDate}{" "} </h6>
                 
                 <h6>Location : {eventListing.location}{" "} </h6>
 
