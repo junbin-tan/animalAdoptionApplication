@@ -240,6 +240,7 @@ const CreateAnimalListing = () => {
                     className={classNames({
                       "p-invalid": isFormFieldValid("description"),
                     })}
+                    // style={{backgroundColor: "#f2d7c9"}}
                   />
                   <label
                     htmlFor="description"
