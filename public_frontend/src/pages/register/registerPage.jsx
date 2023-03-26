@@ -363,6 +363,7 @@ const RegisterPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("openToFoster"),
                   })}
+                  style={{color: "black"}}
                 >
                   I am open to foster*
                 </label>
@@ -384,6 +385,7 @@ const RegisterPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("openToAdopt"),
                   })}
+                  style={{color: "black"}}
                 >
                   I am open to adopt*
                 </label>
@@ -480,6 +482,7 @@ const RegisterPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("accept"),
                   })}
+                  style={{color: "black"}}
                 >
                   I agree to the terms and conditions*
                 </label>

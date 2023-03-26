@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 //import { format, parseISO } from "date-fns";
 import "./EventListing.css";
+import moment from 'moment-timezone';
 import Modal from "../ModalEvent/ModalEvent";
 
 const EventListing= (props) => {
     //const { title, creatorImg, image, creator } = props.item;
     const { image, member, name, description, capacity, dateAndTime} = props.item;
-    //const formattedDate = format((dateAndTime), 'do MMMM Y');
+    const date = dateAndTime;
+    const formattedDate = moment(date, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY');
   
     const [showModal, setShowModal] = useState(false);
   
@@ -30,7 +32,7 @@ const EventListing= (props) => {
   
               <div>
                 <h6>Event Date</h6>
-                <p>{dateAndTime}</p> 
+                <p>{formattedDate}</p> 
               </div>
             </div>
           </div>
