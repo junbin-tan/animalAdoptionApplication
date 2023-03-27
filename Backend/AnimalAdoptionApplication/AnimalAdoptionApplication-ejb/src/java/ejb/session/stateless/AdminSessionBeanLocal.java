@@ -9,6 +9,7 @@ import entity.Admin;
 import exception.AdminNotFoundException;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -25,5 +26,7 @@ public interface AdminSessionBeanLocal {
     public void updateAdmin (Admin admin) throws AdminNotFoundException;
     
     public void deleteAdmin (Admin admin) throws AdminNotFoundException;
+
+    public List<Admin> retrieveAllAdmins();
      
 }

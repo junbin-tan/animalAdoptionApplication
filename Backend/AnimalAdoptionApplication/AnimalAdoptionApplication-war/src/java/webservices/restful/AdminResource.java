@@ -9,15 +9,18 @@ import ejb.session.stateless.AdminSessionBeanLocal;
 import entity.Admin;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -54,6 +57,31 @@ public class AdminResource {
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     } 
+    
+    @GET
+    @Path("/getAllAdmins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAdmins(@Context HttpHeaders headers) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            List<Admin> admins = adminSessionBeanLocal.retrieveAllAdmins();
+
+            // nullify relationships
+            // admin no relatiionship
+
+            return Response.status(200).entity(admins).build();
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
 
     
     

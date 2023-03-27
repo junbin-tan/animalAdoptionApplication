@@ -21,6 +21,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import ListIcon from '@mui/icons-material/List';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -147,9 +148,9 @@ const Sidebar = () => {
             {/* creating menu items */}
             <Box paddingLeft={isCollapsed ? undefined : "10%"}>
               <Item
-                title="Manage Account"
+                title="Listings & Forms"
                 to="/"
-                icon={<AccountCircleIcon />}
+                icon={<ListIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

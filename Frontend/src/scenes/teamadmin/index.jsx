@@ -8,11 +8,10 @@ import Header from "../../components/AdminHeader";
 import React, { useState, useEffect } from "react";
 
 // importing data should change later
-import { mockDataTeam } from "../../assets/data/mockData";
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 
-const Team = () => {
+const TeamAdmin = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   
@@ -23,27 +22,26 @@ const Team = () => {
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut("/login");
 
-  const [members, setMembers] = useState([]);
+  const [admins, setAdmins] = useState([]);
 
   // get members from java restful backend
   useEffect(() => {
-    Api.getAllMembers()
+    Api.getAllAdmins()
       .then((data) => data.json())
-      .then((data) => setMembers(data));
+      .then((data) => setAdmins(data));
   }, []);
 
   // map members data to compatible data format for datagrid below
-  var tempActualMembers = [];
-  members &&
-    members.map((data) => {
-      const member = {
-        id: data.memberId,
-        name: data.name,
-        phone: data.phoneNumber,
+  var tempActualAdmins = [];
+  admins &&
+    admins.map((data) => {
+      const admin = {
+        id: data.adminId,
+        name: data.firstName.concat(" ", data.lastName),
         email: data.email,
-        access: "user",
+        access: "admin",
       };
-      tempActualMembers.push(member);
+      tempActualAdmins.push(admin);
     });
 
 
@@ -59,7 +57,7 @@ const Team = () => {
       cellClassName: "name-column-cell",
     },
     // { field: "age", headerName: "Age", type: "number", headerAlign: "left", align:"left"},
-    { field: "phone", headerName: "Phone Number", flex: 1 },
+    // { field: "phone", headerName: "Phone Number", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     {
       field: "access",
@@ -118,10 +116,10 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid rows={tempActualMembers} columns={columns} />
+        <DataGrid rows={tempActualAdmins} columns={columns} />
       </Box>
     </Box>
   );
 };
 
-export default Team;
+export default TeamAdmin;
