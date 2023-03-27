@@ -12,6 +12,14 @@ const Api = {
          method: "GET",
       });
     },
+    getAllAdmins() {
+        return fetch(`${SERVER_PREFIX}/admin/getAllAdmins`, {
+         headers: {
+             "Authorization": `Bearer ${Auth.getAccessToken()}`,
+         },
+         method: "GET",
+      });
+    },
 }
 
 export default Api;

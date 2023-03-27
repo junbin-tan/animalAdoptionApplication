@@ -148,7 +148,14 @@ const Sidebar = () => {
                 Users
               </Typography>
               <Item
-                title="Manage Team"
+                title="View All Admins"
+                to="/teamadmin"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="View All Members"
                 to="/team"
                 icon={<PeopleOutlinedIcon />}
                 selected={selected}
@@ -212,7 +219,7 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Line Chart"
+                title="Sign Up Rate"
                 to="/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}

@@ -84,6 +84,15 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             throw new AdminNotFoundException(ex.getMessage());
         }
     }
+    
+    
+    @Override
+    public List<Admin> retrieveAllAdmins()
+    {
+        Query query = em.createQuery("SELECT m FROM Admin m ORDER BY m.adminId ASC");
+        
+        return query.getResultList();
+    }
 
     @Override
     public void deleteAdmin(Admin admin) throws AdminNotFoundException {
