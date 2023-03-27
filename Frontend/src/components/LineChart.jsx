@@ -23,23 +23,70 @@ const LineChart = ({ isDashboard = false }) => {
   // map members data to compatible data format for datagrid below
   var tempActualMembers = [];
   members &&
-  members.map((data) => {
-    const member = {
+    members.map((data) => {
+      const member = {
         id: data.memberId,
-        data : [
-            {
-            x: data.memberId,
-            y: data.createDate,
-            },
+        data: [
+          {
+            x: data.createDate,
+            y: data.memberId,
+          },
         ],
-    };
-    tempActualMembers.push(member);
-  });
+      };
+      tempActualMembers.push(member);
+    });
 
+  // var tempDateMember = [];
+  // var id = 1;
+  // tempActualMembers.forEach((member) => {
+  //   const createDate = member.data[0].x;
+  //   const matchingMember = tempDateMember.find(
+  //     (m) => m.data[0].x === createDate
+  //   );
+  //   if (matchingMember) {
+  //     matchingMember.data[0].y++;
+  //   } else {
+  //     tempDateMember.push({
+  //       id: id++,
+  //       data: [
+  //         {
+  //           x: createDate,
+  //           y: 1,
+  //         },
+  //       ],
+  //     });
+  //   }
+  // });
+
+  var tempDateMember = {
+    id: "Singapore",
+    data: [],
+  };
+  
+  tempActualMembers.forEach((member) => {
+    const createDate = member.data[0].x;
+    const matchingMember = tempDateMember.data.find((m) => m.x === createDate);
+    if (matchingMember) {
+      matchingMember.y += 1;
+    } else {
+      tempDateMember.data.push({
+        x: createDate,
+        y: 1,
+      });
+    }
+  });
+  
+  tempDateMember.data = tempDateMember.data.map((d) => ({
+    x: d.x,
+    y: d.y,
+  }));
+
+  var ff = [];
+  ff.push(tempDateMember);
 
   return (
     <ResponsiveLine
-      data={tempActualMembers}
+      data={ff}
       theme={{
         axis: {
           domain: {
@@ -74,7 +121,7 @@ const LineChart = ({ isDashboard = false }) => {
         },
       }}
       // can just remove  thee colors line if needed cause might not want to manually add colors for all our data
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
+      // colors={isDashboard ? { datum: "color" } : { scheme: "color" }}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -85,10 +132,10 @@ const LineChart = ({ isDashboard = false }) => {
         reverse: false,
       }}
       yFormat=" >-.2f"
-      curve="catmullRom"
+      curve="linear"
       axisTop={null}
       axisRight={null}
-      axisBottom={{
+      axisBottom={isDashboard ? null : {
         orient: "bottom",
         tickSize: 5,
         tickPadding: 5,
