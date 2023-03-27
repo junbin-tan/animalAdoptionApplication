@@ -285,8 +285,9 @@ const DonationPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("accept"),
                   })}
+                  style={{color: "black"}}
                 >
-                  I Acknowlegde that donations are non refundable*
+                  I acknowledged that donations are non refundable*
                 </label>
               </div>
 
