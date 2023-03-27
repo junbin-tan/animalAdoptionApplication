@@ -7,6 +7,11 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/AdminHeader";
 import React, { useState, useEffect } from "react";
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+
+
 // importing data should change later
 import { mockDataTeam } from "../../assets/data/mockData";
 import Auth from "../../helpers/Auth";
@@ -42,6 +47,12 @@ const Team = () => {
         phone: data.phoneNumber,
         email: data.email,
         access: "user",
+        openToFoster: data.openToFoster,
+        openToAdopt: data.openToAdopt,
+        location: data.location,
+        occupation: data.occupation,
+        residentialType: data.residentialType,
+        accountStatus: data.accountStatus,
       };
       tempActualMembers.push(member);
     });
@@ -90,7 +101,34 @@ const Team = () => {
         );
       },
     },
+    { 
+      field: 'moreInfo', 
+      headerName: 'More Info', 
+      width: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <Button 
+          variant="contained" 
+          onClick={() => handleClickOpen(params.row)}
+        >
+          View
+        </Button>
+      )
+    },
+
   ];
+  
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = (row) => {
+    setSelectedRow(row);
+    setOpen(true);
+  };
 
   return (
     // neeed to specify the actual pixel height defintion if not css cannto redner
@@ -119,6 +157,25 @@ const Team = () => {
         }}
       >
         <DataGrid rows={tempActualMembers} columns={columns} />
+        {selectedRow && (
+        <Dialog open={open} onClose={handleClose}>
+          <DialogContent  style={{border: '1px solid white'}}>
+            <div>
+              <h2>More Information</h2>
+              <p>ID: {selectedRow.id}</p>
+              <p>Name: {selectedRow.name}</p>
+              <p>Email: {selectedRow.email}</p>
+              <p>Access: {selectedRow.access}</p>
+              <p>Location: {selectedRow.location}</p>
+              <p>Occupation: {selectedRow.occupation}</p>
+              <p>Residential Type: {selectedRow.residentialType}</p>
+              <p>Account Status: {selectedRow.accountStatus} </p>
+              <p>Open To Foster: {selectedRow.openToFoster ? "Yes" : "No"} </p>
+              <p>Open To Adopt: {selectedRow.openToAdopt ? "Yes" : "No"}</p>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
       </Box>
     </Box>
   );
