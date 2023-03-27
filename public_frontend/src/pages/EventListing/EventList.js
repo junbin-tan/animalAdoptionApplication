@@ -18,6 +18,7 @@ export const EventList = [
         image: CatTraining,
         creator: "Trista Francis",
         creatorImg: ava01,
+        category: "PET_TRAINING",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
     },
 
@@ -27,6 +28,7 @@ export const EventList = [
         image: CorgiBeachDay,
         creator: "Trista Francis",
         creatorImg: ava02,
+        category: "GATHERING",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
     },
 
@@ -36,6 +38,7 @@ export const EventList = [
         image: DogPicnic,
         creator: "Trista Francis",
         creatorImg: ava03,
+        category: "GATHERING",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
     },
 
@@ -45,6 +48,7 @@ export const EventList = [
         image: PetItOut,
         creator: "Trista Francis",
         creatorImg: ava04,
+        category: "COMPETITION",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
     },
 
@@ -54,6 +58,7 @@ export const EventList = [
         image: WaterPlay,
         creator: "Trista Francis",
         creatorImg: ava05,
+        category: "GATHERING",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam adipisci cupiditate officia, nostrum et deleniti vero corrupti facilis minima laborum nesciunt nulla error natus saepe illum quasi ratione suscipit tempore dolores. Recusandae, similique modi voluptates dolore repellat eum earum sint.",
     },
 ]

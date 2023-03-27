@@ -100,7 +100,7 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
     @Override
     public List<AnimalListing> retrieveAllAnimalListings()
     {
-        Query query = em.createQuery("SELECT l FROM AnimalListing l ORDER BY l.animalListingId ASC");
+        Query query = em.createQuery("SELECT l FROM AnimalListing l ORDER BY l.animalListingId DESC");
         
         return query.getResultList();
     }
@@ -111,6 +111,11 @@ public class AnimalListingSessionBean implements AnimalListingSessionBeanLocal {
         Query query = em.createQuery("SELECT l FROM AnimalListing l WHERE l.member.email = :emailAddress");
         
         query.setParameter("emailAddress", emailAddress);
+        
+        List<AnimalListing> animalListings = query.getResultList();
+        for (AnimalListing al : animalListings) {
+            al.getApplicationForms().size(); // lazy loading to get application forms for each animal listing
+        }
         
         return query.getResultList();
     }

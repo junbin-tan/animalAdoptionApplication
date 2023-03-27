@@ -60,6 +60,17 @@ public class EventRegistrationSessionBean implements EventRegistrationSessionBea
 
         if (constraintViolations.isEmpty()) {
             try {
+                
+                Member managedMember = memberSessionBeanLocal.retrieveMemberByMemberId(member.getMemberId());
+                
+                List<EventRegistration>  managedEventRegistration = retrieveAllEventRegistrationForMember(member.getMemberId());  
+
+                for (int i = 0; i< managedEventRegistration.size(); i ++) {                  
+                    if(managedEventRegistration.get(i).getEventListing().getEventListingId() == eventListing.getEventListingId()) {
+                            throw new EventRegistrationExistsException("Member has already registered for event!");
+                    }
+                }
+                           
                 thisEventListing.getEventRegistrations().add(eventRegistration);
                 thisMember.getEventRegistrations().add(eventRegistration);
 

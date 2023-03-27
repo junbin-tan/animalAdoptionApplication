@@ -108,7 +108,20 @@ public class AnimalListingResource {
 
         for (AnimalListing al : animalListings) {
             al.setMember(null);
-            al.setApplicationForms(null);
+            for (ApplicationForm af : al.getApplicationForms()) {
+                af.setAnimalListing(null);
+
+                // need to retrieve member on each app form to know who submittted it
+                // so set inverse member relationship to null
+                af.getMember().setAnimalListings(null);
+                af.getMember().setDonations(null);
+                af.getMember().setEventListings(null);
+                af.getMember().setEventRegistrations(null);
+                af.getMember().setNotifications(null);
+                af.getMember().setReviewsCreated(null);
+                af.getMember().setReviewsReceived(null);
+                af.getMember().setApplicationForms(null);
+            }
         }
 
         return animalListings;

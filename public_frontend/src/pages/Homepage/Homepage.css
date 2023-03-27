@@ -134,15 +134,15 @@
     font-weight: 500;
   }
   
-  .adoption__section__top {
+  .adoption__section__top  .event__section__top{
     margin-top: 50px;
   }
   
-  .adoption__section__top h3{
+  .adoption__section__top h3 .event__section__top h3 {
     text-align: center;
   }
   
-  .adoption__section__top span a {
+  .adoption__section__top span a .event__section__top span a {
     text-decoration: none;
   }
   

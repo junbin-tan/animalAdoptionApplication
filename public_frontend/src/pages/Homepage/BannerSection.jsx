@@ -22,10 +22,10 @@ const Homepage = () => {
     
                   <div className="banner__btns d-flex align-items-center gap-4">
                     <button className=" explore__btn d-flex align-items-center gap-2">
-                      <Link to="/AdoptionFostering">Adopt</Link>
+                      <Link to="/AdoptionFostering" style={{color: "white"}}>Adopt</Link>
                     </button>
                     <button className=" create__btn d-flex align-items-center gap-2">
-                      <Link to="/Donation">Donate</Link>
+                      <Link to="/Donation" style={{color: "white"}}>Donate</Link>
                     </button>
                   </div>
                 </div>

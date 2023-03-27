@@ -168,7 +168,6 @@ const DonationPage = () => {
         
         <div className="flex justify-content-center">
           <div className="card">
-            <h5 className="text-center">Donate</h5>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Name textbox */}
               <div className="field">
@@ -286,8 +285,9 @@ const DonationPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("accept"),
                   })}
+                  style={{color: "black"}}
                 >
-                  I Acknowlegde that donations are non refundable*
+                  I acknowledged that donations are non refundable*
                 </label>
               </div>
 

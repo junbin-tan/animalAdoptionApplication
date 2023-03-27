@@ -75,6 +75,7 @@ return (
     <>
     <h2 style={{textAlign: "center"}}> Contact Us</h2>
     <h3 style={{textAlign: "center"}}> Drop us a message! </h3>
+    <div className="form-demo">
     <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
@@ -175,6 +176,7 @@ return (
           </form>
           </div>
       </div> 
+      </div>
     </>
   );
 }

@@ -245,31 +245,11 @@ const CreateEventListing = () => {
                     maxFileSize={10000000}
                     emptyTemplate={
                       <p className="m-0">
-                        Drag and drop files to here to upload.
+                        Drag and drop image to here to upload (Upload 1 image)*
                       </p>
                     }
                   />
-
-                  {/* <InputText
-                    id="image"
-                    name="image"
-                    value={formik.values.image}
-                    onChange={formik.handleChange}
-                    autoFocus
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("image"),
-                    })}
-                  /> */}
-                  <label
-                    htmlFor="image"
-                    className={classNames({
-                      "p-error": isFormFieldValid("image"),
-                    })}
-                  >
-                    Image*
-                  </label>
                 </span>
-                {getFormErrorMessage("Image")}
               </div>
 
 
@@ -292,7 +272,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("eventName"),
                     })}
                   >
-                    eventName*
+                    Event Name*
                   </label>
                 </span>
                 {getFormErrorMessage("eventName")}
@@ -344,7 +324,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("location"),
                     })}
                   >
-                    location*
+                    Event Location*
                   </label>
                 </span>
                 {getFormErrorMessage("location")}
@@ -369,7 +349,7 @@ const CreateEventListing = () => {
                       "p-error": isFormFieldValid("capacity"),
                     })}
                   >
-                    capacity*
+                    Event Capacity*
                   </label>
                 </span>
                 {getFormErrorMessage("capacity")}
@@ -380,19 +360,20 @@ const CreateEventListing = () => {
 
              
 
-              {/* Start date textbox (For fostering only) */}
+              {/* Start date textbox */}
               <div className="field">
                 <span className="p-float-label">
                   <Calendar
                     id="dateAndTime"
                     name="dateAndTime"
+                    showTime hourFormat="24"
                     value={formik.values.dateAndTime}
                     onChange={formik.handleChange}
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
                   <label htmlFor="dateAndTime">
-                    Date And Time 
+                    Date and Time 
                   </label>
                 </span>
               </div>

@@ -157,9 +157,10 @@ const LoginPage = () => {
             </p>
           </div>
         </Dialog>
+       
         <div className="flex justify-content-center">
+        <h2 className="text-center">Login</h2>
           <div className="card">
-            <h5 className="text-center">Login</h5>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Email textbox */}
               <div className="field">

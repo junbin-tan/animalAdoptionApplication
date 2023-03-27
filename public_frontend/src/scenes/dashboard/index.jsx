@@ -1,6 +1,7 @@
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 import React, { useEffect, useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
@@ -19,7 +20,8 @@ const Dashboard = () => {
 
   const [animalListings, setAnimalListings] = useState([]);
   const [applicationForms, setApplicationForms] = useState([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     Api.getAnimalListingByMemberEmail()
       .then((data) => data.json())
@@ -60,6 +62,11 @@ const Dashboard = () => {
   const confirmDeleteAnimalListing = (animalListing) => {
     setAnimalListing(animalListing);
     setDeleteAnimalListingDialog(true);
+  };
+
+  const redirectToManageApplicationForms= (animalListing) => {
+    // console.log(animalListing);
+    navigate("/ManageApplicationForm", {state: animalListing});
   };
 
   const deleteAnimalListing = () => {
@@ -104,6 +111,14 @@ const Dashboard = () => {
           outlined
           severity="danger"
           onClick={() => confirmDeleteAnimalListing(rowData)}
+        />
+        <Button
+          icon="pi pi-file"
+          label="View Application Forms"
+          rounded
+          outlined
+          severity="info"
+          onClick={() => redirectToManageApplicationForms(rowData)}
         />
       </React.Fragment>
     );
