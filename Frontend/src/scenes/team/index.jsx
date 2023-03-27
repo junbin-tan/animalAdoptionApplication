@@ -161,7 +161,8 @@ const Team = () => {
         <Dialog open={open} onClose={handleClose}>
           <DialogContent  style={{border: '1px solid white'}}>
             <div>
-              <h2>More Information</h2>
+        
+              <h2>More Info</h2>
               <p>ID: {selectedRow.id}</p>
               <p>Name: {selectedRow.name}</p>
               <p>Email: {selectedRow.email}</p>
@@ -172,6 +173,7 @@ const Team = () => {
               <p>Account Status: {selectedRow.accountStatus} </p>
               <p>Open To Foster: {selectedRow.openToFoster ? "Yes" : "No"} </p>
               <p>Open To Adopt: {selectedRow.openToAdopt ? "Yes" : "No"}</p>
+      
             </div>
           </DialogContent>
         </Dialog>

@@ -292,7 +292,7 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Typography variant="h5" fontWeight="600" sx={{ p:"30px 30px 0 30px"}}>
-            Sales Quantity
+            Animal Listings
           </Typography>
           <Box
             height = "250px"

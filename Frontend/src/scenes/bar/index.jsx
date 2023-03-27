@@ -15,7 +15,7 @@ const Bar = () => {
 
   return (
     <Box m="20px">
-      <Header title="Bar Chart" subtitle="Simple Bar Chart" />
+      <Header title="Types of Animal Listings" subtitle="Breakdown of Animal Listings Type" />
       <Box height="75vh">
         <BarChart />
       </Box>
