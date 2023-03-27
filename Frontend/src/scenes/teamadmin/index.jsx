@@ -94,7 +94,7 @@ const TeamAdmin = () => {
     // neeed to specify the actual pixel height defintion if not css cannto redner
     // vh is view port height allow data grid to show
     <Box m="20px">
-      <Header title="Members" subtitle="Managing the Current Members" />
+      <Header title="Admin" subtitle="Current Admins" />
       <Box
         m="40ox 0 0 0"
         height="75vh"
