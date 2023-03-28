@@ -36,7 +36,7 @@ const Api = {
           method: "GET",
         });
     },
-    getAllEventListings() {
+    getAllEventListingsAdmin() {
         return fetch(`${SERVER_PREFIX}/eventListing/getAllEventListingsAdmin`, {
             headers: {
                 "Authorization": `Bearer ${Auth.getAccessToken()}`,

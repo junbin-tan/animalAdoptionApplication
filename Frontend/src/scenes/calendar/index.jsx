@@ -34,7 +34,7 @@ const Calendar = () => {
 
   // get allanimallisting from java restful backend
   useEffect(() => {
-    Api.getAllEventListings()
+    Api.getAllEventListingsAdmin()
       .then((data) => data.json())
       .then((data) => setEventListings(data));
   }, []);
@@ -55,13 +55,15 @@ const Calendar = () => {
   //     tempActualEventListings.push(eventListing);
   //   });
 
+
+  
   var tempActualEventListings = [];
   eventListings &&
     eventListings.map((data) => {
       const eventListing = {
         id: data.eventListingId,
-        title: data.eventName,
-        date: data.dateAndTime,
+        title: data.eventName.toString(),
+        date: data.dateAndTime.toString().substring(0,10),
       };
       tempActualEventListings.push(eventListing);
     });
@@ -94,10 +96,15 @@ const Calendar = () => {
       selected.event.remove();
     }
   };
-
   return (
     <Box m="20px">
       <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      {/* <p>
+        {tempActualEventListings.length > 0
+          ? tempActualEventListings[tempActualEventListings.length - 1].date
+          : "No events"}
+      </p> */}
+
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
         <Box
@@ -134,8 +141,9 @@ const Calendar = () => {
           </List>
         </Box>
         {/* CALENDAR */}
+
         <Box flex="1 1 100%" ml="15px">
-          <FullCalendar
+          {/* <FullCalendar
             height="75vh"
             plugins={[
               dayGridPlugin,
@@ -156,11 +164,63 @@ const Calendar = () => {
             select={handleDateClick}
             eventClick={handlleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              { id: "1234", title: "All-day event", date: "2023-03-19" },
-              { id: "4321", title: "Timed event", date: "2023-03-10" },
+            initialEvents={
+              tempActualEventListings
+            }
+          /> */}
+          {tempActualEventListings.length > 0 ? (
+            <FullCalendar
+              height="75vh"
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+              ]}
+              headerToolbar={{
+                left: "prev,next,today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              }}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvent={true}
+              select={handleDateClick}
+              eventClick={handlleEventClick}
+              eventsSet={(events) => setCurrentEvents(events)}
+              initialEvents={tempActualEventListings}
+            />
+          ) : (
+            <>
+            {/* <FullCalendar
+            height="75vh"
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              listPlugin,
             ]}
-          />
+            headerToolbar={{
+              left: "prev,next,today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+            }}
+            initialView="dayGridMonth"
+            editiable={true}
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvent={true}
+            select={handleDateClick}
+            eventClick={handlleEventClick}
+            eventsSet={(events) => setCurrentEvents(events)}
+            initialEvents={
+              tempActualEventListings
+            }
+          /> */}
+            </> // Or any other empty element, e.g. <div />
+          )}
         </Box>
       </Box>
     </Box>
