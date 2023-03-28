@@ -191,19 +191,19 @@ const Sidebar = () => {
                 setSelected={setSelected}
               /> */}
               <Item
-                title="Calendar"
+                title="Event Calendar"
                 to="/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="FAQ"
                 to="/faq"
                 icon={<HelpOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -220,7 +220,7 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Pie Chart"
+                title="Event Types Pie"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
@@ -233,13 +233,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Geography Chart"
                 to="/geography"
                 icon={<MapOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
                 title="Logout"
                 to="/"

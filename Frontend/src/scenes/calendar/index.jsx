@@ -98,7 +98,7 @@ const Calendar = () => {
   };
   return (
     <Box m="20px">
-      <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      <Header title="Event Calendar" subtitle="Event Listing Calendar" />
       {/* <p>
         {tempActualEventListings.length > 0
           ? tempActualEventListings[tempActualEventListings.length - 1].date
