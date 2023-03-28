@@ -9,7 +9,7 @@ import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Auth from "../../helpers/Auth";
 // Initialize Userfront Core JS
-Userfront.init("5nx5q8vb");
+Userfront.init("pn4545mb");
 
 const LoginPage = () => {
   // redirect user to dashboard page if user is already logged in

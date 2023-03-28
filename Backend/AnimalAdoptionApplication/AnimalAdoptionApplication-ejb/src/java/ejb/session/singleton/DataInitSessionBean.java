@@ -37,16 +37,19 @@ public class DataInitSessionBean {
 
     @EJB
     private AdminSessionBeanLocal adminSessionBean;
-    
-    
 
     @PostConstruct
     public void postConstruct() {
-        initializeData();
-        
+
+        try {
+            adminSessionBean.retrieveAdminByEmail("admin1@pawfect.com");
+        } catch (AdminNotFoundException ex) {
+            initializeData();
+        }
+
     }
-    
-     private void initializeData() {
+
+    private void initializeData() {
         try {
             Admin newAdmin = new Admin();
             newAdmin.setFirstName("adminFirst");
@@ -54,7 +57,7 @@ public class DataInitSessionBean {
             newAdmin.setEmail("admin1@pawfect.com");
             newAdmin.setPassword("password");
             adminSessionBean.createAdmin(newAdmin);
-            
+
 //            Member newMember = new Member();
 //            newMember.setName("membber1");
 //            newMember.setEmail("member1@gmail.com");
@@ -67,11 +70,11 @@ public class DataInitSessionBean {
 //            newMember.setResidentialType(ResidentialTypeEnum.LANDED);
 //            newMember.setAccountStatus(AccountStatusEnum.VERIFIED);
 //            memberSessionBean.createMember(newMember);
-        } catch (UnknownPersistenceException  ex) {
+        } catch (UnknownPersistenceException ex) {
             ex.printStackTrace();
         } catch (InputDataValidationException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }
