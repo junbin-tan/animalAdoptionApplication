@@ -28,6 +28,22 @@ const Api = {
           method: "GET",
         });
     },
+    getAllEnquirys() {
+        return fetch(`${SERVER_PREFIX}/enquiry/getAllEnquirys`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
+    getAllEventListings() {
+        return fetch(`${SERVER_PREFIX}/eventListing/getAllEventListingsAdmin`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
 }
 
 export default Api;

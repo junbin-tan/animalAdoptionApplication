@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -16,18 +16,56 @@ import {
 import Header from "../../components/AdminHeader";
 import { tokens } from "../../theme";
 import Auth from "../../helpers/Auth";
+import Api from "../../helpers/Api";
 
 const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   // to prevent other userfront non admin logged in in admin
   if (!Auth.isAdmin(Auth.getUser())) {
-    Auth.redirectIfLoggedIn('/login');
+    Auth.redirectIfLoggedIn("/login");
   }
-  
+
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut("/login");
+
+  const [eventListings, setEventListings] = useState([]);
+
+  // get allanimallisting from java restful backend
+  useEffect(() => {
+    Api.getAllEventListings()
+      .then((data) => data.json())
+      .then((data) => setEventListings(data));
+  }, []);
+
+  // map members data to compatible data format for datagrid below
+  // var tempActualEventListings = [];
+  // eventListings &&
+  // eventListings.map((data) => {
+  //     const eventListing = {
+  //       id: data.eventListingId,
+  //       name: data.eventName,
+  //       date: data.dateAndTime,
+  //       location: data.location,
+  //       capacity: data.capacity,
+  //       description: data.description,
+  //       eventType: data.eventType,
+  //     };
+  //     tempActualEventListings.push(eventListing);
+  //   });
+
+  var tempActualEventListings = [];
+  eventListings &&
+    eventListings.map((data) => {
+      const eventListing = {
+        id: data.eventListingId,
+        title: data.eventName,
+        date: data.dateAndTime,
+      };
+      tempActualEventListings.push(eventListing);
+    });
+
 
   const [currentEvents, setCurrentEvents] = useState([]);
 

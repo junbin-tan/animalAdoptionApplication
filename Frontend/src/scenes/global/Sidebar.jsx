@@ -158,7 +158,7 @@ const Sidebar = () => {
               <Item
                 title="View All Members"
                 to="/team"
-                icon={<PeopleOutlinedIcon />}
+                icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -169,27 +169,27 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Contacts Information"
                 to="/contacts"
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
-                title="Invoices Balances"
+                title="Enquiries"
                 to="/invoices"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              {/* <Item
                 title="Profile Form"
                 to="/form"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
                 title="Calendar"
                 to="/calendar"

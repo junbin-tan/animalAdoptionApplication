@@ -9,6 +9,7 @@ import entity.Enquiry;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
@@ -16,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -72,5 +74,13 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         return msg;
     }
     
+     
+    @Override
+    public List<Enquiry> retrieveAllEnquirys()
+    {
+        Query query = em.createQuery("SELECT l FROM Enquiry l ORDER BY l.enquiryId DESC");
+        
+        return query.getResultList();
+    }
     
 }

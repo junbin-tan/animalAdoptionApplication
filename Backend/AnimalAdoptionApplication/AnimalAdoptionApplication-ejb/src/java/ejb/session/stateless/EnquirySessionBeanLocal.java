@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Enquiry;
 import exception.InputDataValidationException;
 import exception.UnknownPersistenceException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +19,7 @@ import javax.ejb.Local;
 public interface EnquirySessionBeanLocal {
     
     public Long createEnquiry(Enquiry newEnquiry) throws UnknownPersistenceException, InputDataValidationException;
+
+     public List<Enquiry> retrieveAllEnquirys();
     
 }
