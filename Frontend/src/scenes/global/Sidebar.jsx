@@ -252,6 +252,7 @@ const Sidebar = () => {
         </ProSidebar>
       </Box>
     );
+    
   } else {
     return (
       <Box
