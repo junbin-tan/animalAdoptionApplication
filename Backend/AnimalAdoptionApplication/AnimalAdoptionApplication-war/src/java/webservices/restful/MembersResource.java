@@ -149,7 +149,7 @@ public class MembersResource {
 
         List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
         String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
-        boolean validToken = JwtVerification.verifyJwtToken(token);
+        boolean validToken = AdminJwtVerification.verifyJwtToken(token);
         String msg = "";
         if (validToken) {
             msg = "User calling this is a verified Userfront user. YAY!";

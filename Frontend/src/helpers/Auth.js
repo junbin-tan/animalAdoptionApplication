@@ -1,6 +1,6 @@
 import Userfront from "@userfront/core";
 // Initialize Userfront Core JS
-Userfront.init("5nx5q8vb");
+Userfront.init("pn4545mb");
 
 const Auth = {
   // returns user object if authenticated

@@ -2,14 +2,61 @@ import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
 import { mockBarData as data } from "../assets/data/mockData";
+import Auth from "../helpers/Auth";
+import Api from "../helpers/Api";
+import React, { useState, useEffect } from "react";
+
 
 const BarChart = ({ isDashboard = false }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const [animalListings, setAnimalListings] = useState([]);
+
+  // get allanimallisting from java restful backend
+    useEffect(() => {
+    Api.getAllAnimalListings()
+      .then((data) => data.json())
+      .then((data) => setAnimalListings(data));
+    }, []);
+
+  // map members data to compatible data format for datagrid below
+  var tempActualAnimalListings= [];
+  animalListings &&
+    animalListings.map((data) => {
+      const animalListing = {
+        id: data.animalListingId,
+        animalType: data.animalType,
+        isActive: data.isActive,
+        isNeutered: data.isNeutered,
+        isAdoption: data.isAdoption,
+        isFostering: data.isFostering,
+      };
+      tempActualAnimalListings.push(animalListing);
+    });
+
+    const tempFinalAnimalList = [
+        {
+          Type: "isFostering",
+          Dog: tempActualAnimalListings.filter(item => item.animalType === "DOG" && item.isFostering === true).length,
+          Cat: tempActualAnimalListings.filter(item => item.animalType === "CAT" && item.isFostering === true).length,
+          Hamster: tempActualAnimalListings.filter(item => item.animalType === "HAMSTER" && item.isFostering === true).length,
+          Rabbit: tempActualAnimalListings.filter(item => item.animalType === "RABBIT" && item.isFostering === true).length,
+          Others: tempActualAnimalListings.filter(item => item.animalType === "OTHERS" && item.isFostering === true).length,
+        },
+        {
+          Type: "isAdoption",
+          Dog: tempActualAnimalListings.filter(item => item.animalType === "DOG" && item.isAdoption === true).length,
+          Cat: tempActualAnimalListings.filter(item => item.animalType === "CAT" && item.isAdoption === true).length,
+          Hamster: tempActualAnimalListings.filter(item => item.animalType === "HAMSTER" && item.isAdoption === true).length,
+          Rabbit: tempActualAnimalListings.filter(item => item.animalType === "RABBIT" && item.isAdoption === true).length,
+          Others: tempActualAnimalListings.filter(item => item.animalType === "OTHERS" && item.isAdoption === true).length,
+        },
+      ];
+
 
     return ( <ResponsiveBar
-        data={data}
+        data={tempFinalAnimalList}
         theme= {{
             axis: {
                 domain: {
@@ -39,14 +86,13 @@ const BarChart = ({ isDashboard = false }) => {
             }
         }}
         keys={[
-            'hot dog',
-            'burger',
-            'sandwich',
-            'kebab',
-            'fries',
-            'donut'
+            'Dog',
+            'Cat',
+            'Hamster',
+            'Rabbit',
+            'Others',
         ]}
-        indexBy="country"
+        indexBy="Type"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
         valueScale={{ type: 'linear' }}
@@ -72,20 +118,20 @@ const BarChart = ({ isDashboard = false }) => {
                 spacing: 10
             }
         ]}
-        fill={[
-            {
-                match: {
-                    id: 'fries'
-                },
-                id: 'dots'
-            },
-            {
-                match: {
-                    id: 'sandwich'
-                },
-                id: 'lines'
-            }
-        ]}
+        // fill={[
+        //     {
+        //         match: {
+        //             id: 'fries'
+        //         },
+        //         id: 'dots'
+        //     },
+        //     {
+        //         match: {
+        //             id: 'sandwich'
+        //         },
+        //         id: 'lines'
+        //     }
+        // ]}
         borderColor={{
             from: 'color',
             modifiers: [
@@ -102,7 +148,7 @@ const BarChart = ({ isDashboard = false }) => {
             tickPadding: 5,
             tickRotation: 0,
             // remove if else to check if it is in dashboard
-            legend: isDashboard ? undefined :'country',
+            legend: isDashboard ? undefined :'Types',
             legendPosition: 'middle',
             legendOffset: 32
         }}
@@ -110,7 +156,7 @@ const BarChart = ({ isDashboard = false }) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend:  isDashboard ? undefined : 'food',
+            legend:  isDashboard ? undefined : 'Number of Listings',
             legendPosition: 'middle',
             legendOffset: -40
         }}
@@ -151,7 +197,7 @@ const BarChart = ({ isDashboard = false }) => {
         ]}
         role="application"
         ariaLabel="Nivo bar chart demo"
-        barAriaLabel={function(e){return e.id+": "+e.formattedValue+" in country: "+e.indexValue}}
+        barAriaLabel={function(e){return e.id+": "+e.formattedValue+" in type: "+e.indexValue}}
     />)
 }
 

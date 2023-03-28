@@ -18,6 +18,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import PetsIcon from '@mui/icons-material/Pets';
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import Auth from "../../helpers/Auth";
@@ -145,7 +146,7 @@ const Sidebar = () => {
                 sx={{ m: "15px 0 5px 20px" }}
               >
                 {" "}
-                Users
+                Data
               </Typography>
               <Item
                 title="View All Admins"
@@ -158,6 +159,13 @@ const Sidebar = () => {
                 title="View All Members"
                 to="/team"
                 icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="View All Animal Listing"
+                to="/animallisting"
+                icon={<PetsIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -205,7 +213,7 @@ const Sidebar = () => {
                 Stats
               </Typography>
               <Item
-                title="Bar Chart"
+                title="Animal Listings"
                 to="/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}

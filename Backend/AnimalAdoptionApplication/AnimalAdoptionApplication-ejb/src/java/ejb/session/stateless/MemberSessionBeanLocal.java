@@ -13,6 +13,7 @@ import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -36,5 +37,7 @@ public interface MemberSessionBeanLocal {
     public void deleteMember(Long memberId) throws MemberNotFoundException, DeleteMemberException;
 
     public Member memberLogin(String email, String password) throws InvalidLoginCredentialException;
+
+    public void createMemberForInside(String email, Date createDate);
     
 }
