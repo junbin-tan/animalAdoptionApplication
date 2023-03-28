@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -62,14 +64,23 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     public Admin retrieveAdminByEmail(String emailAddress) throws AdminNotFoundException {
         Query query = em.createQuery("SELECT a FROM Admin a WHERE a.email = :emailAddress");
         query.setParameter("emailAddress", emailAddress);
-        Admin adminToRetrieve = (Admin)query.getSingleResult();
         
-        if (adminToRetrieve == null) {
-            throw new AdminNotFoundException("Admin cannot be found.");
-        
-        } else {
-            return adminToRetrieve;
+        try
+        {
+            return (Admin)query.getSingleResult();
         }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new AdminNotFoundException("Email" + emailAddress + " does not exist!");
+        }
+//        Admin adminToRetrieve = (Admin)query.getSingleResult();
+//        
+//        if (adminToRetrieve == null) {
+//            throw new AdminNotFoundException("Admin cannot be found.");
+//        
+//        } else {
+//            return adminToRetrieve;
+//        }
     }
 
     @Override

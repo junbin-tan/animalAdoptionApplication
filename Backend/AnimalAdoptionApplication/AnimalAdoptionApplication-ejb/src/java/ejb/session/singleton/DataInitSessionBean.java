@@ -14,6 +14,7 @@ import entity.ResidentialTypeEnum;
 import exception.AdminNotFoundException;
 import exception.InputDataValidationException;
 import exception.MemberExistsException;
+import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,8 @@ public class DataInitSessionBean {
 
         try {
             adminSessionBean.retrieveAdminByEmail("admin1@pawfect.com");
-        } catch (AdminNotFoundException ex) {
+            memberSessionBean.retrieveMemberByEmail("email1.com");
+        } catch (AdminNotFoundException | MemberNotFoundException ex) {
             initializeData();
         }
 
