@@ -20,6 +20,14 @@ const Api = {
          method: "GET",
       });
     },
+    getAllAnimalListings() {
+        return fetch(`${SERVER_PREFIX}/animalListing/getAllAnimalListingsAdmin`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
 }
 
 export default Api;

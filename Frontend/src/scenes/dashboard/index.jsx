@@ -182,22 +182,22 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Revenue Generated
+                User Sign Up Rate
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
               >
-                $559,423,23
+                {countMemberString}
               </Typography>
             </Box>
             <Box>
-              <IconButton>
+              {/* <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
-              </IconButton>
+              </IconButton> */}
             </Box>
           </Box>
 
@@ -292,7 +292,7 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
         >
           <Typography variant="h5" fontWeight="600" sx={{ p:"30px 30px 0 30px"}}>
-            Sales Quantity
+            Animal Listings
           </Typography>
           <Box
             height = "250px"

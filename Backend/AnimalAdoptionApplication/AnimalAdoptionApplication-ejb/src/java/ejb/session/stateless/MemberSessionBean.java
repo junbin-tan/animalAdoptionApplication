@@ -5,12 +5,14 @@
  */
 package ejb.session.stateless;
 
+import entity.AccountStatusEnum;
 import entity.AnimalListing;
 import entity.ApplicationForm;
 import entity.Donation;
 import entity.EventListing;
 import entity.EventRegistration;
 import entity.Member;
+import entity.ResidentialTypeEnum;
 import entity.Review;
 import exception.DeleteMemberException;
 import exception.InputDataValidationException;
@@ -20,6 +22,7 @@ import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -125,6 +128,30 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
+    
+    @Override
+    public void createMemberForInside(String email, Date createDate) 
+    {     
+        Member newMember = new Member();
+        newMember.setName("testerName");
+        newMember.setEmail(email);
+        newMember.setPassword("passowrd");
+        newMember.setPhoneNumber("98000000");
+        newMember.setOpenToAdopt(Boolean.TRUE);
+        newMember.setOpenToFoster(Boolean.TRUE);
+        newMember.setLocation("Location");
+        newMember.setOccupation("DOCTOR");
+        newMember.setResidentialType(ResidentialTypeEnum.LANDED);
+        newMember.setAccountStatus(AccountStatusEnum.VERIFIED);
+        newMember.setCreateDate(createDate);
+        em.persist(newMember);
+        em.flush();
+    }
+    
+    
+    
+    
+    
 
     @Override
     public List<Member> retrieveAllMembers()
