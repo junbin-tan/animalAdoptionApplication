@@ -74,7 +74,7 @@ const Donations = () => {
     // neeed to specify the actual pixel height defintion if not css cannto redner
     // vh is view port height allow data grid to show
     <Box m="20px">
-      <Header title="Animal Listings" subtitle="Current Animal Listings" />
+      <Header title="Donations" subtitle="View all Donations" />
       <Box
         m="40ox 0 0 0"
         height="75vh"
