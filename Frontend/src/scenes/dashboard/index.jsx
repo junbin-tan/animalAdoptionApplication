@@ -8,6 +8,8 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 
+
+import PieChart from "../../components/PieChart";
 import LineChart from "../../components/LineChart";
 import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
@@ -18,6 +20,7 @@ import { Email } from "@mui/icons-material";
 import Auth from "../../helpers/Auth";
 import React, { useState, useEffect } from "react";
 import Api from "../../helpers/Api";
+import moment from 'moment-timezone';
 
 
 const Dashboard = () => {
@@ -54,6 +57,32 @@ const Dashboard = () => {
       };
       tempActualMembers.push(member);
     });
+
+
+    const [donations, setDonations] = useState([]);
+
+
+    useEffect(() => {
+    Api.getAllTestimonialdmin()
+      .then((data) => data.json())
+      .then((data) => setDonations(data));
+    }, []);
+
+  // map members data to compatible data format for datagrid below
+  var tempActualDonations= [];
+  donations &&
+    donations.map((data) => {
+      const donation = {
+        id: data.donationId,
+        name: data.name,
+        email: data.email,
+        date: moment(data.date, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
+        paymentMode: data.paymentMode,
+        donationType: data.donationType,      
+      };
+      tempActualDonations.push(donation);
+    });
+
 
   const countMemberString = tempActualMembers.length;
 
@@ -221,12 +250,12 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
-              Recent Transactions
+              Recent Donations
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {tempActualDonations.map((transaction, i) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={`${transaction.donationId}-${i}`}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -239,19 +268,26 @@ const Dashboard = () => {
                   fontWeight="600"
                   color={colors.greenAccent[500]}
                 >
-                  {transaction.txId}
+                  {transaction.donationId}
                 </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                <Typography   style={{fontSize: "16px"}} color={colors.grey[100]}>
+                  {transaction.name}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box  color={colors.grey[100]}>{transaction.date}</Box>
+              <Box
+                backgroundColor={colors.greenAccent[400]}
+                p="5px 10px"
+                borderRadius="4px"
+              >
+                {transaction.donationType}
+              </Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                {transaction.cost}
+                {transaction.paymentMode}
               </Box>
             </Box>
           ))}
@@ -264,25 +300,14 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaign
+            Event Type
           </Typography>
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
+             height = "250px"
+             mt="-20px"
           >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,213,200 Revenue Generatee
-            </Typography>
-            <Typography>
-              include extra expense and cost
-            </Typography>
+            <PieChart isDashboard={true}/>
+          
           </Box>
         </Box>
 

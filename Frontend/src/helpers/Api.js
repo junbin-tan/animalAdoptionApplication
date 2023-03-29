@@ -52,6 +52,14 @@ const Api = {
           method: "GET",
         });
     },
+    getAllTestimonialdmin() {
+        return fetch(`${SERVER_PREFIX}/donation/getAllDonationsAdmin`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
 }
 
 export default Api;

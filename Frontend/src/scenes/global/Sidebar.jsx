@@ -18,6 +18,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import FeedIcon from '@mui/icons-material/Feed';
 import PetsIcon from '@mui/icons-material/Pets';
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -181,6 +182,13 @@ const Sidebar = () => {
                 title="Application Forms"
                 to="/applicationforms"
                 icon={<FeedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Donations"
+                to="/donations"
+                icon={<VolunteerActivismIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
