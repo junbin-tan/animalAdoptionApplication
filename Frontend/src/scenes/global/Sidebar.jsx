@@ -18,6 +18,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import FeedIcon from '@mui/icons-material/Feed';
 import PetsIcon from '@mui/icons-material/Pets';
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
@@ -149,21 +150,21 @@ const Sidebar = () => {
                 Data
               </Typography>
               <Item
-                title="View All Admins"
+                title="Admins"
                 to="/teamadmin"
                 icon={<PeopleOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="View All Members"
+                title="Members"
                 to="/team"
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="View All Animal Listing"
+                title="Animal Listings"
                 to="/animallisting"
                 icon={<PetsIcon />}
                 selected={selected}
@@ -176,6 +177,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               /> */}
+               <Item
+                title="Application Forms"
+                to="/applicationforms"
+                icon={<FeedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Item
                 title="Enquiries"
                 to="/invoices"

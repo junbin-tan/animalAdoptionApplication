@@ -69,6 +69,12 @@ public class ApplicationFormSessionBean implements ApplicationFormSessionBeanLoc
                     }
                 }
                 
+                newAppForm.setMemberId(managedMember.getMemberId());
+                newAppForm.setMemberName(managedMember.getName());
+                newAppForm.setAnimalListingId(managedAnimalListing.getAnimalListingId());
+                newAppForm.setAnimalListingName(managedAnimalListing.getName());
+                
+                
                 newAppForm.setMember(managedMember);
                 managedMember.getApplicationForms().add(newAppForm);
 
