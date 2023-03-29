@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Grid from '@mui/material/Grid';
+import moment from 'moment-timezone';
 
 // importing data should change later
 import { mockDataTeam } from "../../assets/data/mockData";
@@ -55,8 +56,8 @@ const AnimalListing = () => {
         isNeutered: data.isNeutered,
         isAdoption: data.isAdoption,
         isFostering: data.isFostering,
-        fosterStartDate: data.fosterStartDate,
-        fosterEndDate: data.fosterEndDate,
+        fosterStartDate: moment(data.fosterStartDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
+        fosterEndDate: moment(data.fosterEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
       };
       tempActualAnimalListings.push(animalListing);
     });

@@ -22,6 +22,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -91,6 +92,47 @@ public class EventListingResource {
         return allEventListings;
 
     }
+    
+    @GET
+    @Path("/getAllEventListingsAdmin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllEventListingsAdmin(@Context HttpHeaders headers) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = AdminJwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            List<EventListing> allEventListings = eventListingSessionBeanLocal.retrieveAllEventListings();
+
+            for (EventListing el : allEventListings) {
+                el.getMember().setEventListings(null);
+                el.getMember().setDonations(null);
+                el.getMember().setAnimalListings(null);
+                el.getMember().setEventRegistrations(null);
+                el.getMember().setNotifications(null);
+                el.getMember().setReviewsCreated(null);
+                el.getMember().setReviewsReceived(null);
+                el.getMember().setApplicationForms(null);
+            
+                for (EventRegistration er : el.getEventRegistrations()) {
+                    er.setEventListing(null);
+                    er.setMember(null);   
+                }
+            }
+        
+            return Response.status(200).entity(allEventListings).build();
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+    
+    
+    
     
 
 }
