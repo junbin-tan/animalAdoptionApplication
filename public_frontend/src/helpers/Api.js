@@ -188,6 +188,14 @@ const Api = {
       }
     );
   },
+  getChatReceipients() {
+    return fetch(`${SERVER_PREFIX}/member/getChatRecipients/${Auth.getUser().email}`, {
+      headers: {
+        Authorization: `Bearer ${Auth.getAccessToken()}`,
+      },
+      method: "GET",
+    });
+  },
 };
 
 export default Api;
