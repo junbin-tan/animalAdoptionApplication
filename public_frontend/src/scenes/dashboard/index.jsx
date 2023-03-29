@@ -262,7 +262,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <h2 style={{ textAlign: "center" }}> Manage Account</h2>
+      <h2 style={{ textAlign: "center" }}> Listings & Forms </h2>
       
       {/* -------------------------Start of Manage your Animal Listing------------------------- */}
       <div className="animalListingSection">
