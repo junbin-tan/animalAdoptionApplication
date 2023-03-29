@@ -25,6 +25,7 @@
     "@userfront/react": "^0.3.2",
     "bootstrap": "^5.1.3",
     "formik": "^2.2.9",
+    "moment-timezone": "^0.5.42",
     "primeicons": "^6.0.1",
     "primereact": "^9.2.1",
     "react": "^17.0.2",

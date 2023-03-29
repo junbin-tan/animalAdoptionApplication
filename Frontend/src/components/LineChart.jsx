@@ -6,6 +6,7 @@ import { mockLineData as data } from "../assets/data/mockData";
 import Auth from "../helpers/Auth";
 import Api from "../helpers/Api";
 import React, { useState, useEffect } from "react";
+import moment from 'moment-timezone';
 
 const LineChart = ({ isDashboard = false }) => {
   const theme = useTheme();
@@ -28,7 +29,7 @@ const LineChart = ({ isDashboard = false }) => {
         id: data.memberId,
         data: [
           {
-            x: data.createDate,
+            x: moment(data.createDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
             y: data.memberId,
           },
         ],
