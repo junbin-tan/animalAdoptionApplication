@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -191,7 +192,7 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
             }
         }
         
-        return chatRecipientsByCurrentMember;
+        return chatRecipientsByCurrentMember.stream().distinct().collect(Collectors.toList());
     }
     
     
