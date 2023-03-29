@@ -117,49 +117,72 @@ const ChatPage = () => {
   //     orderBy("createdAt", "asc")
   //   );
 
+  // const q = query(
+  //   collection(db, "chats"),
+  //   and(
+  //     or(
+  //       where("user2", "==", String(Auth.getUser().email)),
+  //       where("user2", "==", String(currentConversation.email))
+  //     ),
+  //     or(
+  //       where("user1", "==", String(Auth.getUser().email)),
+  //       where("user1", "==", String(currentConversation.email))
+  //     )
+  //   ),
+  // );
+
   const q = query(
     collection(db, "chats"),
-    and(
-      or(
-        where("user2", "==", String(Auth.getUser().email)),
-        where("user2", "==", String(currentConversation.email))
-      ),
-      or(
-        where("user1", "==", String(Auth.getUser().email)),
-        where("user1", "==", String(currentConversation.email))
-      )
-    ),
+    orderBy("createdAt", "asc")
+    // and(
+    //   or(
+    //     where("user2", "==", String(Auth.getUser().email)),
+    //     where("user2", "==", String(currentConversation.email))
+    //   ),
+    //   or(
+    //     where("user1", "==", String(Auth.getUser().email)),
+    //     where("user1", "==", String(currentConversation.email))
+    //   )
+    // ),
   );
 
   const [chatsData, loading, error] = useCollection(q, "hooks");
 
   const [finalMessages, setFinalMessages] = useState([]);
 
+  const conversationRecipient = currentConversation && currentConversation.email;
+
   useEffect(() => {
     const messages = [];
     chatsData &&
-      chatsData.docs.map((doc) => {
-        const sender =
-          String(doc.data().user1) == Auth.getUser().email
-            ? Auth.getUser().email
-            : currentConversation.email;
-        const direction =
-          String(doc.data().user1) == Auth.getUser().email
-            ? "outgoing"
-            : "incoming";
-        const messageObj = {
-          _id: doc.data().createdAt,
-          message: doc.data().message,
-          sentTime: "15 mins ago",
-          sender: sender,
-          direction: direction,
-          position: "single",
-        };
-        messages.push(messageObj);
-        // setFinalMessages((messages) => messages.concat(messageObj));
-      });
+      chatsData.docs
+        .filter((doc) => {
+          const user1 = String(doc.data().user1);
+          const user2 = String(doc.data().user2);
+          return ((user2 == String(Auth.getUser().email) || user2 == String(currentConversation.email)) && (user1 == String(Auth.getUser().email) || user1 == String(currentConversation.email)));
+        })
+        .map((doc) => {
+          const sender =
+            String(doc.data().user1) == Auth.getUser().email
+              ? Auth.getUser().email
+              : currentConversation.email;
+          const direction =
+            String(doc.data().user1) == Auth.getUser().email
+              ? "outgoing"
+              : "incoming";
+          const messageObj = {
+            _id: doc.data().createdAt,
+            message: doc.data().message,
+            sentTime: "15 mins ago",
+            sender: sender,
+            direction: direction,
+            position: "single",
+          };
+          messages.push(messageObj);
+          // setFinalMessages((messages) => messages.concat(messageObj));
+        });
     setFinalMessages(messages);
-  }, [chatsData]);
+  }, [chatsData, conversationRecipient]);
 
   const finalFinalMessages = [];
 
@@ -200,25 +223,25 @@ const ChatPage = () => {
   //     });
   //   }, []);
 
-//   const test = [];
-//   const msgObj = {
-//     message: "Hello my friend",
-//     sentTime: "15 mins ago",
-//     sender: "Zoe",
-//     direction: "incoming",
-//     position: "single",
-//   };
+  //   const test = [];
+  //   const msgObj = {
+  //     message: "Hello my friend",
+  //     sentTime: "15 mins ago",
+  //     sender: "Zoe",
+  //     direction: "incoming",
+  //     position: "single",
+  //   };
 
-//   // important to load messages
-//   test.push(
-//     <Message
-//       key={1}
-//       model={{
-//         message: `Message ${1}`,
-//         sender: "Zoe",
-//       }}
-//     />
-//   );
+  //   // important to load messages
+  //   test.push(
+  //     <Message
+  //       key={1}
+  //       model={{
+  //         message: `Message ${1}`,
+  //         sender: "Zoe",
+  //       }}
+  //     />
+  //   );
 
   return (
     <div
