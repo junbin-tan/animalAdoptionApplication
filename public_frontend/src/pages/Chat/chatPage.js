@@ -40,6 +40,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import avatarIcon from "../../images/ava-06.png";
 import Api from "../../helpers/Api";
 import Auth from "../../helpers/Auth";
+import moment from "moment";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -104,7 +105,6 @@ const ChatPage = () => {
     setMessageInputValue(""); // empty message once sent
   };
 
-
   const q = query(
     collection(db, "chats"),
     // orderBy("createdAt", "asc")
@@ -130,6 +130,8 @@ const ChatPage = () => {
   useEffect(() => {
     const messages = [];
     chatsData &&
+      !loading &&
+      !error &&
       chatsData.docs
         .sort(
           (doc1, doc2) =>
@@ -150,10 +152,23 @@ const ChatPage = () => {
             String(doc.data().user1) == Auth.getUser().email
               ? "outgoing"
               : "incoming";
+
+          // const sentTimeStamp = new Timestamp(
+          //   parseInt(doc.data().createdAt.seconds),
+          //   parseInt(doc.data().createdAt.nanoseconds)
+          // );
+          const sentDateTime = moment
+            .tz(doc.data().createdAt.toDate(), "Asia/Singapore")
+            .format("DD/MM/YYYY HH:mm:ss");
+          const sentDate = moment
+            .tz(doc.data().createdAt.toDate(), "Asia/Singapore")
+            .format("DD/MM/YYYY");
+
           const messageObj = {
             _id: doc.data().createdAt,
             message: doc.data().message,
             sentTime: "15 mins ago",
+            sentDate: sentDate,
             sender: sender,
             direction: direction,
             position: "single",
@@ -161,9 +176,15 @@ const ChatPage = () => {
           messages.push(messageObj);
         });
     setFinalMessages(messages);
-  }, [chatsData, conversationRecipient]);
+  }, [chatsData, loading, error]);
 
   const finalFinalMessages = [];
+
+  const msgDates = finalMessages.map((msg) => msg.sentDate);
+  const distinctMsgDates = msgDates.filter(
+    (item, index) => msgDates.indexOf(item) === index
+  );
+  // console.log(distinctMsgDates);
 
   for (let i = 0; i < finalMessages.length; i++) {
     finalFinalMessages.push(
@@ -202,32 +223,53 @@ const ChatPage = () => {
               ))}
           </ConversationList>
         </Sidebar>
-
-        <ChatContainer>
-          <ConversationHeader>
-            <ConversationHeader.Back />
-            <Avatar src={avatarIcon} name="Zoe" />
-            <ConversationHeader.Content
-              userName={currentConversation.name}
-              info="Active 10 mins ago"
+        {currentConversation.email && (
+          <ChatContainer>
+            <ConversationHeader>
+              <ConversationHeader.Back />
+              <Avatar src={avatarIcon} name="Zoe" />
+              <ConversationHeader.Content
+                userName={currentConversation.name}
+                info="Active 10 mins ago"
+              />
+              <ConversationHeader.Actions>
+                <VoiceCallButton />
+                <VideoCallButton />
+                <EllipsisButton orientation="vertical" />
+              </ConversationHeader.Actions>
+            </ConversationHeader>
+            <MessageList>
+              {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
+              {finalFinalMessages}
+            </MessageList>
+            <MessageInput
+              placeholder="Type message here"
+              value={messageInputValue}
+              onChange={(val) => setMessageInputValue(val)}
+              onSend={(val) => sendMessage(val)}
             />
-            <ConversationHeader.Actions>
-              <VoiceCallButton />
-              <VideoCallButton />
-              <EllipsisButton orientation="vertical" />
-            </ConversationHeader.Actions>
-          </ConversationHeader>
-          <MessageList>
-            <MessageSeparator content="Saturday, 30 November 2019" />
-            {finalFinalMessages}
-          </MessageList>
-          <MessageInput
-            placeholder="Type message here"
-            value={messageInputValue}
-            onChange={(val) => setMessageInputValue(val)}
-            onSend={(val) => sendMessage(val)}
-          />
-        </ChatContainer>
+          </ChatContainer>
+        )}
+
+        {!currentConversation.email && (
+          <ChatContainer>
+            <MessageList>
+              <MessageList.Content
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  height: "100%",
+                  textAlign: "center",
+                  fontSize: "1.2em",
+                }}
+              >
+                Please select a member to chat for animal listings and
+                application forms
+              </MessageList.Content>
+            </MessageList>
+          </ChatContainer>
+        )}
       </MainContainer>
     </div>
   );
