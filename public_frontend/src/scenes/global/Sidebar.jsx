@@ -22,6 +22,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import ListIcon from '@mui/icons-material/List';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -165,6 +166,13 @@ const Sidebar = () => {
                 title="Create Event Listing"
                 to="/CreateEventListing"
                 icon={<NoteAddIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="My Chats"
+                to="/chat"
+                icon={<ChatIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

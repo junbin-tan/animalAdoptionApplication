@@ -11,6 +11,9 @@ import { InputText } from "primereact/inputtext";
 import "./ManageApplicationForm.css";
 
 const ManageApplicationForm = () => {
+  // redirect user to login page if they never login yet
+  Auth.redirectIfLoggedOut("/login");
+  
   const [globalFilter, setGlobalFilter] = useState(null);
   const { state } = useLocation();
   const currentAnimalListing = state;

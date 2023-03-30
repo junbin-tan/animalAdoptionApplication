@@ -59,6 +59,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const ChatPage = () => {
+  // redirect user to login page if they never login yet
+  Auth.redirectIfLoggedOut("/login");
   // Set initial message input value to an empty string
   const [messageInputValue, setMessageInputValue] = useState("");
 
@@ -102,65 +104,43 @@ const ChatPage = () => {
     setMessageInputValue(""); // empty message once sent
   };
 
-  //   const q = query(
-  //     collection(db, "chats"),
-  //     and(
-  //       or(
-  //         where("user2", "==", String(Auth.getUser().email)),
-  //         where("user2", "==", String(currentConversation.email))
-  //       ),
-  //       or(
-  //         where("user1", "==", String(Auth.getUser().email)),
-  //         where("user1", "==", String(currentConversation.email))
-  //       ),
-  //     ),
-  //     orderBy("createdAt", "asc")
-  //   );
-
-  // const q = query(
-  //   collection(db, "chats"),
-  //   and(
-  //     or(
-  //       where("user2", "==", String(Auth.getUser().email)),
-  //       where("user2", "==", String(currentConversation.email))
-  //     ),
-  //     or(
-  //       where("user1", "==", String(Auth.getUser().email)),
-  //       where("user1", "==", String(currentConversation.email))
-  //     )
-  //   ),
-  // );
 
   const q = query(
     collection(db, "chats"),
-    orderBy("createdAt", "asc")
-    // and(
-    //   or(
-    //     where("user2", "==", String(Auth.getUser().email)),
-    //     where("user2", "==", String(currentConversation.email))
-    //   ),
-    //   or(
-    //     where("user1", "==", String(Auth.getUser().email)),
-    //     where("user1", "==", String(currentConversation.email))
-    //   )
-    // ),
+    // orderBy("createdAt", "asc")
+    and(
+      or(
+        where("user2", "==", String(Auth.getUser().email)),
+        where("user2", "==", String(currentConversation.email))
+      ),
+      or(
+        where("user1", "==", String(Auth.getUser().email)),
+        where("user1", "==", String(currentConversation.email))
+      )
+    )
   );
 
   const [chatsData, loading, error] = useCollection(q, "hooks");
 
   const [finalMessages, setFinalMessages] = useState([]);
 
-  const conversationRecipient = currentConversation && currentConversation.email;
+  const conversationRecipient =
+    currentConversation && currentConversation.email;
 
   useEffect(() => {
     const messages = [];
     chatsData &&
       chatsData.docs
-        .filter((doc) => {
-          const user1 = String(doc.data().user1);
-          const user2 = String(doc.data().user2);
-          return ((user2 == String(Auth.getUser().email) || user2 == String(currentConversation.email)) && (user1 == String(Auth.getUser().email) || user1 == String(currentConversation.email)));
-        })
+        .sort(
+          (doc1, doc2) =>
+            doc1.data().createdAt.seconds - doc2.data().createdAt.seconds
+        )
+        // .filter((doc) => {
+        //   console.log(doc.data().createdAt);
+        //   const user1 = String(doc.data().user1);
+        //   const user2 = String(doc.data().user2);
+        //   return ((user2 == String(Auth.getUser().email) || user2 == String(currentConversation.email)) && (user1 == String(Auth.getUser().email) || user1 == String(currentConversation.email)));
+        // })
         .map((doc) => {
           const sender =
             String(doc.data().user1) == Auth.getUser().email
@@ -179,7 +159,6 @@ const ChatPage = () => {
             position: "single",
           };
           messages.push(messageObj);
-          // setFinalMessages((messages) => messages.concat(messageObj));
         });
     setFinalMessages(messages);
   }, [chatsData, conversationRecipient]);
@@ -199,49 +178,6 @@ const ChatPage = () => {
       />
     );
   }
-
-  //   const finalFinalMessages = [];
-  //   finalMessages &&
-  //     finalMessages.map((data) => {
-  //       finalFinalMessages.push(data);
-  //     });
-
-  // messages && messages.map((msg) => console.log(msg));
-
-  //   useEffect(() => {
-  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //       const chats = [];
-  //       setFinalMessages((finalMessages) =>
-  //         finalMessages.concat(querySnapshot.docs.map((doc) => doc.data()))
-  //       );
-  //       //   querySnapshot.forEach((doc) => {
-  //       //     chats.push(doc.data());
-  //       //     // console.log(doc.data());
-
-  //       //   });
-  //       // console.log("Current cities in CA: ", chats.join(", "));
-  //     });
-  //   }, []);
-
-  //   const test = [];
-  //   const msgObj = {
-  //     message: "Hello my friend",
-  //     sentTime: "15 mins ago",
-  //     sender: "Zoe",
-  //     direction: "incoming",
-  //     position: "single",
-  //   };
-
-  //   // important to load messages
-  //   test.push(
-  //     <Message
-  //       key={1}
-  //       model={{
-  //         message: `Message ${1}`,
-  //         sender: "Zoe",
-  //       }}
-  //     />
-  //   );
 
   return (
     <div
@@ -284,19 +220,6 @@ const ChatPage = () => {
           <MessageList>
             <MessageSeparator content="Saturday, 30 November 2019" />
             {finalFinalMessages}
-            {/* {conversations &&
-              conversations.map((data) => {
-                <Message
-                  model={{
-                    message: "Hello my friend",
-                    sentTime: "15 mins ago",
-                    sender: "Eliot",
-                    direction: "incoming",
-                    position: "first",
-                  }}
-                  avatarSpacer={true}
-                />;
-              })} */}
           </MessageList>
           <MessageInput
             placeholder="Type message here"
