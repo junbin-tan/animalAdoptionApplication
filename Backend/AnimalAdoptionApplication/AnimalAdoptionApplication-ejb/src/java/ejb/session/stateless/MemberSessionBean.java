@@ -22,11 +22,13 @@ import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateMemberException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -159,6 +161,38 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         Query query = em.createQuery("SELECT m FROM Member m ORDER BY m.memberId ASC");
         
         return query.getResultList();
+    }
+    
+    public List<Member> retrieveMembersByApplicationFormAndAnimalListing(String email) throws MemberNotFoundException {
+        Member currentMember = retrieveMemberByEmail(email);
+        
+        List<Member> chatRecipientsByCurrentMember = new ArrayList<>();
+        
+        // scenario 1: I am the applicant, i want to chat with the pet owner of animal listing
+        if (!currentMember.getApplicationForms().isEmpty()) {
+            List<ApplicationForm> applicationForms = currentMember.getApplicationForms();
+            for (ApplicationForm af : applicationForms) {
+                AnimalListing al = af.getAnimalListing();
+                Member receipient = al.getMember();
+                chatRecipientsByCurrentMember.add(receipient);
+            }
+        }
+        
+        // scenario 2: I am the pet owner, i want to chat with applicants that applied for my pet
+        if (!currentMember.getAnimalListings().isEmpty()) {
+            List<AnimalListing> animalListings = currentMember.getAnimalListings();
+            for (AnimalListing al : animalListings) {
+                if (!al.getApplicationForms().isEmpty()) {
+                    List<ApplicationForm> applicationForms = al.getApplicationForms();
+                    for (ApplicationForm af : applicationForms) {
+                        Member receipient = af.getMember();
+                        chatRecipientsByCurrentMember.add(receipient);
+                    }
+                }
+            }
+        }
+        
+        return chatRecipientsByCurrentMember.stream().distinct().collect(Collectors.toList());
     }
     
     

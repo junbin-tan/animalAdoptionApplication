@@ -333,7 +333,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                           checked={formik.values.hasDailyExercise}
                           onChange={formik.handleChange}
                         />
-                        <label htmlFor="hasDailyExercise">
+                        <label htmlFor="hasDailyExercise" style={{ color: "black" }}>
                           Do your pet(s) have daily exercise? (If you have an
                           existing pet)
                         </label>

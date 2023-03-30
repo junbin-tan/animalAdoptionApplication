@@ -25,6 +25,7 @@ import CreateAnimalListingPage from "./pages/CreateAnimalListing/CreateAnimalLis
 import CreateEventListingPage from "./pages/CreateEventListing/CreateEventListing";
 import UserProvider from "./helpers/context/UserProvider";
 import ManageApplicationForm from "./pages/ManageApplicationForm/ManageApplicationForm";
+import ChatPage from "./pages/Chat/chatPage";
 
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
               <Route exact path="/Contact" element={<ContactUsPage />} />
               <Route exact path="/CreateAnimalListing" element={<CreateAnimalListingPage />} />
               <Route exact path="/CreateEventListing" element={<CreateEventListingPage />} />
+              <Route exact path="/chat" element={<ChatPage />} />
+
 
               {/* if path doesn't exist, show 404 error page */}
               <Route path="*" element={<NotFoundPage />} />

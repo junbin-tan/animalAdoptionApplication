@@ -176,6 +176,46 @@ public class MembersResource {
 
     }
 
+    @GET
+    @Path("/getChatRecipients/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getChatRecipients(@Context HttpHeaders headers, @PathParam("email") String email) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            List<Member> members;
+            try {
+                members = memberSessionBeanLocal.retrieveMembersByApplicationFormAndAnimalListing(email);
+                // nullify relationships
+                for (Member member : members) {
+                    member.setReviewsCreated(null);
+                    member.setReviewsReceived(null);
+                    member.setEventListings(null);
+                    member.setEventRegistrations(null);
+                    member.setAnimalListings(null);
+                    member.setApplicationForms(null);
+                    member.setDonations(null);
+                    member.setNotifications(null);
+                }
+
+                return Response.status(200).entity(members).build();
+            } catch (MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+
     // method to nullify member relationships
     private void nullifyMemberRelationships(Member member) {
         //Nullifying relationships related to member
