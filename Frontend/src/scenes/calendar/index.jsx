@@ -17,6 +17,7 @@ import Header from "../../components/AdminHeader";
 import { tokens } from "../../theme";
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
+import moment from 'moment-timezone';
 
 const Calendar = () => {
   const theme = useTheme();
@@ -64,6 +65,7 @@ const Calendar = () => {
         id: data.eventListingId,
         title: data.eventName.toString(),
         date: data.dateAndTime.toString().substring(0,10),
+        // date: moment(data.dateAndTime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
       };
       tempActualEventListings.push(eventListing);
     });
@@ -194,31 +196,31 @@ const Calendar = () => {
             />
           ) : (
             <>
+            <Typography variant="h2">There are currently no event listings</Typography>
             {/* <FullCalendar
-            height="75vh"
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              listPlugin,
-            ]}
-            headerToolbar={{
-              left: "prev,next,today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-            }}
-            initialView="dayGridMonth"
-            editiable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvent={true}
-            select={handleDateClick}
-            eventClick={handlleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={
-              tempActualEventListings
-            }
-          /> */}
+              height="75vh"
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+              ]}
+              headerToolbar={{
+                left: "prev,next,today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              }}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvent={true}
+              select={handleDateClick}
+              eventClick={handlleEventClick}
+              eventsSet={(events) => setCurrentEvents(events)}
+              initialEvents={tempActualEventListings}
+              
+            /> */}
             </> // Or any other empty element, e.g. <div />
           )}
         </Box>

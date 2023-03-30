@@ -20,14 +20,18 @@ import javax.ejb.Local;
 @Local
 public interface DonationSessionBeanLocal {
 
-	public Long createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException;
 
-	public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException;
 
-	public long setDonationToTestimonial(Long donationId, Long testId);
-        
-        public void setTestimonialToDonation(Long donationId, Long testId);
+    public long setDonationToTestimonial(Long donationId, Long testId);
 
-	public List<Member> getMemberByEmail(String email);
-	
+    public void setTestimonialToDonation(Long donationId, Long testId);
+
+    public List<Member> getMemberByEmail(String email);
+
+    public List<Donation> retrieveAllDonations();
+
+
+
 }
