@@ -104,7 +104,6 @@ const ChatPage = () => {
     setMessageInputValue(""); // empty message once sent
   };
 
-
   const q = query(
     collection(db, "chats"),
     // orderBy("createdAt", "asc")
@@ -130,6 +129,8 @@ const ChatPage = () => {
   useEffect(() => {
     const messages = [];
     chatsData &&
+      !loading &&
+      !error &&
       chatsData.docs
         .sort(
           (doc1, doc2) =>
@@ -161,7 +162,7 @@ const ChatPage = () => {
           messages.push(messageObj);
         });
     setFinalMessages(messages);
-  }, [chatsData, conversationRecipient]);
+  }, [chatsData, loading, error]);
 
   const finalFinalMessages = [];
 
