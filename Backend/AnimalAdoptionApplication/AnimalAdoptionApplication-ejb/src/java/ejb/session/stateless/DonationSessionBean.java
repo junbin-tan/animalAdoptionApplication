@@ -29,139 +29,120 @@ import javax.validation.ValidatorFactory;
 @Stateless
 public class DonationSessionBean implements DonationSessionBeanLocal {
 
-	@PersistenceContext(unitName = "AnimalAdoptionApplication-ejbPU")
-	private EntityManager entityManager;
+    @PersistenceContext(unitName = "AnimalAdoptionApplication-ejbPU")
+    private EntityManager entityManager;
 
-	private final ValidatorFactory validatorFactory;
+    private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
-    
-    
+
     public DonationSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
 
-	@Override
+    @Override
     public Long createNewDonation(Donation newDonation) throws UnknownPersistenceException, InputDataValidationException {
-        Set<ConstraintViolation<Donation>>constraintViolations = validator.validate(newDonation);
-        
-        if(constraintViolations.isEmpty()) {
+        Set<ConstraintViolation<Donation>> constraintViolations = validator.validate(newDonation);
+
+        if (constraintViolations.isEmpty()) {
             try {
                 entityManager.persist(newDonation);
                 entityManager.flush();
 
                 return newDonation.getDonationId();
-            }
-            catch(PersistenceException ex)
-            {
-                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
-                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
-                    {
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }
-                    else
-                    {
-                        throw new UnknownPersistenceException(ex.getMessage());
-                    }
-                }
-                else
-                {
+                } else {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             }
-        }
-        else
-        {
+        } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
 
-	@Override
+    @Override
+    public List<Donation> retrieveAllDonations() {
+        Query query = entityManager.createQuery("SELECT a FROM Donation a ORDER BY a.donationId ASC");
+
+        return query.getResultList();
+    }
+
+    @Override
     public Long createNewTestimonial(Testimonial newTestimonial) throws UnknownPersistenceException, InputDataValidationException {
-        Set<ConstraintViolation<Testimonial>>constraintViolations = validator.validate(newTestimonial);
-        
-        if(constraintViolations.isEmpty()) {
+        Set<ConstraintViolation<Testimonial>> constraintViolations = validator.validate(newTestimonial);
+
+        if (constraintViolations.isEmpty()) {
             try {
                 entityManager.persist(newTestimonial);
                 entityManager.flush();
 
                 return newTestimonial.getTestimonialId();
-            }
-            catch(PersistenceException ex)
-            {
-                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
-                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
-                    {
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }
-                    else
-                    {
-                        throw new UnknownPersistenceException(ex.getMessage());
-                    }
-                }
-                else
-                {
+                } else {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             }
-        }
-        else
-        {
+        } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessageForTestimonial(constraintViolations));
         }
     }
 
     public long setDonationToTestimonial(Long donationId, Long testId) {
-            Donation d = entityManager.find(Donation.class, donationId);
-            Testimonial test = entityManager.find(Testimonial.class, testId);
-            test.setDonation(d);
-            entityManager.flush();
-            return test.getTestimonialId();
+        Donation d = entityManager.find(Donation.class, donationId);
+        Testimonial test = entityManager.find(Testimonial.class, testId);
+        test.setDonation(d);
+        entityManager.flush();
+        return test.getTestimonialId();
     }
 
     public void setTestimonialToDonation(Long donationId, Long testId) {
-            Donation d = entityManager.find(Donation.class, donationId);
-            Testimonial test = entityManager.find(Testimonial.class, testId);
-            d.setTestimonial(test);
-            entityManager.flush();
+        Donation d = entityManager.find(Donation.class, donationId);
+        Testimonial test = entityManager.find(Testimonial.class, testId);
+        d.setTestimonial(test);
+        entityManager.flush();
     }
 
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Donation>> constraintViolations) {
+        String msg = "Input data validation error!:";
 
-	 private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Donation>>constraintViolations) {
-        String msg = "Input data validation error!:";
-            
-        for(ConstraintViolation constraintViolation:constraintViolations)
-        {
+        for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-        
-        return msg;
-    }
-	 
-	 private String prepareInputDataValidationErrorsMessageForTestimonial(Set<ConstraintViolation<Testimonial>>constraintViolations) {
-        String msg = "Input data validation error!:";
-            
-        for(ConstraintViolation constraintViolation:constraintViolations)
-        {
-            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
-        }
-        
+
         return msg;
     }
 
-	public void persist(Object object) {
-		entityManager.persist(object);
-	}
+    private String prepareInputDataValidationErrorsMessageForTestimonial(Set<ConstraintViolation<Testimonial>> constraintViolations) {
+        String msg = "Input data validation error!:";
 
-	public List<Member> getMemberByEmail(String email) {
-		Query query = entityManager.createQuery("SELECT m FROM Member m WHERE m.email = :inEmail");
-		query.setParameter("inEmail", email);
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+
+        return msg;
+    }
+
+    public void persist(Object object) {
+        entityManager.persist(object);
+    }
+
+    public List<Member> getMemberByEmail(String email) {
+        Query query = entityManager.createQuery("SELECT m FROM Member m WHERE m.email = :inEmail");
+        query.setParameter("inEmail", email);
 
         return query.getResultList();
-	}
-
-	
-	
+    }
 
 }

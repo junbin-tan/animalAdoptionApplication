@@ -5,7 +5,7 @@ import { mockPieData as data } from "../assets/data/mockData";
 import Api from "../helpers/Api";
 import React, { useState, useEffect } from "react";
 
-const PieChart = () => {
+const PieChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -85,11 +85,13 @@ const PieChart = () => {
         from: "color",
         modifiers: [["darker", 0.2]],
       }}
+      enableArcLinkLabels={isDashboard ? false : true}
       arcLinkLabelsSkipAngle={10}
       arcLinkLabelsTextColor={colors.greenAccent[100]}
       arcLinkLabelsThickness={2}
       arcLinkLabelsColor={{ from: "color" }}
       arcLabelsSkipAngle={10}
+      enableArcLabels={ isDashboard ? false : true }
       arcLabelsTextColor={{
         from: "color",
         modifiers: [["darker", 2]],

@@ -18,6 +18,8 @@ import Form from "./scenes/form";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
+import Donations from "./scenes/donations";
+import ApplicationForm from "./scenes/applicationforms";
 import Geography from "./scenes/geography";
 import Calendar from "./scenes/calendar";
 import LoginPage from "./pages/login/loginPage";
@@ -46,7 +48,9 @@ function App() {
                 <Route path="/animallisting" element={<AnimalListing />} />
                 <Route path="/team" element={<Team />} />
                 <Route path="/contacts" element={<Contacts />} />
+                <Route path="/applicationforms" element={<ApplicationForm />} />
                 <Route path="/invoices" element={<Invoices />} />
+                <Route path="/donations" element={<Donations />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/bar" element={<Bar />} />
                 <Route path="/pie" element={<Pie />} />

@@ -31,6 +31,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -138,4 +139,31 @@ public class ApplicationFormResource {
                     .type(MediaType.APPLICATION_JSON).build();
         }
     } //end updateAppFormStatus
+
+    @GET
+    @Path("/getApplicationFormsAdmin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getApplicationFormsAdmin(@Context HttpHeaders headers) {
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = AdminJwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            List<ApplicationForm> applicationForms = applicationFormSessionBeanLocal.retrieveAllApplicationForms();
+
+            for (ApplicationForm af : applicationForms) {
+                af.setMember(null);
+                af.setAnimalListing(null);
+            }
+
+            return Response.status(200).entity(applicationForms).build();
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+
 }

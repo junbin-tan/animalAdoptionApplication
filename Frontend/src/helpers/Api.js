@@ -44,6 +44,22 @@ const Api = {
           method: "GET",
         });
     },
+    getAllApplicationFormAdmin() {
+        return fetch(`${SERVER_PREFIX}/applicationForm/getApplicationFormsAdmin`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
+    getAllTestimonialdmin() {
+        return fetch(`${SERVER_PREFIX}/donation/getAllDonationsAdmin`, {
+            headers: {
+                "Authorization": `Bearer ${Auth.getAccessToken()}`,
+            },
+          method: "GET",
+        });
+    },
 }
 
 export default Api;

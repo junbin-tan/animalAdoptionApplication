@@ -42,6 +42,14 @@ public class ApplicationForm implements Serializable {
     private SleepAreaEnum sleepArea;
 	
     private Integer petAloneTime;
+    
+    private long memberId;
+    
+    private String memberName;
+    
+    private long animalListingId;
+    
+    private String animalListingName;
 	
     @Column(nullable = false)
     @NotNull
@@ -189,6 +197,42 @@ public class ApplicationForm implements Serializable {
     public void setAnimalListing(AnimalListing animalListing) {
         this.animalListing = animalListing;
     }
+
+    public long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(long memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
+    public long getAnimalListingId() {
+        return animalListingId;
+    }
+
+    public void setAnimalListingId(long animalListingId) {
+        this.animalListingId = animalListingId;
+    }
+
+    public String getAnimalListingName() {
+        return animalListingName;
+    }
+
+    public void setAnimalListingName(String animalListingName) {
+        this.animalListingName = animalListingName;
+    }
+
+  
+    
+    
     
     
     
