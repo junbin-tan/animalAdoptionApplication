@@ -184,7 +184,7 @@ const ChatPage = () => {
   const distinctMsgDates = msgDates.filter(
     (item, index) => msgDates.indexOf(item) === index
   );
-  console.log(distinctMsgDates);
+  // console.log(distinctMsgDates);
 
   for (let i = 0; i < finalMessages.length; i++) {
     finalFinalMessages.push(
