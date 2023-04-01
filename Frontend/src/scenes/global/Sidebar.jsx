@@ -98,8 +98,8 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]}>
-                    ADMIN PANEL
+                  <Typography variant="h4" color={colors.grey[100]} >
+                    Pawfect Panel    
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
@@ -109,7 +109,7 @@ const Sidebar = () => {
             </MenuItem>
             {/* Create user  icon + name*/}
             {!isCollapsed && (
-              <Box mb="25px">
+              <Box mb="25px" >
                 <Box display="flex" justifyContent="center" alignItems="center">
                   {/* put user image tag here */}
                   <img
@@ -120,18 +120,20 @@ const Sidebar = () => {
                     style={{ cursor: "pointer", borderRadius: "50%" }}
                   />
                 </Box>
-                <Box textAlign="center">
+                <Box textAlign="center"  sx={{ mt: "20px" }}>
+                <Typography variant="h3"  fontWeight="bold" color={colors.grey[100]}>
+                    {currentUser.name}
+                  </Typography>
                   <Typography
                     variant="h5"
                     color={colors.grey[100]}
-                    fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
                     {currentUser.email}
                   </Typography>
-                  <Typography variant="h5" color={colors.grey[100]}>
+                  {/* <Typography variant="h5" color={colors.grey[100]}>
                     {currentUser.name}
-                  </Typography>
+                  </Typography> */}
                 </Box>
               </Box>
             )}
