@@ -82,6 +82,19 @@ public class EventListingSessionBean implements EventListingSessionBeanLocal {
 
         return query.getResultList();
     }
+    
+    @Override
+    public List<EventListing> retrieveEventListingByMemberEmail(String email) {
+        Query query = em.createQuery("SELECT e FROM EventListing e WHERE e.member.email = :email");
+        query.setParameter("email", email);
+        
+        List<EventListing> eventListings = query.getResultList();
+        for (EventListing el : eventListings) {
+            el.getEventRegistrations().size(); // lazy loading to get event registrations
+        }
+        
+        return query.getResultList();
+    }
 
     @Override
     public EventListing retrieveEventListingById(Long eventListingId) throws EventListingNotFoundException {
@@ -144,7 +157,7 @@ public class EventListingSessionBean implements EventListingSessionBeanLocal {
             thisMember.getEventListings().remove(eventListingToRemove);
             em.remove(eventListingToRemove);
         } else {
-            throw new DeleteEventListingException("Event Lsiting ID " + eventListingId + " is associated with existing items and cannot be deleted!");
+            throw new DeleteEventListingException("Event Listing is associated with existing event registrations and cannot be deleted!");
         }
     }
 

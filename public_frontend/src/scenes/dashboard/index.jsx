@@ -20,8 +20,10 @@ const Dashboard = () => {
 
   const [animalListings, setAnimalListings] = useState([]);
   const [applicationForms, setApplicationForms] = useState([]);
+  const [eventListings, setEventListings] = useState([]);
+  const [eventRegistrations, setEventRegistrations] = useState([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     Api.getAnimalListingByMemberEmail()
       .then((data) => data.json())
@@ -34,6 +36,19 @@ const Dashboard = () => {
       .then((data) => setApplicationForms(data));
   }, []);
   console.log(applicationForms);
+
+  useEffect(() => {
+    Api.getEventListingByMemberEmail()
+      .then((data) => data.json())
+      .then((data) => setEventListings(data));
+  }, []);
+
+  useEffect(() => {
+    Api.getEventRegistrationByMemberEmail()
+      .then((data) => data.json())
+      .then((data) => setEventRegistrations(data));
+  }, []);
+
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
   const { currentActualUser } = useContext(UserContext);
@@ -64,9 +79,9 @@ const Dashboard = () => {
     setDeleteAnimalListingDialog(true);
   };
 
-  const redirectToManageApplicationForms= (animalListing) => {
+  const redirectToManageApplicationForms = (animalListing) => {
     // console.log(animalListing);
-    navigate("/ManageApplicationForm", {state: animalListing});
+    navigate("/ManageApplicationForm", { state: animalListing });
   };
 
   const deleteAnimalListing = () => {
@@ -259,11 +274,184 @@ const Dashboard = () => {
   );
   //-------------------------End of Manage your Application Form-------------------------
 
+  //-------------------------Start of Manage your Event Listing------------------------- 
+  let emptyEventListing = {
+    eventListingId: null,
+    name: "",
+    description: "",
+  };
+
+  const [eventListing, setEventListing] = useState(emptyEventListing);
+  const [deleteEventListingDialog, setDeleteEventListingDialog] =
+    useState(false);
+  const dtForEventListing = useRef(null);
+  const [selectedEventListings, setSelectedEventListings] = useState(null);
+  const [globalFilterForEventListing, setGlobalFilterForEventListing] = useState(null);
+
+  const hideDeleteEventListingDialog = () => {
+    setDeleteEventListingDialog(false);
+  };
+
+  const confirmDeleteEventListing = (eventListing) => {
+    setEventListing(eventListing);
+    setDeleteEventListingDialog(true);
+  };
+
+  const deleteEventListing = () => {
+    Api.deleteEventListingByEventListingId(
+      eventListing.eventListingId
+    ).then((response) => {
+      if (response.status === 204) {
+        // HTTP code when success deletion
+        // have to manually filter away the deleted item because the item is deleted on database
+        let _eventListings = eventListings.filter(
+          (val) => val.eventListingId !== eventListing.eventListingId
+        );
+        setEventListings(_eventListings);
+        setDeleteEventListingDialog(false);
+        setEventListing(emptyEventListing);
+        toast.current.show({ //using the same toast as animal listing
+          severity: "success",
+          summary: "Successful",
+          detail: "Event Listing Deleted",
+          life: 3000,
+        });
+      } else {
+        setDeleteEventListingDialog(false);
+        response.json().then((responseJSON) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: responseJSON.error,
+            life: 3000,
+          });
+        });
+      }
+    });
+  };
+
+  const actionBodyTemplateForEventListing = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteEventListing(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const headerForEventListing = (
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+      <h4 className="m-0">Manage your Event Listings</h4>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilterForEventListing(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  );
+
+  const deleteEventListingDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteEventListingDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteEventListing}
+      />
+    </React.Fragment>
+  );
+  //-------------------------End of Manage your Event Listing-------------------------
+
+  //-------------------------Start of Manage your Event Registration------------------------- 
+  let emptyEventRegistration = {
+    eventRegistrationId: null,
+    name: "",
+    description: "",
+  };
+
+  const [eventRegistration, setEventRegistration] = useState(emptyEventRegistration);
+  const [deleteEventRegistrationDialog, setDeleteEventRegistrationDialog] =
+    useState(false);
+  const dtForEventRegistration = useRef(null);
+  const [selectedEventRegistrations, setSelectedEventRegistrations] = useState(null);
+  const [globalFilterForEventRegistration, setGlobalFilterForEventRegistration] = useState(null);
+
+  const hideDeleteEventRegistrationDialog = () => {
+    setDeleteEventRegistrationDialog(false);
+  };
+
+  const confirmDeleteEventRegistration = (eventRegistration) => {
+    setEventRegistration(eventRegistration);
+    setDeleteEventRegistrationDialog(true);
+  };
+
+  const deleteEventRegistration = {}; // delete or set boolean?
+
+  const actionBodyTemplateForEventRegistration = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-times-circle"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteEventRegistration(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const headerForEventRegistration = (
+    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+      <h4 className="m-0">Manage your Event Registrations</h4>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilterForEventRegistration(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  );
+
+  const deleteEventRegistrationDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteEventRegistrationDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        severity="danger"
+        onClick={deleteEventRegistration}
+      />
+    </React.Fragment>
+  );
+
+  //-------------------------End of Manage your Event Registration-------------------------
 
   return (
     <>
       <h2 style={{ textAlign: "center" }}> Listings & Forms </h2>
-      
+
       {/* -------------------------Start of Manage your Animal Listing------------------------- */}
       <div className="animalListingSection">
         <Toast ref={toast} />
@@ -372,6 +560,117 @@ const Dashboard = () => {
         </Dialog>
       </div>
       {/* -------------------------End of Manage your Application Forms------------------------- */}
+
+      {/* -------------------------Start of Manage your Event Listing------------------------- */}
+      <div className="eventListingSection">
+        <Toast ref={toast} />
+        <div className="card">
+          <DataTable
+            ref={dtForEventListing}
+            value={eventListings}
+            selection={selectedEventListings}
+            onSelectionChange={(e) => setSelectedEventListings(e.value)}
+            dataKey="eventListingId"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} event listings"
+            globalFilter={globalFilterForEventListing}
+            header={headerForEventListing}
+            showGridlines
+            tableStyle={{ minWidth: "40rem" }}
+          >
+            <Column field="eventListingId" header="ID"></Column>
+            <Column field="eventName" header="Event Name"></Column>
+            <Column field="description" header="Description"></Column>
+            <Column field="capacity" header="Capacity"></Column>
+            <Column
+              field="options" header="Options"
+              body={actionBodyTemplateForEventListing}
+              exportable={false}
+              style={{ minWidth: "12rem" }}
+            ></Column>
+          </DataTable>
+        </div>
+        <Dialog
+          visible={deleteEventListingDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Confirm"
+          modal
+          footer={deleteEventListingDialogFooter}
+          onHide={hideDeleteEventListingDialog}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {eventListing && (
+              <span>
+                Are you sure you want to delete <b>{eventListing.name}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
+      </div>
+      {/* -------------------------End of Manage your Event Listing------------------------- */}
+
+      {/* -------------------------Start of Manage your Event Registration------------------------- */}
+      <div className="eventRegistrationSection">
+        <Toast ref={toast} />
+        <div className="card">
+          <DataTable
+            ref={dtForEventRegistration}
+            value={eventRegistrations}
+            selection={selectedEventRegistrations}
+            onSelectionChange={(e) => setSelectedEventRegistrations(e.value)}
+            dataKey="eventRegistrationId"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} event registrations"
+            globalFilter={globalFilterForEventRegistration}
+            header={headerForEventRegistration}
+            showGridlines
+            tableStyle={{ minWidth: "40rem" }}
+          >
+            <Column field="eventRegistrationId" header="ID"></Column>
+            <Column field="" header="Event Name"></Column>
+            <Column
+              field="options" header="Options"
+              body={actionBodyTemplateForEventRegistration}
+              exportable={false}
+              style={{ minWidth: "12rem" }}
+            ></Column>
+          </DataTable>
+        </div>
+        <Dialog
+          visible={deleteEventRegistrationDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="Confirm"
+          modal
+          footer={deleteEventRegistrationDialogFooter}
+          onHide={hideDeleteEventRegistrationDialog}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {eventRegistration && (
+              <span>
+                Are you sure you want to delete <b>{eventRegistration.name}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
+      </div>
+
+      {/* -------------------------End of Manage your Event Registration------------------------- */}
 
     </>
   );

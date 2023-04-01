@@ -118,6 +118,45 @@ const Api = {
     });
   },
 
+  getEventListingByMemberEmail() {
+    return fetch(
+      `${SERVER_PREFIX}/eventListing/getEventListingByMemberEmail/${
+        Auth.getUser().email
+      }`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }
+    );
+  },
+
+  getEventRegistrationByMemberEmail() {
+    return fetch(
+      `${SERVER_PREFIX}/eventRegistration/getEventRegistrationByMemberEmail/${
+        Auth.getUser().email
+      }`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }
+    );
+  },
+
+  deleteEventListingByEventListingId(eventListingId) {
+    return fetch(
+      `${SERVER_PREFIX}/eventListing/deleteEventListing/${eventListingId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
+
   createApplicationForm(data) {
     return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
       headers: {
@@ -144,6 +183,7 @@ const Api = {
       }
     );
   },
+
   deleteAnimalListingByAnimalListingId(animalListingId) {
     return fetch(
       `${SERVER_PREFIX}/animalListing/deleteAnimalListing/${animalListingId}`,
