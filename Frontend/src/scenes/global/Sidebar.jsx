@@ -18,7 +18,9 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import FeedIcon from '@mui/icons-material/Feed';
 import PetsIcon from '@mui/icons-material/Pets';
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -171,6 +173,13 @@ const Sidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Event Listings"
+                to="/eventlistings"
+                icon={<LocalActivityIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               {/* <Item
                 title="Contacts Information"
                 to="/contacts"
@@ -239,6 +248,13 @@ const Sidebar = () => {
                 title="Event Types Pie"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Member Pie"
+                to="/memberpie"
+                icon={<DonutLargeIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

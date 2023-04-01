@@ -6,6 +6,8 @@
 package webservices.restful;
 
 import ejb.session.stateless.MemberSessionBeanLocal;
+import entity.AccessData;
+import entity.AccountStatusEnum;
 import entity.AnimalListing;
 import entity.ApplicationForm;
 import entity.Donation;
@@ -29,6 +31,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
@@ -218,5 +221,33 @@ public class MembersResource {
             n.setMember(null);
         }
     }
-
+    
+    
+    
+    @PUT
+    @Path("updateMemberAccess/{memberId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateMemberAccess(@PathParam("memberId") Long memberId, AccessData data) {
+        try {
+            Member currentMember = memberSessionBeanLocal.retrieveMemberByMemberId(memberId);
+            if (data.getAccess() == "DEACTIVATED")  {
+                currentMember.setAccountStatus(AccountStatusEnum.DEACTIVATED);
+            } else if (data.getAccess() == "FLAGGED") {
+                currentMember.setAccountStatus(AccountStatusEnum.FLAGGED);
+            } else if (data.getAccess() == "UNVERIFIED") {
+                currentMember.setAccountStatus(AccountStatusEnum.UNVERIFIED);
+            } else {
+                currentMember.setAccountStatus(AccountStatusEnum.VERIFIED);
+            }
+            return Response.status(204).build();
+        } catch (MemberNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception)
+                    .type(MediaType.APPLICATION_JSON).build();
+        }
+    } 
 }
+

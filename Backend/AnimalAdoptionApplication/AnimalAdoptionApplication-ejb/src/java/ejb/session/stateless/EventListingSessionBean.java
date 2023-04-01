@@ -15,8 +15,11 @@ import exception.ListingExistException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
 import exception.UpdateEventListingException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,6 +65,13 @@ public class EventListingSessionBean implements EventListingSessionBeanLocal {
                 //association with member
                 thisMember.getEventListings().add(eventListing);
                 eventListing.setMember(thisMember);
+                
+                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+                TimeZone tz = TimeZone.getTimeZone("Asia/Singapore");
+                sdf.setTimeZone(tz);
+                java.util.Date date = new java.util.Date();
+                
+                eventListing.setCreateDate(date);
 
                 em.persist(eventListing);
                 em.flush();
