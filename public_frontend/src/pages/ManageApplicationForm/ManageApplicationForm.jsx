@@ -1,6 +1,7 @@
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 import React, { useEffect, useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -41,6 +42,7 @@ const ManageApplicationForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const toast = useRef(null);
   const dt = useRef(null);
+  const navigate = useNavigate();
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -130,6 +132,14 @@ const ManageApplicationForm = () => {
         icon="pi pi-check"
         disabled={appForm.applicationStatus !== 'ACCEPTED'}
         onClick={() => updateApplicationFormStatus("COMPLETED")}
+      />
+      <Button
+        label="Chat With Applicant"
+        icon="pi pi-send"
+        outlined
+        onClick={() => {
+          navigate("/chat");
+        }}
       />
     </React.Fragment>
   );

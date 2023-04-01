@@ -8,6 +8,7 @@ package webservices.restful;
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
+import entity.ApplicationStatusEnum;
 import exception.AnimalListingHasApplicationFormException;
 import exception.DeleteAnimalListingException;
 import exception.InputDataValidationException;
@@ -18,6 +19,7 @@ import exception.UnknownPersistenceException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -96,6 +98,18 @@ public class AnimalListingResource {
                 af.setMember(null);
             }
         }
+
+        // must do filter to display available animal listings after nullify relationships above here
+        // if not won't work, can't do it in session bean also
+        allAnimalListings = allAnimalListings.stream().filter(al -> {
+            boolean isStillAvailable = true;
+            for (ApplicationForm af : al.getApplicationForms()) {
+                if (af != null && af.getApplicationStatus() != ApplicationStatusEnum.SUBMITTED) {
+                    isStillAvailable = false;
+                }
+            }
+            return isStillAvailable;
+        }).collect(Collectors.toList());
 
         return allAnimalListings;
 

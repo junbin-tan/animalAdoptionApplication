@@ -213,6 +213,46 @@ const Dashboard = () => {
     });
   };
 
+  let emptyAppForm = {
+    applicationFormId: null,
+    applicationStatus: null,
+    existingPetsOwned: null,
+    formType: null,
+    hasDailyExercise: null,
+    hasOtherPets: null,
+    isFirstTime: null,
+    petAloneTime: null,
+    reason: null,
+    sleepArea: null,
+  };
+
+  const [appFormDialog, setAppFormDialog] = useState(false);
+  const [appForm, setAppForm] = useState(emptyAppForm);
+
+  const hideDialog = () => {
+    setAppFormDialog(false);
+  };
+
+  const viewAppForm = (appForm) => {
+    // appForm.submittedBy = appForm.member.name;
+    // console.log(appForm);
+    setAppForm({ ...appForm });
+    setAppFormDialog(true);
+  };
+
+  const appFormDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Chat With Pet Owner"
+        icon="pi pi-send"
+        outlined
+        onClick={() => {
+          navigate("/chat");
+        }}
+      />
+    </React.Fragment>
+  );
+
   const actionBodyTemplateForApplicationForm = (rowData) => {
     return (
       <React.Fragment>
@@ -222,6 +262,14 @@ const Dashboard = () => {
           outlined
           severity="danger"
           onClick={() => confirmDeleteApplicationForm(rowData)}
+        />
+        <Button
+          icon="pi pi-file"
+          label="View My Application Form"
+          rounded
+          outlined
+          className="mr-2"
+          onClick={() => viewAppForm(rowData)}
         />
       </React.Fragment>
     );
@@ -341,6 +389,7 @@ const Dashboard = () => {
           >
             <Column field="applicationFormId" header="Application Form ID"></Column>
             <Column field="reason" header="Description"></Column>
+            <Column field="applicationStatus" header="Application Status"></Column>
             <Column
               field="options" header="Options"
               body={actionBodyTemplateForApplicationForm}
@@ -368,6 +417,78 @@ const Dashboard = () => {
                 Are you sure you want to delete Application Form <b>{applicationForm.applicationFormId}</b>?
               </span>
             )}
+          </div>
+        </Dialog>
+        <Dialog
+          visible={appFormDialog}
+          style={{ width: "32rem" }}
+          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+          header="My Application Form Details"
+          modal
+          className="p-fluid"
+          footer={appFormDialogFooter}
+          onHide={hideDialog}
+        >
+          
+
+          <div className="field">
+            <label className="font-bold">Status:</label>
+            <p>{appForm.applicationStatus}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">Application Type:</label>
+            <p>{appForm.formType}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              Is applicant first time having pets?
+            </label>
+            {appForm.isFirstTime && <p>Yes</p>}
+            {!appForm.isFirstTime && <p>No</p>}
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              Applicant's pet alone time (if any)
+            </label>
+            <p>{appForm.petAloneTime}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              What kind of sleeping area can the applicant provide?
+            </label>
+            <p>{appForm.sleepArea}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              Does the applicant have other pets?
+            </label>
+            {appForm.hasOtherPets && <p>Yes</p>}
+            {!appForm.hasOtherPets && <p>No</p>}
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              Does the applicant's pet have daily exercise?
+            </label>
+            {appForm.hasOtherPets && <p>Yes</p>}
+            {!appForm.hasOtherPets && <p>No</p>}
+          </div>
+
+          <div className="field">
+            <label className="font-bold">
+              How many existing pets does the applicant own?
+            </label>
+            <p>{appForm.existingPetsOwned}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">Reason for {appForm.formType}</label>
+            <p>{appForm.reason}</p>
           </div>
         </Dialog>
       </div>

@@ -221,6 +221,26 @@ const ChatPage = () => {
                   <Avatar name={c.name} src={c.avatarSrc} />
                 </Conversation>
               ))}
+
+            {conversations.length == 0 && (
+              <Conversation>
+                <Conversation.Content>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      height: "100%",
+                      textAlign: "center",
+                      fontSize: "1.2em",
+                    }}
+                  >
+                    Only members involved in your animal listing or application
+                    forms will be available to chat
+                  </div>
+                </Conversation.Content>
+              </Conversation>
+            )}
           </ConversationList>
         </Sidebar>
         {currentConversation.email && (
