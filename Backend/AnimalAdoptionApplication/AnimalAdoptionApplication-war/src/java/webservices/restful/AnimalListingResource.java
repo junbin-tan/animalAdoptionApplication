@@ -101,10 +101,11 @@ public class AnimalListingResource {
 
         // must do filter to display available animal listings after nullify relationships above here
         // if not won't work, can't do it in session bean also
+        // Logic: only display animal listing that are not yet completed/accepted
         allAnimalListings = allAnimalListings.stream().filter(al -> {
             boolean isStillAvailable = true;
             for (ApplicationForm af : al.getApplicationForms()) {
-                if (af != null && af.getApplicationStatus() != ApplicationStatusEnum.SUBMITTED) {
+                if (af != null && ((af.getApplicationStatus() != ApplicationStatusEnum.SUBMITTED && af.getApplicationStatus() != ApplicationStatusEnum.REJECTED) && (af.getApplicationStatus() != ApplicationStatusEnum.SUBMITTED))) {
                     isStillAvailable = false;
                 }
             }
