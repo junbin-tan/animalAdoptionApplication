@@ -8,6 +8,7 @@ import { classNames } from "primereact/utils";
 import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Auth from "../../helpers/Auth";
+import Header from "../../components/AdminHeader";
 // Initialize Userfront Core JS
 Userfront.init("pn4545mb");
 
@@ -99,6 +100,7 @@ const LoginPage = () => {
 
   return (
     <>
+      <Header title="Admin Login Panel" subtitle=" Welcome to Animal Adoption Application Admin Panel" />
       <div className="form-demo">
         <Dialog
           visible={showMessage}
