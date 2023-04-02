@@ -5,8 +5,6 @@
  */
 package webservices.restful;
 
-import ejb.session.stateless.AnimalListingSessionBeanLocal;
-import ejb.session.stateless.ApplicationFormSessionBeanLocal;
 import ejb.session.stateless.MemberSessionBeanLocal;
 import entity.ApplicationForm;
 import exception.ApplicationFormExistException;
@@ -35,6 +33,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import ejb.session.stateless.AnimalListingSessionBeanLocal;
+import ejb.session.stateless.ApplicationFormSessionBeanLocal;
 
 /**
  *
