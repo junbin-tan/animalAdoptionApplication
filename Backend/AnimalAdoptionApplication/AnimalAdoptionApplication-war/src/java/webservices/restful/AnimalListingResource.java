@@ -5,7 +5,6 @@
  */
 package webservices.restful;
 
-import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import entity.AnimalListing;
 import entity.ApplicationForm;
 import entity.ApplicationStatusEnum;
@@ -35,6 +34,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import ejb.session.stateless.AnimalListingSessionBeanLocal;
 
 /**
  *

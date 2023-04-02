@@ -1,5 +1,5 @@
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   MainContainer,
   ChatContainer,
@@ -36,6 +36,7 @@ import avatarIcon from "../../images/ava-06.png";
 import Api from "../../helpers/Api";
 import Auth from "../../helpers/Auth";
 import moment from "moment";
+import UserContext from "../../helpers/context/UserContext";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -62,10 +63,16 @@ const ChatPage = () => {
 
   const [recipients, setReceipients] = useState([]);
 
+  const { currentActualUser } = useContext(UserContext);
+
+  const memberAccountStatusVerified =
+    currentActualUser && currentActualUser.accountStatus === "VERIFIED";
+
   useEffect(() => {
-    Api.getChatReceipients()
-      .then((response) => response.json())
-      .then((data) => setReceipients(data));
+    memberAccountStatusVerified &&
+      Api.getChatReceipients()
+        .then((response) => response.json())
+        .then((data) => setReceipients(data));
   }, []);
 
   const conversations = [];
@@ -118,8 +125,6 @@ const ChatPage = () => {
   const [chatsData, loading, error] = useCollection(q, "hooks");
 
   const [finalMessages, setFinalMessages] = useState([]);
-
- 
 
   useEffect(() => {
     const messages = [];
@@ -201,90 +206,101 @@ const ChatPage = () => {
         position: "relative",
       }}
     >
-      <MainContainer responsive>
-        <Sidebar position="left" scrollable={false}>
-          <Search placeholder="Search..." />
-          <ConversationList>
-            {conversations &&
-              conversations.map((c) => (
-                <Conversation
-                  key={c._id}
-                  name={c.name}
-                  onClick={() => setCurrentConversation(c)}
-                >
-                  <Avatar name={c.name} src={c.avatarSrc} />
-                </Conversation>
-              ))}
-
-            {conversations.length === 0 && (
-              <Conversation>
-                <Conversation.Content>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      height: "100%",
-                      textAlign: "center",
-                      fontSize: "1.2em",
-                    }}
+      {!memberAccountStatusVerified && (
+        <>
+          <h2 className="text-center">Your Account Status</h2>
+          <h5 className="text-center">
+            Please wait for the Admin to verify your account before you can chat with others. Thank you.
+          </h5>
+        </>
+      )}
+      
+      {memberAccountStatusVerified && (
+        <MainContainer responsive>
+          <Sidebar position="left" scrollable={false}>
+            <Search placeholder="Search..." />
+            <ConversationList>
+              {conversations &&
+                conversations.map((c) => (
+                  <Conversation
+                    key={c._id}
+                    name={c.name}
+                    onClick={() => setCurrentConversation(c)}
                   >
-                    Only members involved in your animal listing or application
-                    forms will be available to chat
-                  </div>
-                </Conversation.Content>
-              </Conversation>
-            )}
-          </ConversationList>
-        </Sidebar>
-        {currentConversation.email && (
-          <ChatContainer>
-            <ConversationHeader>
-              <ConversationHeader.Back />
-              <Avatar src={avatarIcon} name="Zoe" />
-              <ConversationHeader.Content
-                userName={currentConversation.name}
-                info="Active 10 mins ago"
-              />
-              <ConversationHeader.Actions>
-                <VoiceCallButton />
-                <VideoCallButton />
-                <EllipsisButton orientation="vertical" />
-              </ConversationHeader.Actions>
-            </ConversationHeader>
-            <MessageList>
-              {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
-              {finalFinalMessages}
-            </MessageList>
-            <MessageInput
-              placeholder="Type message here"
-              value={messageInputValue}
-              onChange={(val) => setMessageInputValue(val)}
-              onSend={(val) => sendMessage(val)}
-            />
-          </ChatContainer>
-        )}
+                    <Avatar name={c.name} src={c.avatarSrc} />
+                  </Conversation>
+                ))}
 
-        {!currentConversation.email && (
-          <ChatContainer>
-            <MessageList>
-              <MessageList.Content
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  height: "100%",
-                  textAlign: "center",
-                  fontSize: "1.2em",
-                }}
-              >
-                Please select a member to chat for animal listings and
-                application forms
-              </MessageList.Content>
-            </MessageList>
-          </ChatContainer>
-        )}
-      </MainContainer>
+              {conversations.length === 0 && (
+                <Conversation>
+                  <Conversation.Content>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        height: "100%",
+                        textAlign: "center",
+                        fontSize: "1.2em",
+                      }}
+                    >
+                      Only members involved in your animal listing or
+                      application forms will be available to chat
+                    </div>
+                  </Conversation.Content>
+                </Conversation>
+              )}
+            </ConversationList>
+          </Sidebar>
+          {currentConversation.email && (
+            <ChatContainer>
+              <ConversationHeader>
+                <ConversationHeader.Back />
+                <Avatar src={avatarIcon} name="Zoe" />
+                <ConversationHeader.Content
+                  userName={currentConversation.name}
+                  info="Active 10 mins ago"
+                />
+                <ConversationHeader.Actions>
+                  <VoiceCallButton />
+                  <VideoCallButton />
+                  <EllipsisButton orientation="vertical" />
+                </ConversationHeader.Actions>
+              </ConversationHeader>
+              <MessageList>
+                {/* <MessageSeparator content="Saturday, 30 November 2019" /> */}
+                {finalFinalMessages}
+              </MessageList>
+              <MessageInput
+                placeholder="Type message here"
+                value={messageInputValue}
+                onChange={(val) => setMessageInputValue(val)}
+                onSend={(val) => sendMessage(val)}
+              />
+            </ChatContainer>
+          )}
+
+          {!currentConversation.email && (
+            <ChatContainer>
+              <MessageList>
+                <MessageList.Content
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    height: "100%",
+                    textAlign: "center",
+                    fontSize: "1.2em",
+                  }}
+                >
+                  Please select a member to chat for animal listings and
+                  application forms
+                </MessageList.Content>
+              </MessageList>
+            </ChatContainer>
+          )}
+        </MainContainer>
+      )}
     </div>
   );
 };
