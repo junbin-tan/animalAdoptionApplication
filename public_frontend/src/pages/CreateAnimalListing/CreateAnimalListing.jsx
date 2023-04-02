@@ -134,6 +134,22 @@ const CreateAnimalListing = () => {
         errors.description = "Description is required.";
       }
 
+      if (!data.isAdoption && !data.isFostering) {
+        errors.isAdoption = "Adoption is required.";
+      }
+
+      if (!data.isFostering && !data.isAdoption) {
+        errors.isFostering = "Fostering is required.";
+      }
+
+      if (data.isFostering && !data.fosterStartDate) {
+        errors.fosterStartDate = "Foster Start Date is required.";
+      }
+
+      if (data.isFostering && !data.fosterEndDate) {
+        errors.fosterEndDate = "Foster End Date is required.";
+      }
+
       return errors;
     },
     onSubmit: (data) => {
@@ -500,10 +516,18 @@ const CreateAnimalListing = () => {
                     name="fosterStartDate"
                     value={formik.values.fosterStartDate}
                     onChange={formik.handleChange}
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("fosterStartDate"),
+                    })}
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
-                  <label htmlFor="fosterStartDate">
+                  <label 
+                  htmlFor="fosterStartDate"
+                  className={classNames({
+                    "p-error": isFormFieldValid("fosterStartDate"),
+                  })}
+                  >
                     Foster Start Date (For Fostering Only)
                   </label>
                 </span>
@@ -517,10 +541,18 @@ const CreateAnimalListing = () => {
                     name="fosterEndDate"
                     value={formik.values.fosterEndDate}
                     onChange={formik.handleChange}
+                    className={classNames({
+                      "p-invalid": isFormFieldValid("fosterEndDate"),
+                    })}
                     dateFormat="dd/mm/yy"
                     autoFocus
                   />
-                  <label htmlFor="fosterEndDate">
+                  <label 
+                  htmlFor="fosterEndDate"
+                  className={classNames({
+                    "p-error": isFormFieldValid("fosterEndDate"),
+                  })}
+                  >
                     Foster End Date (For Fostering Only)
                   </label>
                 </span>
