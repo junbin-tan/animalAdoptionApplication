@@ -104,6 +104,14 @@ public class EventRegistrationSessionBean implements EventRegistrationSessionBea
 
         return query.getResultList();
     }
+    
+    @Override
+    public List<EventRegistration> retrieveEventRegistrationByEmail(String email) {
+        Query query = em.createQuery("SELECT e FROM EventRegistration e WHERE e.member.email = :email");
+        query.setParameter("email", email);
+        
+        return query.getResultList();
+    }
 
     @Override
     public EventRegistration retrieveEventRegistrationById(Long eventRegistrationId) throws EventRegistrationNotFoundException {
@@ -131,7 +139,7 @@ public class EventRegistrationSessionBean implements EventRegistrationSessionBea
 
         return query.getResultList();
     }
-
+    
     @Override
     public void updateEventRegistration(EventRegistration eventRegistration) throws EventRegistrationNotFoundException, UpdateEventRegistrationException, InputDataValidationException {
         if (eventRegistration != null && eventRegistration.getEventRegistrationId() != null) {

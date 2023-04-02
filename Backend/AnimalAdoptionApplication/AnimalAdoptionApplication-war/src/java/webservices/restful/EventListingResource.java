@@ -9,6 +9,8 @@ import ejb.session.stateless.EventListingSessionBeanLocal;
 import entity.ApplicationForm;
 import entity.EventListing;
 import entity.EventRegistration;
+import exception.DeleteEventListingException;
+import exception.EventListingNotFoundException;
 import exception.InputDataValidationException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
@@ -17,9 +19,11 @@ import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -60,12 +64,12 @@ public class EventListingResource {
             JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        }  catch (MemberNotFoundException ex) {
+        } catch (MemberNotFoundException ex) {
             JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<EventListing> getAllEventListings() {
@@ -80,19 +84,17 @@ public class EventListingResource {
             el.getMember().setReviewsCreated(null);
             el.getMember().setReviewsReceived(null);
             el.getMember().setApplicationForms(null);
-            
+
             for (EventRegistration er : el.getEventRegistrations()) {
                 er.setEventListing(null);
-                er.setMember(null);   
+                er.setMember(null);
             }
         }
-        
-
 
         return allEventListings;
 
     }
-    
+
     @GET
     @Path("/getAllEventListingsAdmin")
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,13 +117,13 @@ public class EventListingResource {
                 el.getMember().setReviewsCreated(null);
                 el.getMember().setReviewsReceived(null);
                 el.getMember().setApplicationForms(null);
-            
+
                 for (EventRegistration er : el.getEventRegistrations()) {
                     er.setEventListing(null);
-                    er.setMember(null);   
+                    er.setMember(null);
                 }
             }
-        
+
             return Response.status(200).entity(allEventListings).build();
         } else {
             msg = "Invalid Userfront user! Go away!";
@@ -130,9 +132,48 @@ public class EventListingResource {
         }
 
     }
+
+    @GET
+    @Path("/getEventListingByMemberEmail/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EventListing> getEventListingByMemberEmail(@PathParam("email") String emailAddress) {
+        List<EventListing> eventListings = eventListingSessionBeanLocal.retrieveEventListingByMemberEmail(emailAddress);
+
+        for (EventListing el : eventListings) {
+            el.setMember(null);
+            for (EventRegistration er : el.getEventRegistrations()) {
+                er.setEventListing(null);
+
+                // need to retrieve member on each event registration to know who submittted it
+                // so set inverse member relationship to null
+                er.getMember().setAnimalListings(null);
+                er.getMember().setDonations(null);
+                er.getMember().setEventListings(null);
+                er.getMember().setEventRegistrations(null);
+                er.getMember().setNotifications(null);
+                er.getMember().setReviewsCreated(null);
+                er.getMember().setReviewsReceived(null);
+                er.getMember().setApplicationForms(null);
+            }
+        }
+
+        return eventListings;
+
+    }
     
-    
-    
-    
+    @DELETE
+    @Path("/deleteEventListing/{eventListingId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteEventListingById(@PathParam("eventListingId") Long eventListingId) {
+        try {
+            eventListingSessionBeanLocal.deleteEventListing(eventListingId);
+            return Response.status(204).build();
+        } catch (EventListingNotFoundException | MemberNotFoundException | DeleteEventListingException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
+    }
 
 }

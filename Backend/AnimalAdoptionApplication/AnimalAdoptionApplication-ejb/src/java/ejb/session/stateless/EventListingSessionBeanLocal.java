@@ -27,6 +27,8 @@ public interface EventListingSessionBeanLocal {
     
     public List<EventListing> retrieveAllEventListings();
     
+    public List<EventListing> retrieveEventListingByMemberEmail(String email);
+    
     public EventListing retrieveEventListingById(Long eventListingId) throws EventListingNotFoundException;
     
     public EventListing retrieveEventListingByEventName(String eventName) throws EventListingNotFoundException;

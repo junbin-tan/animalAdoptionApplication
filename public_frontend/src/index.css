@@ -15,7 +15,7 @@ code {
     monospace;
 }
 
-.animalListingSection, .applicationFormSection {
+.animalListingSection, .applicationFormSection, .eventListingSection, .eventRegistrationSection {
   margin: 10px;
   margin-bottom: 20px;
 }

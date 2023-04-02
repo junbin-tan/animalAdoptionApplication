@@ -26,6 +26,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -86,6 +87,19 @@ public class EventRegistrationResource {
         }
     }
 
-    
+    @GET
+    @Path("/getEventRegistrationByMemberEmail/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EventRegistration> getEventRegistrationByMemberEmail(@PathParam("email") String email) {
+        List<EventRegistration> eventRegistration = eventRegistrationSessionBeanLocal.retrieveEventRegistrationByEmail(email);
+
+        for (EventRegistration er : eventRegistration) {
+            er.setMember(null);
+            er.setEventListing(null);
+        }
+
+        return eventRegistration;
+
+    }
 
 }
