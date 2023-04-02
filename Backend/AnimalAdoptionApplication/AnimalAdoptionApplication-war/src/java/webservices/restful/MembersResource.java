@@ -22,6 +22,7 @@ import exception.InvalidLoginCredentialException;
 import exception.MemberExistsException;
 import exception.MemberNotFoundException;
 import exception.UnknownPersistenceException;
+import exception.UpdateMemberException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -280,8 +281,10 @@ public class MembersResource {
             } else {
                 currentMember.setAccountStatus(AccountStatusEnum.VERIFIED);
             }
+            
+            memberSessionBeanLocal.updateMember(currentMember);
             return Response.status(204).build();
-        } catch (MemberNotFoundException ex) {
+        } catch (MemberNotFoundException | UpdateMemberException | InputDataValidationException ex) {
             JsonObject exception = Json.createObjectBuilder()
                     .add("error", ex.getMessage())
                     .build();

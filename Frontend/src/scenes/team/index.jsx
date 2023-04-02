@@ -34,19 +34,21 @@ const Team = () => {
 
 
   const handleSelectChange = (event, params) => {
-    // const accessLevel = event.target.value;
-    // const memberId = params.row.id;
-    // const data = { access: accessLevel };
+    const accessLevel = event.target.value;
+    const memberId = params.row.id;
+    const data = { access: accessLevel };
     
-    // Api.updateMemberAccess(memberId, data)
-    //   .then((response) => {
-    //     // handle successful response
-    //     console.log("Access level updated successfully");
-    //   })
-    //   .catch((error) => {
-    //     // handle error response
-    //     console.error("Error updating access level:", error);
-    //   });
+    Api.updateMemberAccess(memberId, data)
+      .then((response) => {
+        // handle successful response
+        if (response.status === 204) {
+          console.log("Access level updated successfully");
+        }
+      })
+      .catch((error) => {
+        // handle error response
+        console.error("Error updating access level:", error);
+      });
   };
   
 

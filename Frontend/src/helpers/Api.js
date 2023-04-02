@@ -17,8 +17,8 @@ const Api = {
       `${SERVER_PREFIX}/member/updateMemberAccess/${memberId}`,
       {
         headers: {
-          Accept: "member/json",
-          "Content-Type": "member/json",
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         method: "PUT",
         body: JSON.stringify(data),
