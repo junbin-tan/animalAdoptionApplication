@@ -12,6 +12,19 @@ const Api = {
          method: "GET",
       });
     },
+    updateMemberAccess(memberId, data) {
+    return fetch(
+      `${SERVER_PREFIX}/member/updateMemberAccess/${memberId}`,
+      {
+        headers: {
+          Accept: "member/json",
+          "Content-Type": "member/json",
+        },
+        method: "PUT",
+        body: JSON.stringify(data),
+      }
+    );
+  },
     getAllAdmins() {
         return fetch(`${SERVER_PREFIX}/admin/getAllAdmins`, {
          headers: {

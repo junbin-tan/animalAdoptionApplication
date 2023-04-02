@@ -1,35 +1,54 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
+import { Select, MenuItem } from "@material-ui/core";
+
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import FlagIcon from "@mui/icons-material/Flag";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
 import Header from "../../components/AdminHeader";
 import React, { useState, useEffect } from "react";
+import GppMaybeIcon from "@mui/icons-material/GppMaybe";
+import GppBadIcon from "@mui/icons-material/GppBad";
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-
-
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 // importing data should change later
 import { mockDataTeam } from "../../assets/data/mockData";
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 
-
-
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   // to prevent other userfront non admin logged in in admin
   if (!Auth.isAdmin(Auth.getUser())) {
-    Auth.redirectIfLoggedIn('/login');
+    Auth.redirectIfLoggedIn("/login");
   }
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut("/login");
+
+
+  const handleSelectChange = (event, params) => {
+    // const accessLevel = event.target.value;
+    // const memberId = params.row.id;
+    // const data = { access: accessLevel };
+    
+    // Api.updateMemberAccess(memberId, data)
+    //   .then((response) => {
+    //     // handle successful response
+    //     console.log("Access level updated successfully");
+    //   })
+    //   .catch((error) => {
+    //     // handle error response
+    //     console.error("Error updating access level:", error);
+    //   });
+  };
+  
 
   const [members, setMembers] = useState([]);
 
@@ -49,7 +68,7 @@ const Team = () => {
         name: data.name,
         phone: data.phoneNumber,
         email: data.email,
-        access: "user",
+        access: data.accountStatus,
         openToFoster: data.openToFoster,
         openToAdopt: data.openToAdopt,
         location: data.location,
@@ -59,7 +78,6 @@ const Team = () => {
       };
       tempActualMembers.push(member);
     });
-
 
   // make the column for the data
   //flex will grow to 1 fractiion of the size of flex , no flex wont grow
@@ -82,21 +100,20 @@ const Team = () => {
       renderCell: ({ row: { access } }) => {
         return (
           <Box
-            width="60%"
+            width="75%"
             m="0 auto"
             p="5px"
             display="flex"
             justifyContent="center"
             backgroundColor={
-              access === "admin"
-                ? colors.greenAccent[600]
-                : colors.greenAccent[700]
+              access === "VERIFIED" ? colors.greenAccent[600] : "#d8392b"
             }
-            borderRadius="4px"
+            borderRadius="5px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
+            {access === "DEACTIVATED" && <GppBadIcon />}
+            {access === "FLAGGED" && <GppMaybeIcon />}
+            {access === "UNVERIFIED" && <UnpublishedIcon />}
+            {access === "VERIFIED" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
               {access}
             </Typography>
@@ -104,23 +121,52 @@ const Team = () => {
         );
       },
     },
-    { 
-      field: 'moreInfo', 
-      headerName: 'More Info', 
+
+    {
+      field: "action",
+      headerName: "Change Access",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <Box
+            width="75%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={"#24ccff"}
+            borderRadius="5px"
+          >
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={params.row.access}
+              onChange={(event) => handleSelectChange(event, params)}
+              color="white"
+              sx={{ backgroundColor: "white" }}
+            >
+              <MenuItem value={"DEACTIVATED"}>Deactivate</MenuItem>
+              <MenuItem value={"FLAGGED"}>Flag</MenuItem>
+              <MenuItem value={"UNVERIFIED"}>Unverify</MenuItem>
+              <MenuItem value={"VERIFIED"}>Verify</MenuItem>
+            </Select>
+          </Box>
+        );
+      },
+    },
+    {
+      field: "moreInfo",
+      headerName: "More Info",
       width: 150,
       sortable: false,
       renderCell: (params) => (
-        <Button 
-          variant="contained" 
-          onClick={() => handleClickOpen(params.row)}
-        >
+        <Button variant="contained" onClick={() => handleClickOpen(params.row)}>
           View
         </Button>
-      )
+      ),
     },
-
   ];
-  
+
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -132,6 +178,22 @@ const Team = () => {
     setSelectedRow(row);
     setOpen(true);
   };
+
+  // const handleSelectChange = (event, params) => {
+  //   const accessLevel = event.target.value;
+  //   const memberId = params.row.id;
+  //   const data = { access: accessLevel };
+    
+  //   Api.updateMemberAccess(memberId, data)
+  //     .then((response) => {
+  //       // handle successful response
+  //       console.log("Access level updated successfully");
+  //     })
+  //     .catch((error) => {
+  //       // handle error response
+  //       console.error("Error updating access level:", error);
+  //     });
+  // };
 
   return (
     // neeed to specify the actual pixel height defintion if not css cannto redner
@@ -161,31 +223,33 @@ const Team = () => {
       >
         <DataGrid rows={tempActualMembers} columns={columns} />
         {selectedRow && (
-        <Dialog open={open} onClose={handleClose}>
-
-          <DialogContent  style={{
-         border: '1px solid #ccc',
-         borderRadius: '10px',
-         padding: '20px',
-         width: '500px',}}>
-            <div>
-        
-              <h2>More Info</h2>
-              <p>ID: {selectedRow.id}</p>
-              <p>Name: {selectedRow.name}</p>
-              <p>Email: {selectedRow.email}</p>
-              <p>Access: {selectedRow.access}</p>
-              <p>Location: {selectedRow.location}</p>
-              <p>Occupation: {selectedRow.occupation}</p>
-              <p>Residential Type: {selectedRow.residentialType}</p>
-              <p>Account Status: {selectedRow.accountStatus} </p>
-              <p>Open To Foster: {selectedRow.openToFoster ? "Yes" : "No"} </p>
-              <p>Open To Adopt: {selectedRow.openToAdopt ? "Yes" : "No"}</p>
-      
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogContent
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "10px",
+                padding: "20px",
+                width: "500px",
+              }}
+            >
+              <div>
+                <h2>More Info</h2>
+                <p>ID: {selectedRow.id}</p>
+                <p>Name: {selectedRow.name}</p>
+                <p>Email: {selectedRow.email}</p>
+                <p>Access: {selectedRow.access}</p>
+                <p>Location: {selectedRow.location}</p>
+                <p>Occupation: {selectedRow.occupation}</p>
+                <p>Residential Type: {selectedRow.residentialType}</p>
+                <p>Account Status: {selectedRow.accountStatus} </p>
+                <p>
+                  Open To Foster: {selectedRow.openToFoster ? "Yes" : "No"}{" "}
+                </p>
+                <p>Open To Adopt: {selectedRow.openToAdopt ? "Yes" : "No"}</p>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </Box>
     </Box>
   );

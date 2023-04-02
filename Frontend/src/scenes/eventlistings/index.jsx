@@ -18,7 +18,7 @@ import { mockDataTeam } from "../../assets/data/mockData";
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
 
-const AnimalListing = () => {
+const AnimalListingAll = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   
@@ -29,39 +29,30 @@ const AnimalListing = () => {
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut("/login");
 
-  const [animalListings, setAnimalListings] = useState([]);
+  const [eventListings, setEventListings] = useState([]);
 
-  // get allanimallisting from java restful backend
-    useEffect(() => {
-    Api.getAllAnimalListings()
+  useEffect(() => {
+    Api.getAllEventListingsAdmin()
       .then((data) => data.json())
-      .then((data) => setAnimalListings(data));
-    }, []);
+      .then((data) => setEventListings(data));
+  }, []);
 
-  // map members data to compatible data format for datagrid below
-  var tempActualAnimalListings= [];
-  animalListings &&
-    animalListings.map((data) => {
-      const animalListing = {
-        id: data.animalListingId,
-        flatFee: data.flatFee,
+  //map members data to compatible data format for datagrid below
+  var tempActualEventListings = [];
+  eventListings &&
+  eventListings.map((data) => {
+      const eventListing = {
+        id: data.eventListingId,
+        name: data.eventName,
+        date: moment(data.dateAndTime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
+        location: data.location,
+        capacity: data.capacity,
         description: data.description,
-        date:  moment(data.createDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
-        age: data.age,
-        name: data.name,
-        gender: data.gender,
-        breed: data.breed,
-        weight: data.weight,
-        animalType: data.animalType,
-        isActive: data.isActive,
-        isNeutered: data.isNeutered,
-        isAdoption: data.isAdoption,
-        isFostering: data.isFostering,
-        fosterStartDate: moment(data.fosterStartDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
-        fosterEndDate: moment(data.fosterEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
+        eventType: data.eventType,
       };
-      tempActualAnimalListings.push(animalListing);
+      tempActualEventListings.push(eventListing);
     });
+
 
 
   
@@ -76,10 +67,9 @@ const AnimalListing = () => {
       flex: 1,
       cellClassName: "name-column-cell",
     },
-    { field: "age", headerName: "Age", type: "number", headerAlign: "left", align:"left"},
-    { field: "gender", headerName: "Gender", flex: 1 },
-    { field: "breed", headerName: "Breed", flex: 1 },
-    { field: "animalType", headerName: "Animal Type", flex: 1 },
+    { field: "date", headerName: "Date", type: "number", headerAlign: "left", align:"left" , flex: 1 },
+    { field: "location", headerName: "Location", flex: 1 },
+    { field: "capacity", headerName: " Capacity", type: "number", headerAlign: "left", align:"left" , flex: 1 },
     { 
       field: 'moreInfo', 
       headerName: 'More Info', 
@@ -135,7 +125,7 @@ const AnimalListing = () => {
           },
         }}
       >
-        <DataGrid rows={tempActualAnimalListings} columns={columns} />
+        <DataGrid rows={tempActualEventListings} columns={columns} />
         {selectedRow && (
         <Dialog open={open} onClose={handleClose}>
           <DialogContent  style={{ border: '1px solid #ccc',
@@ -148,23 +138,11 @@ const AnimalListing = () => {
 
               <p>ID: {selectedRow.id}</p>
               <p>Name: {selectedRow.name}</p>
-              <p>Age: {selectedRow.age}</p>
-              <p>Gender: {selectedRow.gender}</p>
-              <p>Breed: {selectedRow.breed}</p>
-              <p>Weight: {selectedRow.weight}</p>
-              <p>Animal Type: {selectedRow.animalType}</p>
-              <p>Active: {selectedRow.isActive ? "Yes" : "No"}</p>
-              <p>Neutered: {selectedRow.isNeutered ? "Yes" : "No"}</p>
-              <p>Adoption: {selectedRow.isAdoption ? "Yes" : "No"}</p>
-              <p>Fostering: {selectedRow.isFostering ? "Yes" : "No"}</p>
               <p>Date: {selectedRow.date}</p>
-              {selectedRow.isFostering ? (
-                <>
-               <p>Foster Start Date: {selectedRow.fosterStartDate}</p>
-               <p>Foster End Date: {selectedRow.fosterEndDate}</p>
-               </>) : null}
-              <p>Description: {selectedRow.description}</p>
-
+              <p>Location: {selectedRow.location}</p>
+              <p>Capacity: {selectedRow.capacity}</p>
+              <p>Event Type: {selectedRow.eventType}</p>
+              <p  style={{ wordWrap: 'break-word' }}>Description: {selectedRow.description}</p> 
       
             </div>
           </DialogContent>
@@ -175,4 +153,4 @@ const AnimalListing = () => {
   );
 };
 
-export default AnimalListing;
+export default AnimalListingAll;
