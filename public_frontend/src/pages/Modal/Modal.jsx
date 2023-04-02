@@ -153,9 +153,9 @@ const Modal = ({ setShowModal, description, animalListing }) => {
       {/* Show login button and tell user to login if user is not logged in */}
       {!currentActualUser && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_animallisting">
+            <div className="single__modal_animallisting">
+              <span className="close__modal_animallisting">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}
@@ -184,9 +184,9 @@ const Modal = ({ setShowModal, description, animalListing }) => {
       {/* Tell user that you can't register your own animal listings lol */}
       {currentActualUser && currentActualUser.email === animalListing.member.email && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_animallisting">
+            <div className="single__modal_animallisting">
+              <span className="close__modal_animallisting">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}
@@ -216,9 +216,9 @@ const Modal = ({ setShowModal, description, animalListing }) => {
       {/*  Show application form if user is logged in */}
       {currentActualUser && currentActualUser.email !== animalListing.member.email && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_animallisting">
+            <div className="single__modal_animallisting">
+              <span className="close__modal_animallisting">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}

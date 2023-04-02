@@ -131,9 +131,9 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
       {/* Show login button and tell user to login if user is not logged in */}
       {!currentActualUser && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_event">
+            <div className="single__modal_event">
+              <span className="close__modal_event">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}
@@ -163,9 +163,9 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
       {/* Tell user that you can't register your own events lol */}
       {currentActualUser && currentActualUser.email === eventListing.member.email && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_event">
+            <div className="single__modal_event">
+              <span className="close__modal_event">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}
@@ -186,9 +186,9 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
       {/*  Show application form if user is logged in */}
       {currentActualUser && currentActualUser.email !== eventListing.member.email && (
         <>
-          <div className="modal__wrapper">
-            <div className="single__modal">
-              <span className="close__modal">
+          <div className="modal__wrapper_event">
+            <div className="single__modal_event">
+              <span className="close__modal_event">
                 <i
                   className="ri-close-line"
                   onClick={() => setShowModal(false)}
