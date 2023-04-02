@@ -6,77 +6,87 @@ import { classNames } from "primereact/utils";
 import { Dialog } from "primereact/dialog";
 import Api from "../../helpers/Api";
 import "./ContactUsPage.css";
+import Auth from "../../helpers/Auth";
 
 const ContactUsPage = () => {
-    const [showMessage, setShowMessage] = useState(false);
-    const [formData, setFormData] = useState();
+  const [showMessage, setShowMessage] = useState(false);
+  const [formData, setFormData] = useState();
 
-    const formik = useFormik({
-        initialValues: {
-          name: "",
-          email: "",
-          message: "",
-        },
-        validate: (data) => {
-          let errors = {};
-    
-          if (!data.name) {
-            errors.name = "Name is required.";
-          }
+  // get currrent user if authenticated
+  const currentUser = Auth.getUser();
 
-          if (!data.email) {
-            errors.email = "Email is required.";
-          }
+  let userFullName = "";
+  let userEmail = "";
 
-          if (!data.message) {
-            errors.message = "Message is required.";
+  if (currentUser) {
+    userFullName = currentUser.data.name;
+    userEmail = currentUser.email;
+  }
 
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
-          
-         ) {
-            errors.email = "Invalid email address. E.g. example@email.com";
-          }
-          
-          return errors;
-        },
+  const formik = useFormik({
+    initialValues: {
+      name: userFullName,
+      email: userEmail,
+      message: "",
+    },
+    validate: (data) => {
+      let errors = {};
 
-        onSubmit: (data) => {
-          setFormData(data);
-          delete data.accept;
-          Api.createEnquiry(data).then((data) => setShowMessage(true));
-          formik.resetForm();
-        },
-      });
-    
-      const isFormFieldValid = (name) =>
-        !!(formik.touched[name] && formik.errors[name]);
+      if (!data.name) {
+        errors.name = "Name is required.";
+      }
 
-      const getFormErrorMessage = (name) => {
-        return (
-          isFormFieldValid(name) && (
-            <small className="p-error">{formik.errors[name]}</small>
-          )
-        );
-      };
+      if (!data.email) {
+        errors.email = "Email is required.";
+      }
 
-      const dialogFooter = (
-        <div className="flex justify-content-center">
-          <Button
-            label="Close"
-            className="p-button-text"
-            autoFocus
-            onClick={() => setShowMessage(false)}
-          />
-        </div>
-      );
+      if (!data.message) {
+        errors.message = "Message is required.";
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)
+      ) {
+        errors.email = "Invalid email address. E.g. example@email.com";
+      }
 
-return (
+      return errors;
+    },
+
+    onSubmit: (data) => {
+      setFormData(data);
+      delete data.accept;
+      Api.createEnquiry(data).then((data) => setShowMessage(true));
+      formik.resetForm();
+    },
+  });
+
+  const isFormFieldValid = (name) =>
+    !!(formik.touched[name] && formik.errors[name]);
+
+  const getFormErrorMessage = (name) => {
+    return (
+      isFormFieldValid(name) && (
+        <small className="p-error">{formik.errors[name]}</small>
+      )
+    );
+  };
+
+  const dialogFooter = (
+    <div className="flex justify-content-center">
+      <Button
+        label="Close"
+        className="p-button-text"
+        autoFocus
+        onClick={() => setShowMessage(false)}
+      />
+    </div>
+  );
+
+  return (
     <>
-    <h2 style={{textAlign: "center"}}> Contact Us</h2>
-    <h3 style={{textAlign: "center"}}> Drop us a message! </h3>
-    <div className="form-demo">
-    <Dialog
+      <h2 style={{ textAlign: "center" }}> Contact Us</h2>
+      <h3 style={{ textAlign: "center" }}> Drop us a message! </h3>
+      <div className="form-demo">
+        <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
           position="top"
@@ -84,101 +94,101 @@ return (
           showHeader={false}
           breakpoints={{ "960px": "80vw" }}
           style={{ width: "30vw" }}
-      >
-        <div className="flex align-items-center flex-column pt-6 px-3">
-          <i
-            className="pi pi-check-circle"
-            style={{ fontSize: "5rem", color: "var(--green-500)" }}
-          ></i>
-          <h5>Submitted!</h5>
-          <h4> We will get back to you within 3 working days!</h4>
-        </div>
-      </Dialog>
-      <div className="flex justify-content-center">
+        >
+          <div className="flex align-items-center flex-column pt-6 px-3">
+            <i
+              className="pi pi-check-circle"
+              style={{ fontSize: "5rem", color: "var(--green-500)" }}
+            ></i>
+            <h5>Submitted!</h5>
+            <h4> We will get back to you within 3 working days!</h4>
+          </div>
+        </Dialog>
+        <div className="flex justify-content-center">
           <div className="card">
-          <form onSubmit={formik.handleSubmit} className="p-fluid">
+            <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Name textbox */}
               <div className="field">
-              <span className="p-float-label">
+                <span className="p-float-label">
                   <InputText
-                  id="name"
-                  name="name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  autoFocus
-                  className={classNames({
+                    id="name"
+                    name="name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    autoFocus
+                    className={classNames({
                       "p-invalid": isFormFieldValid("name"),
-                  })}
+                    })}
                   />
                   <label
-                  htmlFor="name"
-                  className={classNames({
+                    htmlFor="name"
+                    className={classNames({
                       "p-error": isFormFieldValid("name"),
-                  })}
+                    })}
                   >
-                  Name*
+                    Name*
                   </label>
-              </span>
-              {getFormErrorMessage("name")}
+                </span>
+                {getFormErrorMessage("name")}
               </div>
 
               {/* Email textbox */}
               <div className="field">
-              <span className="p-float-label" style={{ marginTop: '15px'}}>
+                <span className="p-float-label" style={{ marginTop: "15px" }}>
                   <InputText
-                  id="email"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  className={classNames({
+                    id="email"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    className={classNames({
                       "p-invalid": isFormFieldValid("email"),
-                  })}
+                    })}
                   />
                   <label
-                  htmlFor="email"
-                  className={classNames({
+                    htmlFor="email"
+                    className={classNames({
                       "p-error": isFormFieldValid("email"),
-                  })}
+                    })}
                   >
-                  Email*
+                    Email*
                   </label>
-              </span>
-              {getFormErrorMessage("email")}
+                </span>
+                {getFormErrorMessage("email")}
               </div>
 
               {/* Message textbox */}
               <div className="field">
-              <span className="p-float-label" style={{ marginTop: '15px'}}>
+                <span className="p-float-label" style={{ marginTop: "15px" }}>
                   <InputText
-                  id="message"
-                  name="message"
-                  value={formik.values.message}
-                  onChange={formik.handleChange}
-                  className={classNames({
+                    id="message"
+                    name="message"
+                    value={formik.values.message}
+                    onChange={formik.handleChange}
+                    className={classNames({
                       "p-invalid": isFormFieldValid("message"),
-                  })}
-                  style={{height: '180px'}}
+                    })}
+                    style={{ height: "180px" }}
                   />
                   <label
-                  htmlFor="message"
-                  className={classNames({
+                    htmlFor="message"
+                    className={classNames({
                       "p-error": isFormFieldValid("message"),
-                  })}
+                    })}
                   >
-                  Message*
+                    Message*
                   </label>
-              </span>
-              {getFormErrorMessage("message")}
+                </span>
+                {getFormErrorMessage("message")}
               </div>
 
               {/* Submit button */}
               <Button type="submit" label="Send" className="mt-2" />
-          </form>
+            </form>
           </div>
-      </div> 
+        </div>
       </div>
     </>
   );
-}
+};
 
 export default ContactUsPage;
