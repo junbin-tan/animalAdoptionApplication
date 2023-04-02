@@ -39,5 +39,5 @@ public interface EventRegistrationSessionBeanLocal {
     
     public void updateEventRegistration(EventRegistration eventRegistration) throws EventRegistrationNotFoundException, UpdateEventRegistrationException, InputDataValidationException;
     
-    public void deleteEventRegistration(Long eventRegistrationId) throws EventRegistrationNotFoundException, EventListingNotFoundException, MemberNotFoundException;
+    public void deleteEventRegistration(Long eventRegistrationId) throws EventRegistrationNotFoundException;
 }
