@@ -18,7 +18,9 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import FeedIcon from '@mui/icons-material/Feed';
 import PetsIcon from '@mui/icons-material/Pets';
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -96,8 +98,8 @@ const Sidebar = () => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h4" color={colors.grey[100]}>
-                    ADMIN PANEL
+                  <Typography variant="h4" color={colors.grey[100]} >
+                    Pawfect Panel    
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
@@ -107,7 +109,7 @@ const Sidebar = () => {
             </MenuItem>
             {/* Create user  icon + name*/}
             {!isCollapsed && (
-              <Box mb="25px">
+              <Box mb="25px" >
                 <Box display="flex" justifyContent="center" alignItems="center">
                   {/* put user image tag here */}
                   <img
@@ -118,18 +120,20 @@ const Sidebar = () => {
                     style={{ cursor: "pointer", borderRadius: "50%" }}
                   />
                 </Box>
-                <Box textAlign="center">
+                <Box textAlign="center"  sx={{ mt: "20px" }}>
+                <Typography variant="h3"  fontWeight="bold" color={colors.grey[100]}>
+                    {currentUser.name}
+                  </Typography>
                   <Typography
                     variant="h5"
                     color={colors.grey[100]}
-                    fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
                     {currentUser.email}
                   </Typography>
-                  <Typography variant="h5" color={colors.grey[100]}>
+                  {/* <Typography variant="h5" color={colors.grey[100]}>
                     {currentUser.name}
-                  </Typography>
+                  </Typography> */}
                 </Box>
               </Box>
             )}
@@ -168,6 +172,13 @@ const Sidebar = () => {
                 title="Animal Listings"
                 to="/animallisting"
                 icon={<PetsIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Event Listings"
+                to="/eventlistings"
+                icon={<LocalActivityIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -239,6 +250,13 @@ const Sidebar = () => {
                 title="Event Types Pie"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <Item
+                title="Member Pie"
+                to="/memberpie"
+                icon={<DonutLargeIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
