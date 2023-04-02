@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
-import { ADOPTION_FOSTERING } from "../AnimalListing/data";
 import  AnimalListing from "../AnimalListing/AnimalListing";
 import Api from "../../helpers/Api";
 import "./AdoptionFosteringPage.css";
 
 const AdoptionFosteringPage = () => {
-    // const [data, setData] = useState(ADOPTION_FOSTERING);
     const [data, setData] = useState([]);
-    const handleCategory = () => {};
-    const handleItems = () => {};
-    
 
     useEffect(() => { 
         Api.getAllAnimalListings().then((data) => data.json()).then((data) => setData(data));

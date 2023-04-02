@@ -35,7 +35,6 @@ const Dashboard = () => {
       .then((data) => data.json())
       .then((data) => setApplicationForms(data));
   }, []);
-  console.log(applicationForms);
 
   useEffect(() => {
     Api.getEventListingByMemberEmail()
@@ -49,10 +48,10 @@ const Dashboard = () => {
       .then((data) => setEventRegistrations(data));
   }, []);
 
+ 
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
   const { currentActualUser } = useContext(UserContext);
-  console.log(currentActualUser);
   // END: Code to retrieve latest actual Member Data from Java Backend Restful Server
 
   //-------------------------Start of Manage your Animal Listing------------------------- 
@@ -325,7 +324,7 @@ const Dashboard = () => {
   //-------------------------Start of Manage your Event Listing------------------------- 
   let emptyEventListing = {
     eventListingId: null,
-    name: "",
+    eventName: "",
     description: "",
   };
 
@@ -427,8 +426,10 @@ const Dashboard = () => {
   //-------------------------Start of Manage your Event Registration------------------------- 
   let emptyEventRegistration = {
     eventRegistrationId: null,
-    name: "",
-    description: "",
+    isActive: false,
+    eventListing: {
+      eventName: null
+    },
   };
 
   const [eventRegistration, setEventRegistration] = useState(emptyEventRegistration);
@@ -730,7 +731,7 @@ const Dashboard = () => {
             />
             {eventListing && (
               <span>
-                Are you sure you want to delete <b>{eventListing.name}</b>?
+                Are you sure you want to delete <b>{eventListing.eventName}</b>?
               </span>
             )}
           </div>
@@ -759,7 +760,7 @@ const Dashboard = () => {
             tableStyle={{ minWidth: "40rem" }}
           >
             <Column field="eventRegistrationId" header="ID"></Column>
-            <Column field="" header="Event Name"></Column>
+            <Column field="eventListing.eventName" header="Event Name"></Column>
             <Column
               field="options" header="Options"
               body={actionBodyTemplateForEventRegistration}
@@ -784,7 +785,7 @@ const Dashboard = () => {
             />
             {eventRegistration && (
               <span>
-                Are you sure you want to delete <b>{eventRegistration.name}</b>?
+                Are you sure you want to delete <b>{eventRegistration.eventListing.eventName}</b>?
               </span>
             )}
           </div>

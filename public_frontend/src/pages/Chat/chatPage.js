@@ -15,12 +15,10 @@ import {
   VoiceCallButton,
   VideoCallButton,
   EllipsisButton,
-  TypingIndicator,
   MessageSeparator,
-  MessageGroup,
 } from "@chatscope/chat-ui-kit-react";
 
-import firebase, { initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
@@ -29,11 +27,8 @@ import {
   Timestamp,
   query,
   where,
-  onSnapshot,
   or,
-  orderBy,
   and,
-  limit,
 } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 
@@ -124,8 +119,7 @@ const ChatPage = () => {
 
   const [finalMessages, setFinalMessages] = useState([]);
 
-  const conversationRecipient =
-    currentConversation && currentConversation.email;
+ 
 
   useEffect(() => {
     const messages = [];
@@ -145,11 +139,11 @@ const ChatPage = () => {
         // })
         .map((doc) => {
           const sender =
-            String(doc.data().user1) == Auth.getUser().email
+            String(doc.data().user1) === Auth.getUser().email
               ? Auth.getUser().email
               : currentConversation.email;
           const direction =
-            String(doc.data().user1) == Auth.getUser().email
+            String(doc.data().user1) === Auth.getUser().email
               ? "outgoing"
               : "incoming";
 
@@ -176,7 +170,7 @@ const ChatPage = () => {
           messages.push(messageObj);
         });
     setFinalMessages(messages);
-  }, [chatsData, loading, error]);
+  }, [chatsData, loading, error, currentConversation.email]);
 
   const finalFinalMessages = [];
 
@@ -222,7 +216,7 @@ const ChatPage = () => {
                 </Conversation>
               ))}
 
-            {conversations.length == 0 && (
+            {conversations.length === 0 && (
               <Conversation>
                 <Conversation.Content>
                   <div

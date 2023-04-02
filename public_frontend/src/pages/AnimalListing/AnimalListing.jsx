@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import CheckIcon from '@mui/icons-material/Check';
 import "./AnimalListing.css";
 import Modal from "../Modal/Modal";
 
 const AnimalListing= (props) => {
   // const { title, creatorImg, imgUrl, creator } = props.item;
-  const { age, animalType, gender, image, member, isAdoption, isFostering, name, description, animalListingId } = props.item;
+  const { image, member, isAdoption, isFostering, name, description } = props.item;
 
 
   const [showModal, setShowModal] = useState(false);
