@@ -137,7 +137,7 @@ const ManageApplicationForm = () => {
         icon="pi pi-send"
         outlined
         onClick={() => {
-          navigate("/chat");
+          navigate("/chat", { state: appForm.member });
         }}
       />
     </React.Fragment>

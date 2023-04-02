@@ -35,6 +35,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import ejb.session.stateless.AnimalListingSessionBeanLocal;
 import ejb.session.stateless.ApplicationFormSessionBeanLocal;
+import entity.AnimalListing;
+import entity.Member;
 
 /**
  *
@@ -98,7 +100,22 @@ public class ApplicationFormResource {
 
         for (ApplicationForm af : applicationForms) {
             af.setMember(null);
-            af.setAnimalListing(null);
+            //af.setAnimalListing(null);
+            
+            // we want animal listing, so nullify the inverse
+            AnimalListing al = af.getAnimalListing();
+            al.setApplicationForms(null);
+            
+            // we want member from animal listing, so nullify the inverse
+            Member m = al.getMember();
+            m.setAnimalListings(null);
+            m.setApplicationForms(null);
+            m.setDonations(null);
+            m.setEventListings(null);
+            m.setEventRegistrations(null);
+            m.setNotifications(null);
+            m.setReviewsCreated(null);
+            m.setReviewsReceived(null);
         }
 
         return applicationForms;
