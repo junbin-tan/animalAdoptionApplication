@@ -8,6 +8,7 @@ import { classNames } from "primereact/utils";
 import Userfront from "@userfront/core";
 import "./loginPage.css";
 import Auth from "../../helpers/Auth";
+import Header from "../../components/AdminHeader";
 // Initialize Userfront Core JS
 Userfront.init("pn4545mb");
 
@@ -99,83 +100,89 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="form-demo">
-        <Dialog
-          visible={showMessage}
-          onHide={() => setShowMessage(false)}
-          position="top"
-          footer={dialogFooter}
-          showHeader={false}
-          breakpoints={{ "960px": "80vw" }}
-          style={{ width: "30vw" }}
-        >
-          <div className="flex align-items-center flex-column pt-6 px-3">
-            <i
-              className="pi pi-times"
-              style={{ fontSize: "5rem", color: "var(--red-500)" }}
-            ></i>
-            <h5>Login Failed!</h5>
-            <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
-              <b>{formData.error}</b>
-            </p>
-          </div>
-        </Dialog>
-        <div className="flex justify-content-center">
-          <div className="card">
-            <h5 className="text-center">Login</h5>
-            <form onSubmit={formik.handleSubmit} className="p-fluid">
-              {/* Email textbox */}
-              <div className="field">
-                <span className="p-float-label p-input-icon-right">
-                  <i className="pi pi-envelope" />
-                  <InputText
-                    id="email"
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("email"),
-                    })}
-                  />
-                  <label
-                    htmlFor="email"
-                    className={classNames({
-                      "p-error": isFormFieldValid("email"),
-                    })}
-                  >
-                    Email*
-                  </label>
-                </span>
-                {getFormErrorMessage("email")}
-              </div>
+      <div style={{ padding: "30px" }}>
+        <Header
+          title="Admin Login Panel"
+          subtitle=" Welcome to Animal Adoption Application Admin Panel"
+        />
+        <div className="form-demo">
+          <Dialog
+            visible={showMessage}
+            onHide={() => setShowMessage(false)}
+            position="top"
+            footer={dialogFooter}
+            showHeader={false}
+            breakpoints={{ "960px": "80vw" }}
+            style={{ width: "30vw" }}
+          >
+            <div className="flex align-items-center flex-column pt-6 px-3">
+              <i
+                className="pi pi-times"
+                style={{ fontSize: "5rem", color: "var(--red-500)" }}
+              ></i>
+              <h5>Login Failed!</h5>
+              <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
+                <b>{formData.error}</b>
+              </p>
+            </div>
+          </Dialog>
+          <div className="flex justify-content-center">
+            <div className="card">
+              <h5 className="text-center">Login</h5>
+              <form onSubmit={formik.handleSubmit} className="p-fluid">
+                {/* Email textbox */}
+                <div className="field">
+                  <span className="p-float-label p-input-icon-right">
+                    <i className="pi pi-envelope" />
+                    <InputText
+                      id="email"
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("email"),
+                      })}
+                    />
+                    <label
+                      htmlFor="email"
+                      className={classNames({
+                        "p-error": isFormFieldValid("email"),
+                      })}
+                    >
+                      Email*
+                    </label>
+                  </span>
+                  {getFormErrorMessage("email")}
+                </div>
 
-              {/* Password textbox */}
-              <div className="field">
-                <span className="p-float-label">
-                  <Password
-                    id="password"
-                    name="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    toggleMask
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("password"),
-                    })}
-                  />
-                  <label
-                    htmlFor="password"
-                    className={classNames({
-                      "p-error": isFormFieldValid("password"),
-                    })}
-                  >
-                    Password*
-                  </label>
-                </span>
-                {getFormErrorMessage("password")}
-              </div>
-              {/* Submit button */}
-              <Button type="submit" label="Login" className="mt-2" />
-            </form>
+                {/* Password textbox */}
+                <div className="field">
+                  <span className="p-float-label">
+                    <Password
+                      id="password"
+                      name="password"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      toggleMask
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("password"),
+                      })}
+                    />
+                    <label
+                      htmlFor="password"
+                      className={classNames({
+                        "p-error": isFormFieldValid("password"),
+                      })}
+                    >
+                      Password*
+                    </label>
+                  </span>
+                  {getFormErrorMessage("password")}
+                </div>
+                {/* Submit button */}
+                <Button type="submit" label="Login" className="mt-2" />
+              </form>
+            </div>
           </div>
         </div>
       </div>
