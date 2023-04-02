@@ -256,7 +256,7 @@ const Dashboard = () => {
 
   const viewAppForm = (appForm) => {
     // appForm.submittedBy = appForm.member.name;
-    console.log(appForm);
+    // console.log(appForm);
     setAppForm({ ...appForm });
     setAppFormDialog(true);
   };
