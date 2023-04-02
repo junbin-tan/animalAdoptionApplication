@@ -48,7 +48,7 @@ const Dashboard = () => {
       .then((data) => setEventRegistrations(data));
   }, []);
 
- 
+
 
   // START: Code to retrieve latest actual Member Data from Java Backend Restful Server
   const { currentActualUser } = useContext(UserContext);
@@ -448,7 +448,38 @@ const Dashboard = () => {
     setDeleteEventRegistrationDialog(true);
   };
 
-  const deleteEventRegistration = {}; // delete or set boolean?
+  const deleteEventRegistration = () => {
+    Api.deleteEventRegistrationByEventRegistrationId(
+      eventRegistration.eventRegistrationId
+    ).then((response) => {
+      if (response.status === 204) {
+        // HTTP code when success deletion
+        // have to manually filter away the deleted item because the item is deleted on database
+        let _eventRegistrations = eventRegistrations.filter(
+          (val) => val.eventRegistrationId !== eventRegistration.eventRegistrationId
+        );
+        setEventRegistrations(_eventRegistrations);
+        setDeleteEventRegistrationDialog(false);
+        setEventRegistration(emptyEventRegistration);
+        toast.current.show({ //using the same toast as animal listing
+          severity: "success",
+          summary: "Successful",
+          detail: "Event Registration Deleted",
+          life: 3000,
+        });
+      } else {
+        setDeleteEventRegistrationDialog(false);
+        response.json().then((responseJSON) => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: responseJSON.error,
+            life: 3000,
+          });
+        });
+      }
+    });
+  };
 
   const actionBodyTemplateForEventRegistration = (rowData) => {
     return (
@@ -618,7 +649,7 @@ const Dashboard = () => {
           footer={appFormDialogFooter}
           onHide={hideDialog}
         >
-          
+
 
           <div className="field">
             <label className="font-bold">Status:</label>
@@ -785,7 +816,7 @@ const Dashboard = () => {
             />
             {eventRegistration && (
               <span>
-                Are you sure you want to delete <b>{eventRegistration.eventListing.eventName}</b>?
+                Are you sure you want to cancel your registration for <b>{eventRegistration.eventListing.eventName}</b>?
               </span>
             )}
           </div>

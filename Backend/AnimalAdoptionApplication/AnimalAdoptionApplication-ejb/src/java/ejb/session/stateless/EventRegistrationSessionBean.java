@@ -165,7 +165,7 @@ public class EventRegistrationSessionBean implements EventRegistrationSessionBea
     }
 
     @Override
-    public void deleteEventRegistration(Long eventRegistrationId) throws EventRegistrationNotFoundException, EventListingNotFoundException, MemberNotFoundException {
+    public void deleteEventRegistration(Long eventRegistrationId) throws EventRegistrationNotFoundException {
         EventRegistration eventRegistrationToRemove = retrieveEventRegistrationById(eventRegistrationId);
         Member member = eventRegistrationToRemove.getMember();
         EventListing eventListing = eventRegistrationToRemove.getEventListing();
