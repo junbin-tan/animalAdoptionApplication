@@ -157,6 +157,15 @@ const Api = {
     );
   },
 
+  deleteEventRegistrationByEventRegistrationId(eventRegistrationId) {
+    return fetch(
+      `${SERVER_PREFIX}/eventRegistration/deleteEventRegistration/${eventRegistrationId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
+
   createApplicationForm(data) {
     return fetch(`${SERVER_PREFIX}/applicationForm/createApplicationForm`, {
       headers: {

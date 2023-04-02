@@ -14,6 +14,7 @@ import entity.EventRegistration;
 import exception.ApplicationFormExistException;
 import exception.EventListingNotFoundException;
 import exception.EventRegistrationExistsException;
+import exception.EventRegistrationNotFoundException;
 import exception.InputDataValidationException;
 import exception.ListingNotFoundException;
 import exception.MemberNotFoundException;
@@ -23,6 +24,7 @@ import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -106,6 +108,22 @@ public class EventRegistrationResource {
 
         return eventRegistration;
 
+    }
+    
+    @DELETE
+    @Path("/deleteEventRegistration/{eventRegistrationId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteEventRegistrationById(@PathParam("eventRegistrationId") Long eventRegistrationId) {
+        try {
+            eventRegistrationSessionBeanLocal.deleteEventRegistration(eventRegistrationId);
+            return Response.status(204).build();
+
+        } catch (EventRegistrationNotFoundException ex) {
+            JsonObject exception = Json.createObjectBuilder()
+                    .add("error", ex.getMessage())
+                    .build();
+            return Response.status(404).entity(exception).build();
+        }
     }
 
 }
