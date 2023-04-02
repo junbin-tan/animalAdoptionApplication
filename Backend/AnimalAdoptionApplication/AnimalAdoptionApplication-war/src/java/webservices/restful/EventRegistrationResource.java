@@ -95,7 +95,13 @@ public class EventRegistrationResource {
 
         for (EventRegistration er : eventRegistration) {
             er.setMember(null);
-            er.setEventListing(null);
+//            er.setEventListing(null);
+
+            // we want event listing, so set nullify the inverse side
+            EventListing eventListing = er.getEventListing();
+            eventListing.setEventFields(null);
+            eventListing.setMember(null);
+            eventListing.setEventRegistrations(null);
         }
 
         return eventRegistration;

@@ -1,6 +1,6 @@
 import Auth from "../../helpers/Auth";
 import Api from "../../helpers/Api";
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
@@ -41,7 +41,6 @@ const ManageApplicationForm = () => {
   const [appForm, setAppForm] = useState(emptyAppForm);
   const [submitted, setSubmitted] = useState(false);
   const toast = useRef(null);
-  const dt = useRef(null);
   const navigate = useNavigate();
 
   const header = (
