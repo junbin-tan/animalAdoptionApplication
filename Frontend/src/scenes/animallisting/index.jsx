@@ -46,7 +46,6 @@ const AnimalListing = () => {
         id: data.animalListingId,
         flatFee: data.flatFee,
         description: data.description,
-        date:  moment(data.createDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY HH:MM'),
         age: data.age,
         name: data.name,
         gender: data.gender,
@@ -157,7 +156,6 @@ const AnimalListing = () => {
               <p>Neutered: {selectedRow.isNeutered ? "Yes" : "No"}</p>
               <p>Adoption: {selectedRow.isAdoption ? "Yes" : "No"}</p>
               <p>Fostering: {selectedRow.isFostering ? "Yes" : "No"}</p>
-              <p>Date: {selectedRow.date}</p>
               {selectedRow.isFostering ? (
                 <>
                <p>Foster Start Date: {selectedRow.fosterStartDate}</p>

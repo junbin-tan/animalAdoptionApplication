@@ -23,8 +23,6 @@ import ApplicationForm from "./scenes/applicationforms";
 import Geography from "./scenes/geography";
 import Calendar from "./scenes/calendar";
 import LoginPage from "./pages/login/loginPage";
-import AnimalListingAll from "./scenes/eventlistings";
-import MemPie from "./scenes/memberpie";
 
 //theme
 import "primereact/resources/themes/lara-light-blue/theme.css";   
@@ -51,13 +49,11 @@ function App() {
                 <Route path="/team" element={<Team />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/applicationforms" element={<ApplicationForm />} />
-                <Route path="/eventlistings" element={<AnimalListingAll />} />
                 <Route path="/invoices" element={<Invoices />} />
                 <Route path="/donations" element={<Donations />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/bar" element={<Bar />} />
                 <Route path="/pie" element={<Pie />} />
-                <Route path="/memberpie" element={<MemPie />} />
                 <Route path="/line" element={<Line />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/geography" element={<Geography />} />

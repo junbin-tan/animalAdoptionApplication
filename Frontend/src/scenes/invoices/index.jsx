@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Grid from "@mui/material/Grid";
-import moment from 'moment-timezone';
 
 // importing data should change later
 import { mockDataInvoices } from "../../assets/data/mockData";
@@ -45,7 +44,7 @@ const Invoices = () => {
         name: data.name,
         email: data.email,
         message: data.message,
-        date: moment(data.createDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
+        date: data.createDate,
       };
       tempActualEnquiries.push(enquiry);
     });

@@ -61,8 +61,6 @@ public class EventListing implements Serializable {
     
     private String image;
     
-    private Date createDate;
-    
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
@@ -191,14 +189,4 @@ public class EventListing implements Serializable {
     public void setEventType(EventTypeEnum eventType) {
         this.eventType = eventType;
     }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-    
-    
 }

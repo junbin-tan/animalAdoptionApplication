@@ -78,8 +78,6 @@ public class AnimalListing implements Serializable {
 	
     private Boolean isActive;
     
-    private Date createDate;
-    
     @ManyToOne
     @JoinColumn(nullable = false)
     @NotNull
@@ -263,14 +261,5 @@ public class AnimalListing implements Serializable {
         this.applicationForms = applicationForms;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    
     
 }

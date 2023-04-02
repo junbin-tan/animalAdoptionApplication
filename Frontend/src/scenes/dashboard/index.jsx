@@ -5,11 +5,9 @@ import { mockTransactions } from "../../assets/data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PetsIcon from '@mui/icons-material/Pets';
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+
 
 import PieChart from "../../components/PieChart";
 import LineChart from "../../components/LineChart";
@@ -22,8 +20,8 @@ import { Email } from "@mui/icons-material";
 import Auth from "../../helpers/Auth";
 import React, { useState, useEffect } from "react";
 import Api from "../../helpers/Api";
-import moment from "moment-timezone";
-import MemberPie from "../../components/MemberVerifiedPie";
+import moment from 'moment-timezone';
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -31,10 +29,11 @@ const Dashboard = () => {
 
   // to prevent other userfront non admin logged in in admin
   if (!Auth.isAdmin(Auth.getUser())) {
-    Auth.redirectIfLoggedIn("/login");
+    Auth.redirectIfLoggedIn('/login');
   }
   // redirect admin to login page if he/she is not logged in
-  Auth.redirectIfLoggedOut("/login");
+  Auth.redirectIfLoggedOut('/login');
+
 
   const [members, setMembers] = useState([]);
 
@@ -54,168 +53,38 @@ const Dashboard = () => {
         name: data.name,
         phone: data.phoneNumber,
         email: data.email,
-        date: data.createDate,
         access: "user",
       };
       tempActualMembers.push(member);
     });
 
-  const [donations, setDonations] = useState([]);
 
-  useEffect(() => {
+    const [donations, setDonations] = useState([]);
+
+
+    useEffect(() => {
     Api.getAllTestimonialdmin()
       .then((data) => data.json())
       .then((data) => setDonations(data));
-  }, []);
+    }, []);
 
   // map members data to compatible data format for datagrid below
-  var tempActualDonations = [];
+  var tempActualDonations= [];
   donations &&
     donations.map((data) => {
       const donation = {
         id: data.donationId,
         name: data.name,
         email: data.email,
-        date: moment(data.date, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-          .tz("Asia/Shanghai")
-          .format("MMMM Do YYYY"),
+        date: moment(data.date, 'YYYY-MM-DDTHH:mm:ss.SSSZ').tz('Asia/Shanghai').format('MMMM Do YYYY'),
         paymentMode: data.paymentMode,
-        donationType: data.donationType,
+        donationType: data.donationType,      
       };
       tempActualDonations.push(donation);
     });
 
-  const [animalListings, setAnimalListings] = useState([]);
 
-  // get allanimallisting from java restful backend
-  useEffect(() => {
-    Api.getAllAnimalListings()
-      .then((data) => data.json())
-      .then((data) => setAnimalListings(data));
-  }, []);
-
-  // map members data to compatible data format for datagrid below
-  var tempActualAnimalListings = [];
-  animalListings &&
-    animalListings.map((data) => {
-      const animalListing = {
-        id: data.animalListingId,
-        date: data.createDate,
-        flatFee: data.flatFee,
-        description: data.description,
-        age: data.age,
-        name: data.name,
-        gender: data.gender,
-        breed: data.breed,
-        weight: data.weight,
-        animalType: data.animalType,
-        isActive: data.isActive,
-        isNeutered: data.isNeutered,
-        isAdoption: data.isAdoption,
-        isFostering: data.isFostering,
-        fosterStartDate: moment(
-          data.fosterStartDate,
-          "YYYY-MM-DDTHH:mm:ss.SSSZ"
-        )
-          .tz("Asia/Shanghai")
-          .format("MMMM Do YYYY HH:MM"),
-        fosterEndDate: moment(data.fosterEndDate, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-          .tz("Asia/Shanghai")
-          .format("MMMM Do YYYY HH:MM"),
-      };
-      tempActualAnimalListings.push(animalListing);
-    });
-
-  const [eventListings, setEventListings] = useState([]);
-
-  useEffect(() => {
-    Api.getAllEventListingsAdmin()
-      .then((data) => data.json())
-      .then((data) => setEventListings(data));
-  }, []);
-
-  //map members data to compatible data format for datagrid below
-  var tempActualEventListings = [];
-  eventListings &&
-    eventListings.map((data) => {
-      const eventListing = {
-        id: data.eventListingId,
-        name: data.eventName,
-        date: moment(data.dateAndTime, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-          .tz("Asia/Shanghai")
-          .format("MMMM Do YYYY"),
-        location: data.location,
-        capacity: data.capacity,
-        description: data.description,
-        eventType: data.eventType,
-        dateCreate:  moment(data.createDate, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-        .tz("Asia/Shanghai")
-        .format("MMMM Do YYYY"),
-      };
-      tempActualEventListings.push(eventListing);
-    });
-
-  // event 
-
-  const countEventString = tempActualEventListings.length;
-
-  const today = moment().tz("Asia/Shanghai").format("MMMM Do YYYY");
-
-  const todayEvent = tempActualEventListings.filter((event) => {
-    const eventDate = event.dateCreate;
-    const updatedToday = moment(event.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-      .tz("Asia/Shanghai")
-      .isSame(moment(), "day");
-    return eventDate === today || updatedToday;
-  });
-
-  const countEventToday = todayEvent.length;
-
-
-
-  //member
   const countMemberString = tempActualMembers.length;
-
-
-  const todayMembers = tempActualMembers.filter((member) => {
-    const memberDate = moment(member.date, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-      .tz("Asia/Shanghai")
-      .format("MMMM Do YYYY");
-    const updatedToday = moment(member.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-      .tz("Asia/Shanghai")
-      .isSame(moment(), "day");
-    return memberDate === today || updatedToday;
-  });
-
-  const countTodayMembers = todayMembers.length;
-
-  // donation
-  const countDonationString = tempActualDonations.length;
-
-  const todaysDonations = tempActualDonations.filter((donation) => {
-    const donationDate = donation.date;
-    const updatedToday = moment(donation.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-      .tz("Asia/Shanghai")
-      .isSame(moment(), "day");
-    return donationDate === today || updatedToday;
-  });
-
-  const countTodayDonations = todaysDonations.length;
-
-  //animalListing
-  const countAnimalString = tempActualAnimalListings.length;
-
-  const todaysAnimals = tempActualAnimalListings.filter((animalListing) => {
-    const animalDate = moment(animalListing.date, "YYYY-MM-DDTHH:mm:ss.SSSZ").tz("Asia/Shanghai")
-    .format("MMMM Do YYYY");
-    const updatedToday = moment(animalListing.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ")
-      .tz("Asia/Shanghai")
-      .isSame(moment(), "day");
-    return animalDate === today || updatedToday;
-  });
-
-  const countTodayAnimal = todaysAnimals.length;
-
 
   return (
     <Box m="20px">
@@ -223,7 +92,7 @@ const Dashboard = () => {
         <Header title="DASHBOARD" subtitle="Welcome to Dashboard" />
 
         <Box>
-          {/* <Button
+          <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -234,7 +103,7 @@ const Dashboard = () => {
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
-          </Button> */}
+          </Button>
         </Box>
       </Box>
 
@@ -254,14 +123,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={countTodayMembers}
-            subtitle="New Members"
-            progress={countTodayMembers / countMemberString}
-            increase={`+${Math.round(
-              (countTodayMembers / countMemberString) * 100
-            )}%`}
+            title="12,361"
+            subtitle="Emails Sent"
+            progress="0.75"
+            increase="+14%"
             icon={
-              <PersonAddAltIcon
+              <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -275,14 +142,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={countTodayDonations}
-            subtitle="New Donations"
-            progress={countTodayDonations / countDonationString}
-            increase={`+${Math.round(
-              (countTodayDonations / countDonationString) * 100
-            )}%`}
+            title="431,225"
+            subtitle="Sales Obtained"
+            progress="0.5"
+            increase="+21%"
             icon={
-              <VolunteerActivismIcon
+              <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -296,14 +161,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title= {countTodayAnimal}
-            subtitle="New Animal Listings"
-            progress={countTodayAnimal / countAnimalString}
-            increase={`+${Math.round(
-              (countTodayAnimal / countAnimalString) * 100
-            )}%`}
+            title="321,444"
+            subtitle="New Client"
+            progress="0.3"
+            increase="+4%"
             icon={
-              <PetsIcon
+              <PersonAddIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -317,12 +180,10 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title= {countEventToday}
-            subtitle="New Event Listings"
-            progress={countEventToday/countEventString}
-            increase={`+${Math.round(
-              (countEventToday / countEventString) * 100
-            )}%`}
+            title="1,000,000"
+            subtitle="Traffic Inbound"
+            progress="0.80"
+            increase="+43%"
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -409,14 +270,11 @@ const Dashboard = () => {
                 >
                   {transaction.donationId}
                 </Typography>
-                <Typography
-                  style={{ fontSize: "16px" }}
-                  color={colors.grey[100]}
-                >
+                <Typography   style={{fontSize: "16px"}} color={colors.grey[100]}>
                   {transaction.name}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box  color={colors.grey[100]}>{transaction.date}</Box>
               <Box
                 backgroundColor={colors.greenAccent[400]}
                 p="5px 10px"
@@ -444,8 +302,12 @@ const Dashboard = () => {
           <Typography variant="h5" fontWeight="600">
             Event Type
           </Typography>
-          <Box height="250px" mt="-20px">
-            <PieChart isDashboard={true} />
+          <Box
+             height = "250px"
+             mt="-20px"
+          >
+            <PieChart isDashboard={true}/>
+          
           </Box>
         </Box>
 
@@ -454,19 +316,18 @@ const Dashboard = () => {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ p: "30px 30px 0 30px" }}
-          >
+          <Typography variant="h5" fontWeight="600" sx={{ p:"30px 30px 0 30px"}}>
             Animal Listings
           </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+          <Box
+            height = "250px"
+            mt="-20px"
+          >
+           <BarChart isDashboard={true}/>
           </Box>
         </Box>
 
-        {/* <Box
+        <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -480,20 +341,6 @@ const Dashboard = () => {
             height = "200px"
           >
            <GeographyChart isDashboard={true}/>
-          </Box>
-        </Box> */}
-
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Member Type
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <MemberPie isDashboard={true} />
           </Box>
         </Box>
 
