@@ -238,6 +238,13 @@ const Dashboard = () => {
     petAloneTime: null,
     reason: null,
     sleepArea: null,
+    animalListing: {
+      name: null,
+      member: {
+        name: null,
+        email: null
+      }
+    }
   };
 
   const [appFormDialog, setAppFormDialog] = useState(false);
@@ -249,7 +256,7 @@ const Dashboard = () => {
 
   const viewAppForm = (appForm) => {
     // appForm.submittedBy = appForm.member.name;
-    // console.log(appForm);
+    console.log(appForm);
     setAppForm({ ...appForm });
     setAppFormDialog(true);
   };
@@ -257,11 +264,11 @@ const Dashboard = () => {
   const appFormDialogFooter = (
     <React.Fragment>
       <Button
-        label="Chat With Pet Owner"
+        label='Chat With Pet Owner'
         icon="pi pi-send"
         outlined
         onClick={() => {
-          navigate("/chat");
+          navigate("/chat", { state: appForm.animalListing.member });
         }}
       />
     </React.Fragment>
@@ -607,8 +614,9 @@ const Dashboard = () => {
             showGridlines
             tableStyle={{ minWidth: "40rem" }}
           >
-            <Column field="applicationFormId" header="Application Form ID"></Column>
-            <Column field="reason" header="Description"></Column>
+            <Column field="applicationFormId" header="ID"></Column>
+            <Column field="animalListing.name" header="Pet's name"></Column>
+            <Column field="animalListing.member.name" header="Pet's Owner"></Column>
             <Column field="applicationStatus" header="Application Status"></Column>
             <Column
               field="options" header="Options"
@@ -650,6 +658,15 @@ const Dashboard = () => {
           onHide={hideDialog}
         >
 
+          <div className="field">
+            <label className="font-bold">Pet's name:</label>
+            <p>{appForm.animalListing.name}</p>
+          </div>
+
+          <div className="field">
+            <label className="font-bold">Pet's Owner:</label>
+            <p>{appForm.animalListing.member.name}</p>
+          </div>
 
           <div className="field">
             <label className="font-bold">Status:</label>

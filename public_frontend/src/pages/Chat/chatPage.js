@@ -1,5 +1,6 @@
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import React, { useState, useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import {
   MainContainer,
   ChatContainer,
@@ -89,8 +90,14 @@ const ChatPage = () => {
     });
 
   //   console.log(conversations);
-
+  const { state } = useLocation();
+  const selectedConversation = state;
   const [currentConversation, setCurrentConversation] = useState(0);
+  
+  useEffect(() => {
+    selectedConversation && setCurrentConversation(selectedConversation);
+  },[selectedConversation])
+  
 
   const sendMessage = async (message) => {
     console.log(message);
