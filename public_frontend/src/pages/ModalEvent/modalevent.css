@@ -2,7 +2,7 @@
   z-index: 888888 !important;
 }
 
-.modal__wrapper {
+.modal__wrapper_event {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,12 +12,12 @@
   z-index: 444444;
 }
 
-.single__modal {
+.single__modal_event {
   position: relative;
   top: 50%;
   left: 50%;
   width: 1000px;
-  height: 850px;
+  height: 750px;
   transform: translate(-50%, -50%);
   background: #343444 !important;
   border-radius: 5px;
@@ -26,13 +26,13 @@
   cursor: pointer;
 }
 
-.single__modal h6 {
+.single__modal_event h6 {
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 10px;
 }
 
-.single__modal .money {
+.single__modal_event .money {
   color: #fff;
   font-weight: 500;
   font-size: 1.1rem;
@@ -68,14 +68,14 @@
   margin-top: 15px;
 }
 
-.close__modal {
+.close__modal_event {
   position: absolute;
   top: -2px;
   right: -2px;
   z-index: 666666;
 }
 
-.close__modal i {
+.close__modal_event i {
   padding: 5px;
   background: #5142fc;
   color: #fff;
@@ -83,15 +83,15 @@
 }
 
 @media only screen and (max-width: 992px) {
-  .single__modal {
+  .single__modal_event {
     width: 300px;
     height: auto;
   }
 
-  .single__modal h6 {
+  .single__modal_event h6 {
     font-size: 0.9rem;
   }
-  .single__modal p {
+  .single__modal_event p {
     font-size: 0.8rem;
     margin-bottom: 0;
   }
