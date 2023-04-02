@@ -29,6 +29,8 @@ public interface EventRegistrationSessionBeanLocal {
     
     public List<EventRegistration> retrieveAllEventRegistrations();
     
+    public List<EventRegistration> retrieveEventRegistrationByEmail(String email);
+    
     public EventRegistration retrieveEventRegistrationById(Long eventRegistrationId) throws EventRegistrationNotFoundException;
     
     public List<EventRegistration> retrieveAllEventRegistrationForMember(Long memberId) throws MemberNotFoundException;
