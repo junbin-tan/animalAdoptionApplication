@@ -14,6 +14,7 @@ Use the following json to test the above ENDPoint:
     "email": "xiaofeng@gmail.com",
     "password": "password"
 }
+It should not return NULL POINTER EXCEPTION. Keep re-deploy until you don't get NULL POINTER EXCEPTION
 
 ### To run React ADMIN Frontend (MAKE SURE BACKEND IS STARTED AND WORKING)
 1. Go inside "Frontend" folder by doing "cd Frontend"
