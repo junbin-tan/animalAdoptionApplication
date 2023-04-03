@@ -1,5 +1,4 @@
 //import "./app.css";
-import Layout from "./components/Layout/Layout";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
