@@ -32,17 +32,19 @@ const Team = () => {
   // redirect admin to login page if he/she is not logged in
   Auth.redirectIfLoggedOut("/login");
 
-
   const handleSelectChange = (event, params) => {
     const accessLevel = event.target.value;
     const memberId = params.row.id;
     const data = { access: accessLevel };
-    
+
     Api.updateMemberAccess(memberId, data)
       .then((response) => {
         // handle successful response
         if (response.status === 204) {
           console.log("Access level updated successfully");
+          Api.getAllMembers()
+            .then((data) => data.json())
+            .then((data) => setMembers(data));
         }
       })
       .catch((error) => {
@@ -50,7 +52,6 @@ const Team = () => {
         console.error("Error updating access level:", error);
       });
   };
-  
 
   const [members, setMembers] = useState([]);
 
@@ -185,7 +186,7 @@ const Team = () => {
   //   const accessLevel = event.target.value;
   //   const memberId = params.row.id;
   //   const data = { access: accessLevel };
-    
+
   //   Api.updateMemberAccess(memberId, data)
   //     .then((response) => {
   //       // handle successful response
