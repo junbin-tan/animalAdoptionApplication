@@ -108,7 +108,7 @@ const CreateEventListing = () => {
       }
 
       if (!data.dateAndTime) {
-        errors.description = "Date And Time is required";
+        errors.dateAndTime = "Date And Time is required";
       }
 
       return errors;
@@ -257,6 +257,7 @@ const CreateEventListing = () => {
                           <p className="m-0">
                             Drag and drop image to here to upload (Upload 1
                             image)*
+                            {getFormErrorMessage("image")}
                           </p>
                         }
                       />
@@ -378,6 +379,7 @@ const CreateEventListing = () => {
                       />
                       <label htmlFor="dateAndTime">Date and Time</label>
                     </span>
+                    {getFormErrorMessage("dateAndTime")}
                   </div>
 
                   {/* Submit button */}
