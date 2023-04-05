@@ -135,14 +135,18 @@
   padding: 20px;
   background: #343444;
   border-radius: 10px;
+  height: 100%;
 }
 
 .animallisting__img img {
   border-radius: 10px;
+  height: 100% !important;
+  object-fit: cover;
 }
 
 .animallisting__img {
   margin-bottom: 15px;
+  height: 300px;
 }
 
 .animallisting__title {

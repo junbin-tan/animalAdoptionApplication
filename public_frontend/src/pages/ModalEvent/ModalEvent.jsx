@@ -214,8 +214,13 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
                 <h6>Type : {eventListing.eventType}{" "} </h6>
 
                 <h6>Capacity : {eventListing.capacity}{" "} </h6>
-  
-                <img src= {eventListing.image} width="250" height="300" alt="image"></img>
+                
+                <div className="modal_event_image">
+                  <img src= {eventListing.image} alt="image"></img>
+                </div>
+                
+                
+                
                 
               </p>
 
