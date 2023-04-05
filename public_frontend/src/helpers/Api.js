@@ -52,6 +52,7 @@ const Api = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Auth.getAccessToken()}`,
       },
       method: "POST",
       body: JSON.stringify(data),
@@ -63,17 +64,19 @@ const Api = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Auth.getAccessToken()}`,
       },
       method: "POST",
       body: JSON.stringify(data),
     });
   },
-  
+
   createEventRegistration(data) {
     return fetch(`${SERVER_PREFIX}/eventRegistration/createEventRegistration`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Auth.getAccessToken()}`,
       },
       method: "POST",
       body: JSON.stringify(data),
@@ -127,6 +130,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "GET",
       }
@@ -142,6 +146,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "GET",
       }
@@ -152,6 +157,9 @@ const Api = {
     return fetch(
       `${SERVER_PREFIX}/eventListing/deleteEventListing/${eventListingId}`,
       {
+        headers: {
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
+        },
         method: "DELETE",
       }
     );
@@ -161,6 +169,9 @@ const Api = {
     return fetch(
       `${SERVER_PREFIX}/eventRegistration/deleteEventRegistration/${eventRegistrationId}`,
       {
+        headers: {
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
+        },
         method: "DELETE",
       }
     );
@@ -171,12 +182,12 @@ const Api = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Auth.getAccessToken()}`,
       },
       method: "POST",
       body: JSON.stringify(data),
     });
   },
-  
 
   getAnimalListingByMemberEmail() {
     return fetch(
@@ -187,6 +198,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "GET",
       }
@@ -198,6 +210,9 @@ const Api = {
       `${SERVER_PREFIX}/animalListing/deleteAnimalListing/${animalListingId}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
+        },
       }
     );
   },
@@ -211,6 +226,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "GET",
       }
@@ -220,6 +236,9 @@ const Api = {
     return fetch(
       `${SERVER_PREFIX}/applicationForm/deleteApplicationForm/${applicationFormId}`,
       {
+        headers: {
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
+        },
         method: "DELETE",
       }
     );
@@ -231,6 +250,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "PUT",
         body: JSON.stringify(data),
@@ -238,12 +258,15 @@ const Api = {
     );
   },
   getChatReceipients() {
-    return fetch(`${SERVER_PREFIX}/member/getChatRecipients/${Auth.getUser().email}`, {
-      headers: {
-        Authorization: `Bearer ${Auth.getAccessToken()}`,
-      },
-      method: "GET",
-    });
+    return fetch(
+      `${SERVER_PREFIX}/member/getChatRecipients/${Auth.getUser().email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
+        },
+        method: "GET",
+      }
+    );
   },
 };
 
