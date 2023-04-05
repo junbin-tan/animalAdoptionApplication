@@ -53,9 +53,10 @@ const ManageEventRegistration = () => {
                         showGridlines
                         tableStyle={{ minWidth: "40rem" }}
                     >
-                        <Column field="eventRegistrationId" header="ID"></Column>
+                        <Column field="eventRegistrationId" header="ID"> </Column>
                         <Column field="member.name" header="Member Name"></Column>
                         <Column field="member.phoneNumber" header="Phone Number"></Column>
+                        <Column field="member.email" header="Email Address"></Column>
                     </DataTable>
                 </div>
             </div>
