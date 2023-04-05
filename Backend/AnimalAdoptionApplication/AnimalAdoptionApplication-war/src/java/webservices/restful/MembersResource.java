@@ -262,36 +262,48 @@ public class MembersResource {
             n.setMember(null);
         }
     }
-    
-    
-    
+
     @PUT
     @Path("updateMemberAccess/{memberId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMemberAccess(@PathParam("memberId") Long memberId, JsonObject data) {
-        try {
-            Member currentMember = memberSessionBeanLocal.retrieveMemberByMemberId(memberId);
-            String newAccountStatus = data.getString("access");
-            if (newAccountStatus.equals("DEACTIVATED"))  {
-                currentMember.setAccountStatus(AccountStatusEnum.DEACTIVATED);
-            } else if (newAccountStatus.equals("FLAGGED")) {
-                currentMember.setAccountStatus(AccountStatusEnum.FLAGGED);
-            } else if (newAccountStatus.equals("UNVERIFIED")) {
-                currentMember.setAccountStatus(AccountStatusEnum.UNVERIFIED);
-            } else if (newAccountStatus.equals("VERIFIED")) {
-                currentMember.setAccountStatus(AccountStatusEnum.VERIFIED);
-            }
-            
-            memberSessionBeanLocal.updateMember(currentMember);
-            return Response.status(204).build();
-        } catch (MemberNotFoundException | UpdateMemberException | InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-            return Response.status(404).entity(exception)
-                    .type(MediaType.APPLICATION_JSON).build();
-        }
-    } 
-}
+    public Response updateMemberAccess(@Context HttpHeaders headers, @PathParam("memberId") Long memberId, JsonObject data) {
 
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = AdminJwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+
+            try {
+                Member currentMember = memberSessionBeanLocal.retrieveMemberByMemberId(memberId);
+                String newAccountStatus = data.getString("access");
+                if (newAccountStatus.equals("DEACTIVATED")) {
+                    currentMember.setAccountStatus(AccountStatusEnum.DEACTIVATED);
+                } else if (newAccountStatus.equals("FLAGGED")) {
+                    currentMember.setAccountStatus(AccountStatusEnum.FLAGGED);
+                } else if (newAccountStatus.equals("UNVERIFIED")) {
+                    currentMember.setAccountStatus(AccountStatusEnum.UNVERIFIED);
+                } else if (newAccountStatus.equals("VERIFIED")) {
+                    currentMember.setAccountStatus(AccountStatusEnum.VERIFIED);
+                }
+
+                memberSessionBeanLocal.updateMember(currentMember);
+                return Response.status(204).build();
+            } catch (MemberNotFoundException | UpdateMemberException | InputDataValidationException ex) {
+                JsonObject exception = Json.createObjectBuilder()
+                        .add("error", ex.getMessage())
+                        .build();
+                return Response.status(404).entity(exception)
+                        .type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+}
