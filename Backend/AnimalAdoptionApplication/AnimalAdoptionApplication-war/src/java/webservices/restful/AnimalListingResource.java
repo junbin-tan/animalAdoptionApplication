@@ -56,27 +56,42 @@ public class AnimalListingResource {
     @Path("/createAnimalListing")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAnimalListing(AnimalListing newAnimalListing) {
-        try {
-            Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
-            return Response.status(204).build();
+    public Response createAnimalListing(@Context HttpHeaders headers, AnimalListing newAnimalListing) {
 
-        } catch (UnknownPersistenceException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
 
-        } catch (InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            try {
+                Long animalListingId = animalListingSessionBeanLocal.createAnimalListing(newAnimalListing);
+                return Response.status(204).build();
 
-        } catch (ListingExistException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            } catch (UnknownPersistenceException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (MemberNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            } catch (InputDataValidationException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (ListingExistException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     }
 
     @GET
@@ -157,44 +172,73 @@ public class AnimalListingResource {
     @GET
     @Path("/getAnimalListingByMemberEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<AnimalListing> getAnimalListingByMemberEmail(@PathParam("email") String emailAddress) {
-        List<AnimalListing> animalListings = animalListingSessionBeanLocal.retrieveAnimalListingByMemberEmail(emailAddress);
+    public Response getAnimalListingByMemberEmail(@Context HttpHeaders headers, @PathParam("email") String emailAddress) {
 
-        for (AnimalListing al : animalListings) {
-            al.setMember(null);
-            for (ApplicationForm af : al.getApplicationForms()) {
-                af.setAnimalListing(null);
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
 
-                // need to retrieve member on each app form to know who submittted it
-                // so set inverse member relationship to null
-                af.getMember().setAnimalListings(null);
-                af.getMember().setDonations(null);
-                af.getMember().setEventListings(null);
-                af.getMember().setEventRegistrations(null);
-                af.getMember().setNotifications(null);
-                af.getMember().setReviewsCreated(null);
-                af.getMember().setReviewsReceived(null);
-                af.getMember().setApplicationForms(null);
+            List<AnimalListing> animalListings = animalListingSessionBeanLocal.retrieveAnimalListingByMemberEmail(emailAddress);
+
+            for (AnimalListing al : animalListings) {
+                al.setMember(null);
+                for (ApplicationForm af : al.getApplicationForms()) {
+                    af.setAnimalListing(null);
+
+                    // need to retrieve member on each app form to know who submittted it
+                    // so set inverse member relationship to null
+                    af.getMember().setAnimalListings(null);
+                    af.getMember().setDonations(null);
+                    af.getMember().setEventListings(null);
+                    af.getMember().setEventRegistrations(null);
+                    af.getMember().setNotifications(null);
+                    af.getMember().setReviewsCreated(null);
+                    af.getMember().setReviewsReceived(null);
+                    af.getMember().setApplicationForms(null);
+                }
             }
-        }
 
-        return animalListings;
+            return Response.status(200).entity(animalListings).build();
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        }
 
     }
 
     @DELETE
     @Path("/deleteAnimalListing/{animalListingId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAnimalListingById(@PathParam("animalListingId") Long animalListingId) {
-        try {
-            animalListingSessionBeanLocal.deleteAnimalListing(animalListingId);
-            return Response.status(204).build();
-        } catch (AnimalListingHasApplicationFormException | ListingNotFoundException | DeleteAnimalListingException | MemberNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-            return Response.status(404).entity(exception).build();
+    public Response deleteAnimalListingById(@Context HttpHeaders headers, @PathParam("animalListingId") Long animalListingId) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+
+            try {
+                animalListingSessionBeanLocal.deleteAnimalListing(animalListingId);
+                return Response.status(204).build();
+            } catch (AnimalListingHasApplicationFormException | ListingNotFoundException | DeleteAnimalListingException | MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder()
+                        .add("error", ex.getMessage())
+                        .build();
+                return Response.status(404).entity(exception).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     } //end deleteField
 
 }

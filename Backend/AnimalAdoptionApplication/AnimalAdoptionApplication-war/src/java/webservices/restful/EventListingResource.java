@@ -51,23 +51,38 @@ public class EventListingResource {
     @Path("/createEventListing")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEventListing(EventListing newEventListing) {
-        try {
-            Long eventListingId = eventListingSessionBeanLocal.createEventListing(newEventListing);
-            return Response.status(204).build();
+    public Response createEventListing(@Context HttpHeaders headers, EventListing newEventListing) {
 
-        } catch (UnknownPersistenceException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
 
-        } catch (InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            try {
+                Long eventListingId = eventListingSessionBeanLocal.createEventListing(newEventListing);
+                return Response.status(204).build();
 
-        } catch (MemberNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            } catch (UnknownPersistenceException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (InputDataValidationException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     }
 
     @GET
@@ -136,44 +151,72 @@ public class EventListingResource {
     @GET
     @Path("/getEventListingByMemberEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EventListing> getEventListingByMemberEmail(@PathParam("email") String emailAddress) {
-        List<EventListing> eventListings = eventListingSessionBeanLocal.retrieveEventListingByMemberEmail(emailAddress);
+    public Response getEventListingByMemberEmail(@Context HttpHeaders headers, @PathParam("email") String emailAddress) {
 
-        for (EventListing el : eventListings) {
-            el.setMember(null);
-            for (EventRegistration er : el.getEventRegistrations()) {
-                er.setEventListing(null);
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
 
-                // need to retrieve member on each event registration to know who submittted it
-                // so set inverse member relationship to null
-                er.getMember().setAnimalListings(null);
-                er.getMember().setDonations(null);
-                er.getMember().setEventListings(null);
-                er.getMember().setEventRegistrations(null);
-                er.getMember().setNotifications(null);
-                er.getMember().setReviewsCreated(null);
-                er.getMember().setReviewsReceived(null);
-                er.getMember().setApplicationForms(null);
+            List<EventListing> eventListings = eventListingSessionBeanLocal.retrieveEventListingByMemberEmail(emailAddress);
+
+            for (EventListing el : eventListings) {
+                el.setMember(null);
+                for (EventRegistration er : el.getEventRegistrations()) {
+                    er.setEventListing(null);
+
+                    // need to retrieve member on each event registration to know who submittted it
+                    // so set inverse member relationship to null
+                    er.getMember().setAnimalListings(null);
+                    er.getMember().setDonations(null);
+                    er.getMember().setEventListings(null);
+                    er.getMember().setEventRegistrations(null);
+                    er.getMember().setNotifications(null);
+                    er.getMember().setReviewsCreated(null);
+                    er.getMember().setReviewsReceived(null);
+                    er.getMember().setApplicationForms(null);
+                }
             }
+
+            return Response.status(200).entity(eventListings).build();
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
 
-        return eventListings;
-
     }
-    
+
     @DELETE
     @Path("/deleteEventListing/{eventListingId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEventListingById(@PathParam("eventListingId") Long eventListingId) {
-        try {
-            eventListingSessionBeanLocal.deleteEventListing(eventListingId);
-            return Response.status(204).build();
-        } catch (EventListingNotFoundException | MemberNotFoundException | DeleteEventListingException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-            return Response.status(404).entity(exception).build();
+    public Response deleteEventListingById(@Context HttpHeaders headers, @PathParam("eventListingId") Long eventListingId) {
+
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+            try {
+                eventListingSessionBeanLocal.deleteEventListing(eventListingId);
+                return Response.status(204).build();
+            } catch (EventListingNotFoundException | MemberNotFoundException | DeleteEventListingException ex) {
+                JsonObject exception = Json.createObjectBuilder()
+                        .add("error", ex.getMessage())
+                        .build();
+                return Response.status(404).entity(exception).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     }
 
 }

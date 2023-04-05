@@ -126,6 +126,7 @@ const Dashboard = () => {
           severity="danger"
           onClick={() => confirmDeleteAnimalListing(rowData)}
         />
+        {" "}
         <Button
           icon="pi pi-file"
           label="View Application Forms"
@@ -351,6 +352,10 @@ const Dashboard = () => {
     setDeleteEventListingDialog(true);
   };
 
+  const redirectToManageEventRegistration = (eventListing) => {
+    navigate("/ManageEventRegistration", { state: eventListing });
+  };
+
   const deleteEventListing = () => {
     Api.deleteEventListingByEventListingId(
       eventListing.eventListingId
@@ -393,6 +398,14 @@ const Dashboard = () => {
           outlined
           severity="danger"
           onClick={() => confirmDeleteEventListing(rowData)}
+        />
+        {" "} 
+        <Button
+        icon="pi pi-users"
+        label="View Registered Members"
+        rounded
+        outlined
+        onClick={() => redirectToManageEventRegistration(rowData)}
         />
       </React.Fragment>
     );
@@ -471,7 +484,7 @@ const Dashboard = () => {
         toast.current.show({ //using the same toast as animal listing
           severity: "success",
           summary: "Successful",
-          detail: "Event Registration Deleted",
+          detail: "Event Registration Cancelled",
           life: 3000,
         });
       } else {
@@ -697,7 +710,8 @@ const Dashboard = () => {
             <label className="font-bold">
               What kind of sleeping area can the applicant provide?
             </label>
-            <p>{appForm.sleepArea}</p>
+            {appForm.sleepArea && <p>{appForm.sleepArea}</p>}
+            {!appForm.sleepArea && <p>Not Applicable</p>}
           </div>
 
           <div className="field">

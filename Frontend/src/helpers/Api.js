@@ -19,6 +19,7 @@ const Api = {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${Auth.getAccessToken()}`,
         },
         method: "PUT",
         body: JSON.stringify(data),

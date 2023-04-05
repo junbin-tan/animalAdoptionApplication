@@ -64,30 +64,44 @@ public class ApplicationFormResource {
     @Path("/createApplicationForm")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createApplicationForm(ApplicationForm appForm) {
-        try {
-            Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
+    public Response createApplicationForm(@Context HttpHeaders headers, ApplicationForm appForm) {
 
-            return Response.status(204).build();
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
 
-        } catch (UnknownPersistenceException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            try {
+                Long applicationFormId = applicationFormSessionBeanLocal.createNewApplication(appForm, appForm.getMember(), appForm.getAnimalListing());
 
-        } catch (InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+                return Response.status(204).build();
 
-        } catch (ListingNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            } catch (UnknownPersistenceException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Unknown Persistence Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (ApplicationFormExistException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
-            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            } catch (InputDataValidationException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", "Input Data Validation Exception occurred.").build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
 
-        } catch (MemberNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+            } catch (ListingNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (ApplicationFormExistException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+
+            } catch (MemberNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder().add("error", ex.getMessage()).build();
+                return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
             return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
     }
@@ -95,66 +109,109 @@ public class ApplicationFormResource {
     @GET
     @Path("/getApplicationFormByMemberEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ApplicationForm> getApplicationFormByMemberEmail(@PathParam("email") String emailAddress) {
-        List<ApplicationForm> applicationForms = applicationFormSessionBeanLocal.retrieveApplicationFormsByMemberEmail(emailAddress);
+    public Response getApplicationFormByMemberEmail(@Context HttpHeaders headers, @PathParam("email") String emailAddress) {
 
-        for (ApplicationForm af : applicationForms) {
-            af.setMember(null);
-            //af.setAnimalListing(null);
-            
-            // we want animal listing, so nullify the inverse
-            AnimalListing al = af.getAnimalListing();
-            al.setApplicationForms(null);
-            
-            // we want member from animal listing, so nullify the inverse
-            Member m = al.getMember();
-            m.setAnimalListings(null);
-            m.setApplicationForms(null);
-            m.setDonations(null);
-            m.setEventListings(null);
-            m.setEventRegistrations(null);
-            m.setNotifications(null);
-            m.setReviewsCreated(null);
-            m.setReviewsReceived(null);
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+
+            List<ApplicationForm> applicationForms = applicationFormSessionBeanLocal.retrieveApplicationFormsByMemberEmail(emailAddress);
+
+            for (ApplicationForm af : applicationForms) {
+                af.setMember(null);
+                //af.setAnimalListing(null);
+
+                // we want animal listing, so nullify the inverse
+                AnimalListing al = af.getAnimalListing();
+                al.setApplicationForms(null);
+
+                // we want member from animal listing, so nullify the inverse
+                Member m = al.getMember();
+                m.setAnimalListings(null);
+                m.setApplicationForms(null);
+                m.setDonations(null);
+                m.setEventListings(null);
+                m.setEventRegistrations(null);
+                m.setNotifications(null);
+                m.setReviewsCreated(null);
+                m.setReviewsReceived(null);
+            }
+
+            return Response.status(200).entity(applicationForms).build();
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
-
-        return applicationForms;
 
     }
 
     @DELETE
     @Path("/deleteApplicationForm/{applicationFormId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteApplicationFormById(@PathParam("applicationFormId") Long applicationFormId) {
-        try {
-            applicationFormSessionBeanLocal.deleteApplicationForm(applicationFormId);
-            return Response.status(204).build();
+    public Response deleteApplicationFormById(@Context HttpHeaders headers, @PathParam("applicationFormId") Long applicationFormId) {
 
-        } catch (ApplicationNotFoundException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-            return Response.status(404).entity(exception).build();
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+
+            try {
+                applicationFormSessionBeanLocal.deleteApplicationForm(applicationFormId);
+                return Response.status(204).build();
+
+            } catch (ApplicationNotFoundException ex) {
+                JsonObject exception = Json.createObjectBuilder()
+                        .add("error", ex.getMessage())
+                        .build();
+                return Response.status(404).entity(exception).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     } //end deleteApplicationForm
 
     @PUT
     @Path("updateApplicationFormStatus/{applicationFormId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAppFormStatus(@PathParam("applicationFormId") Long applicationFormId, ApplicationForm appForm) {
-        appForm.setApplicationFormId(applicationFormId);
+    public Response updateAppFormStatus(@Context HttpHeaders headers, @PathParam("applicationFormId") Long applicationFormId, ApplicationForm appForm) {
 
-        try {
-            applicationFormSessionBeanLocal.updateApplicationForm(appForm);
-            return Response.status(204).build();
-        } catch (ApplicationNotFoundException | UpdateApplicationFormException | InputDataValidationException ex) {
-            JsonObject exception = Json.createObjectBuilder()
-                    .add("error", ex.getMessage())
-                    .build();
-            return Response.status(404).entity(exception)
-                    .type(MediaType.APPLICATION_JSON).build();
+        List<String> authHeaders = headers.getRequestHeader(HttpHeaders.AUTHORIZATION);
+        String token = authHeaders != null ? authHeaders.get(0).split(" ")[1] : null;
+        boolean validToken = JwtVerification.verifyJwtToken(token);
+        String msg = "";
+        if (validToken) {
+            msg = "User calling this is a verified Userfront user. YAY!";
+
+            appForm.setApplicationFormId(applicationFormId);
+            try {
+                applicationFormSessionBeanLocal.updateApplicationForm(appForm);
+                return Response.status(204).build();
+            } catch (ApplicationNotFoundException | UpdateApplicationFormException | InputDataValidationException ex) {
+                JsonObject exception = Json.createObjectBuilder()
+                        .add("error", ex.getMessage())
+                        .build();
+                return Response.status(404).entity(exception)
+                        .type(MediaType.APPLICATION_JSON).build();
+            }
+
+        } else {
+            msg = "Invalid Userfront user! Go away!";
+            JsonObject exception = Json.createObjectBuilder().add("error", msg).build();
+            return Response.status(404).entity(exception).type(MediaType.APPLICATION_JSON).build();
         }
+
     } //end updateAppFormStatus
 
     @GET

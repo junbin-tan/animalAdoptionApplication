@@ -25,6 +25,7 @@ import CreateAnimalListingPage from "./pages/CreateAnimalListing/CreateAnimalLis
 import CreateEventListingPage from "./pages/CreateEventListing/CreateEventListing";
 import UserProvider from "./helpers/context/UserProvider";
 import ManageApplicationForm from "./pages/ManageApplicationForm/ManageApplicationForm";
+import ManageEventRegistration from "./pages/ManageEventRegistration/ManageEventRegistration";
 import ChatPage from "./pages/Chat/chatPage";
 
 
@@ -43,6 +44,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Dashboard />} />
               <Route exact path="/ManageApplicationForm" element={<ManageApplicationForm />} />
+              <Route exact path="/ManageEventRegistration" element={<ManageEventRegistration />} />
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
               <Route exact path="/Homepage" element={<Homepage />} />

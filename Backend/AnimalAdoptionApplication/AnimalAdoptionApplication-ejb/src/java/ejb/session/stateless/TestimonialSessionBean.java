@@ -95,7 +95,7 @@ public class TestimonialSessionBean implements TestimonialSessionBeanLocal {
 
 	@Override
 	public List<Testimonial> getAllTestimonial() {
-		Query q = em.createQuery("SELECT t FROM Testimonial t");
+		Query q = em.createQuery("SELECT t FROM Testimonial t WHERE t.message != ''");
 		return q.getResultList();
 	}
     
