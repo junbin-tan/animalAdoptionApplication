@@ -269,16 +269,17 @@ public class MembersResource {
     @Path("updateMemberAccess/{memberId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMemberAccess(@PathParam("memberId") Long memberId, AccessData data) {
+    public Response updateMemberAccess(@PathParam("memberId") Long memberId, JsonObject data) {
         try {
             Member currentMember = memberSessionBeanLocal.retrieveMemberByMemberId(memberId);
-            if (data.getAccess() == "DEACTIVATED")  {
+            String newAccountStatus = data.getString("access");
+            if (newAccountStatus.equals("DEACTIVATED"))  {
                 currentMember.setAccountStatus(AccountStatusEnum.DEACTIVATED);
-            } else if (data.getAccess() == "FLAGGED") {
+            } else if (newAccountStatus.equals("FLAGGED")) {
                 currentMember.setAccountStatus(AccountStatusEnum.FLAGGED);
-            } else if (data.getAccess() == "UNVERIFIED") {
+            } else if (newAccountStatus.equals("UNVERIFIED")) {
                 currentMember.setAccountStatus(AccountStatusEnum.UNVERIFIED);
-            } else {
+            } else if (newAccountStatus.equals("VERIFIED")) {
                 currentMember.setAccountStatus(AccountStatusEnum.VERIFIED);
             }
             

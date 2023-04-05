@@ -710,7 +710,8 @@ const Dashboard = () => {
             <label className="font-bold">
               What kind of sleeping area can the applicant provide?
             </label>
-            <p>{appForm.sleepArea}</p>
+            {appForm.sleepArea && <p>{appForm.sleepArea}</p>}
+            {!appForm.sleepArea && <p>Not Applicable</p>}
           </div>
 
           <div className="field">

@@ -291,14 +291,12 @@ const CreateAnimalListing = () => {
                         customUpload
                         auto={true}
                         uploadHandler={customBase64Uploader}
-                        // cancelOptions={{style:{display: "none"}}}
-                        // uploadOptions={{style:{display: "none"}}}
                         maxFileSize={10000000}
                         emptyTemplate={
                           <p className="m-0">
                             Drag and drop image to here to upload (Upload 1
                             image)*
-                            {getFormErrorMessage("Image")}
+                            {getFormErrorMessage("image")}
                           </p>
                         }
                       />
