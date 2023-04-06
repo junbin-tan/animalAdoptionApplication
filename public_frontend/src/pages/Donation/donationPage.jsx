@@ -117,10 +117,17 @@ const DonationPage = () => {
     );
   };
 
+  function getLink() {
+    let link = "https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII?prefilled_email=";
+    return link + formData.email;
+  }
+
+  let linkToRedirect = getLink();
+
   const dialogFooter = (
     <div className="flex justify-content-center">
       <a
-        href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII"
+        href={linkToRedirect}
         target="_blank"
         rel="noopener noreferrer"
       >
