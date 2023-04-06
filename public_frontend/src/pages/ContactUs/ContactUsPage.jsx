@@ -85,7 +85,7 @@ const ContactUsPage = () => {
     <>
       <h2 style={{ textAlign: "center" }}> Contact Us</h2>
       <h3 style={{ textAlign: "center" }}> Drop us a message! </h3>
-      <div className="form-demo">
+      <div className="form-demo" style={{padding: '20px'}}>
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}

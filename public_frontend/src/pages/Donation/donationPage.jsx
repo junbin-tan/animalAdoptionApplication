@@ -122,7 +122,7 @@ const DonationPage = () => {
 
   return (
     <>
-    <h2 style={{textAlign: "center"}}> Donation</h2>
+    <h2 style={{textAlign: "center"}} > Donation</h2>
       <div
         style={{
           margin: "5px",
@@ -143,7 +143,7 @@ const DonationPage = () => {
         />
       </div>
 
-      <div className="form-demo">
+      <div className="form-demo" style={{padding: '20px'}}>
 
         <Dialog
           visible={showMessage}
