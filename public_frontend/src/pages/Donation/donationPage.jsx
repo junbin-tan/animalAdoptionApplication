@@ -13,10 +13,9 @@ import Auth from "../../helpers/Auth";
 import UserContext from "../../helpers/context/UserContext";
 
 const DonationPage = () => {
-
   // Start: get valid current actual user with data like events created, donations, animal listings created etc
 
-  const {currentActualUser} = useContext(UserContext);
+  const { currentActualUser } = useContext(UserContext);
 
   console.log("Getting current actual user at Donation Page");
   const currentUserDonations = currentActualUser && currentActualUser.donations;
@@ -24,13 +23,24 @@ const DonationPage = () => {
   console.log(currentActualUser && currentActualUser);
 
   // End: get valid current actual user with data like events created, donations, animal listings created etc
-   
-  const donationType = [
-    { name: "Anonymous", code: "anonymous" },
-    { name: "Open", code: "open" },
-  ];
+
+  var donationType = [];
+  if (Auth.getUser()) {
+    donationType = [
+      { name: "Anonymous", code: "anonymous" },
+      { name: "Open", code: "open" },
+    ];
+  } else {
+    donationType = [{ name: "Anonymous", code: "anonymous" }];
+  }
+
+  // var donationType = Auth.getUser() &&  [
+  //   { name: "Anonymous", code: "anonymous" },
+  //   { name: "Open", code: "open" },
+  // ];
+
   //JSON format that will be parsed
-/*
+  /*
 {
   "name" : "Alwin",
   "email" : "alwinngjw@gmail.com",
@@ -41,7 +51,7 @@ const DonationPage = () => {
       }
   }
   */
- //Change donationStatus to type
+  //Change donationStatus to type
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({});
   const [toNext, setToNext] = useState(false);
@@ -89,7 +99,7 @@ const DonationPage = () => {
       setFormData(data);
       delete data.accept;
       data.donationType = data.donationType["name"].toUpperCase();
-      const test = {message:data.testimonial};
+      const test = { message: data.testimonial };
       data.testimonial = test;
       console.log(data);
       Api.createNewDonation(data).then((data) => setShowMessage(true));
@@ -109,20 +119,24 @@ const DonationPage = () => {
 
   const dialogFooter = (
     <div className="flex justify-content-center">
-    <a href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII" target="_blank" rel="noopener noreferrer">
-      <Button
-        label="Redirect me"
-        className="p-button-text"
-        autoFocus
-        onClick={() => setShowMessage(false)}
-      />
-       </a>
+      <a
+        href="https://buy.stripe.com/test_5kA17o4Ji5Ax4CYbII"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button
+          label="Redirect me"
+          className="p-button-text"
+          autoFocus
+          onClick={() => setShowMessage(false)}
+        />
+      </a>
     </div>
   );
 
   return (
     <>
-    <h2 style={{textAlign: "center"}}> Donation</h2>
+      <h2 style={{ textAlign: "center" }}> Donation</h2>
       <div
         style={{
           margin: "5px",
@@ -144,7 +158,6 @@ const DonationPage = () => {
       </div>
 
       <div className="form-demo">
-
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
@@ -165,7 +178,7 @@ const DonationPage = () => {
             </p>
           </div>
         </Dialog>
-        
+
         <div className="flex justify-content-center">
           <div className="card">
             <form onSubmit={formik.handleSubmit} className="p-fluid">
@@ -285,7 +298,7 @@ const DonationPage = () => {
                   className={classNames({
                     "p-error": isFormFieldValid("accept"),
                   })}
-                  style={{color: "black"}}
+                  style={{ color: "black" }}
                 >
                   I acknowledged that donations are non refundable*
                 </label>
