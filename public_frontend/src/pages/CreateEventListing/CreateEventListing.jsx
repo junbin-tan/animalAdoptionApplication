@@ -175,7 +175,7 @@ const CreateEventListing = () => {
       {m && m.accountStatus === "VERIFIED" && (
         <>
           <h2 className="text-center">Create Event Listing</h2>
-          <div className="form-demo">
+          <div className="form-demo" style={{padding: '20px'}}>
             <Dialog
               visible={showMessage}
               onHide={() => setShowMessage(false)}

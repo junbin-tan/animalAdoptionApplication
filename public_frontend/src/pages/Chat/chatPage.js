@@ -211,6 +211,7 @@ const ChatPage = () => {
       style={{
         height: "600px",
         position: "relative",
+        padding: '20px'
       }}
     >
       {!memberAccountStatusVerified && (

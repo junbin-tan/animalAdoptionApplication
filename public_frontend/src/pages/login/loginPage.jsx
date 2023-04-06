@@ -136,7 +136,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="form-demo">
+      <div className="form-demo" style={{padding: '20px'}}>
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
