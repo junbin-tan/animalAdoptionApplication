@@ -174,7 +174,7 @@ const ModalEvent = ({ setShowModal,eventname, description, eventListing}) => {
               <h6 className="text-center text-light">Oops!</h6>
               <h6 className="text-center text-light">
                 <p>You are not allowed to register for your own event </p>
-                <p>We know you are excited about your event, so please click the button below to view the registrations for your event.</p>
+                <p>We know you are excited about your event, but you are not allowed to register for your own event.</p>
               </h6>
    
             </div>
