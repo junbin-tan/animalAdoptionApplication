@@ -421,7 +421,7 @@ const CreateAnimalListing = () => {
                           "p-error": isFormFieldValid("weight"),
                         })}
                       >
-                        Weight*
+                        Weight (in kg)*
                       </label>
                     </span>
                     {getFormErrorMessage("weight")}
