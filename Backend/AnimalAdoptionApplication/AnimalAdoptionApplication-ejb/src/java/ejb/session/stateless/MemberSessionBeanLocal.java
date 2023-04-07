@@ -38,8 +38,8 @@ public interface MemberSessionBeanLocal {
 
     public Member memberLogin(String email, String password) throws InvalidLoginCredentialException;
 
-    public void createMemberForInside(String email, Date createDate);
-
     public List<Member> retrieveMembersByApplicationFormAndAnimalListing(String email) throws MemberNotFoundException;
+
+    public void createMemberForInside(String email, String name, Date createDate);
     
 }
