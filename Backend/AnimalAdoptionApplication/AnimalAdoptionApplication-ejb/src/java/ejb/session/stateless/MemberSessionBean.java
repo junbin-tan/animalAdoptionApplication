@@ -132,12 +132,12 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
     }
     
     @Override
-    public void createMemberForInside(String email, Date createDate) 
+    public void createMemberForInside(String email, String name, Date createDate) 
     {     
         Member newMember = new Member();
-        newMember.setName("testerName");
+        newMember.setName(name);
         newMember.setEmail(email);
-        newMember.setPassword("passowrd");
+        newMember.setPassword("password");
         newMember.setPhoneNumber("98000000");
         newMember.setOpenToAdopt(Boolean.TRUE);
         newMember.setOpenToFoster(Boolean.TRUE);
