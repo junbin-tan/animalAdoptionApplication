@@ -125,7 +125,7 @@ const DonationPage = () => {
   let linkToRedirect = getLink();
 
   const dialogFooter = (
-    <div className="flex justify-content-center">
+    <div className="flex justify-content-center" >
       <a
         href={linkToRedirect}
         target="_blank"
@@ -140,7 +140,6 @@ const DonationPage = () => {
       </a>
     </div>
   );
-
   return (
     <>
       <h2 style={{ textAlign: "center" }}> Donation</h2>
@@ -164,7 +163,7 @@ const DonationPage = () => {
         />
       </div>
 
-      <div className="form-demo">
+      <div className="form-demo" style={{padding: '20px'}}>
         <Dialog
           visible={showMessage}
           onHide={() => setShowMessage(false)}
@@ -187,7 +186,7 @@ const DonationPage = () => {
         </Dialog>
 
         <div className="flex justify-content-center">
-          <div className="card">
+          <div className="card" style={{padding: '20px'}}>
             <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Name textbox */}
               <div className="field">
