@@ -126,9 +126,9 @@ const CreateAnimalListing = () => {
         errors.animalType = "Animal Type is required";
       }
 
-      if (!data.isNeutered) {
-        errors.isNeutered = "Please indicate whether the animal is neutered";
-      }
+      // if (!data.isNeutered) {
+      //   errors.isNeutered = "Please indicate whether the animal is neutered";
+      // }
 
       if (!data.description) {
         errors.description = "Description is required.";
@@ -163,6 +163,13 @@ const CreateAnimalListing = () => {
       }
       if (data.fosterEndDate != null) {
         data.fosterEndDate = data.fosterEndDate.toISOString();
+      }
+
+      if (data.isNeutered == false) {
+        data.isNeutered = false;
+
+      } else {
+        data.isNeutered = true;
       }
 
       const animalImage = animalImg && animalImg;
@@ -459,18 +466,12 @@ const CreateAnimalListing = () => {
                       name="isNeutered"
                       checked={formik.values.isNeutered}
                       onChange={formik.handleChange}
-                      className={classNames({
-                        "p-invalid": isFormFieldValid("isNeutered"),
-                      })}
                     />
                     <label
                       htmlFor="isNeutered"
-                      className={classNames({
-                        "p-error": isFormFieldValid("isNeutered"),
-                      })}
                       style={{ color: "black" }}
                     >
-                      Is the animal neuteured?*
+                      Is the animal neuteured? (Tick for true)
                     </label>
                   </div>
 
