@@ -84,6 +84,18 @@ const Modal = ({ setShowModal, description, animalListing }) => {
         errors.formType = "Gender is required";
       }
 
+      if (data.hasOtherPets && !data.existingPetsOwned) {
+        errors.existingPetsOwned = "Existing pets owned is required";
+      }
+
+      if (data.hasOtherPets && !data.sleepArea) {
+        errors.sleepArea = "Please indicate if your existing pet(s) sleeping area";
+      }
+
+      if (data.hasOtherPets && !data.petAloneTime) {
+        errors.petAloneTime = "Please indicate how much time do you pets spent alone";
+      }
+
       return errors;
     },
 
@@ -94,6 +106,14 @@ const Modal = ({ setShowModal, description, animalListing }) => {
       if (data.sleepArea != null) {
         data.sleepArea = data.sleepArea["name"];
       }
+
+      if (data.hasDailyExercise == false) {
+        data.hasDailyExercise = false;
+
+      } else {
+        data.hasDailyExercise = true;
+      }
+      
       data.formType = data.formType["name"];
       Api.createApplicationForm(data).then((response) => {
         if (response.status === 204) {
@@ -355,11 +375,20 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                               name="existingPetsOwned"
                               value={formik.values.existingPetsOwned}
                               onChange={formik.handleChange}
+                              className={classNames({
+                                "p-invalid": isFormFieldValid("existingPetsOwned"),
+                              })}
                             />
-                            <label htmlFor="existingPetsOwned">
+                            <label 
+                            htmlFor="existingPetsOwned"
+                            className={classNames({
+                              "p-error": isFormFieldValid("existingPetsOwned"),
+                            })}
+                            >
                               Existing Pets Owned
                             </label>
                           </span>
+                          {getFormErrorMessage("existingPetsOwned")}
                         </div>
 
                         {/* hasDailyExercise checkbox */}
@@ -374,8 +403,7 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                             htmlFor="hasDailyExercise"
                             style={{ color: "black" }}
                           >
-                            Do your pet(s) have daily exercise? (If you have an
-                            existing pet)
+                            Do your pet(s) have daily exercise? (Tick for true)
                           </label>
                         </div>
 
@@ -389,11 +417,20 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                               onChange={formik.handleChange}
                               options={sleepArea}
                               optionLabel="name"
+                              className={classNames({
+                                "p-invalid": isFormFieldValid("sleepArea"),
+                              })}
                             />
-                            <label htmlFor="sleepArea">
+                            <label 
+                            htmlFor="sleepArea"
+                            className={classNames({
+                              "p-error": isFormFieldValid("sleepArea"),
+                            })}>
+
                               Sleep Area (If you have an existing pet)
                             </label>
                           </span>
+                          {getFormErrorMessage("sleepArea")}
                         </div>
 
                         {/* Pet Alone Time textbox */}
@@ -404,11 +441,20 @@ const Modal = ({ setShowModal, description, animalListing }) => {
                               name="petAloneTime"
                               value={formik.values.petAloneTime}
                               onChange={formik.handleChange}
+                              className={classNames({
+                                "p-invalid": isFormFieldValid("petAloneTime"),
+                              })}
                             />
-                            <label htmlFor="petAloneTime">
+                            <label 
+                            htmlFor="petAloneTime"
+                            className={classNames({
+                              "p-error": isFormFieldValid("petAloneTime"),
+                            })}
+                              >
                               Pet Alone Time (If you have an existing pet)
                             </label>
                           </span>
+                          {getFormErrorMessage("petAloneTime")}
                         </div>
 
                         {/* Reason textbox */}
