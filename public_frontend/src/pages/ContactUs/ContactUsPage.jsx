@@ -108,7 +108,7 @@ const ContactUsPage = () => {
           <div className="card">
             <form onSubmit={formik.handleSubmit} className="p-fluid">
               {/* Name textbox */}
-              <div className="field">
+              <div className="field" style={{padding: '20px'}}>
                 <span className="p-float-label">
                   <InputText
                     id="name"
@@ -133,7 +133,7 @@ const ContactUsPage = () => {
               </div>
 
               {/* Email textbox */}
-              <div className="field">
+              <div className="field" style={{padding: '20px'}}>
                 <span className="p-float-label" style={{ marginTop: "15px" }}>
                   <InputText
                     id="email"
@@ -157,7 +157,7 @@ const ContactUsPage = () => {
               </div>
 
               {/* Message textbox */}
-              <div className="field">
+              <div className="field" style={{padding: '20px'}}>
                 <span className="p-float-label" style={{ marginTop: "15px" }}>
                   <InputText
                     id="message"
@@ -182,7 +182,7 @@ const ContactUsPage = () => {
               </div>
 
               {/* Submit button */}
-              <Button type="submit" label="Send" className="mt-2" />
+              <Button type="submit" label="Send" className="mt-2"  />
             </form>
           </div>
         </div>
