@@ -1,4 +1,4 @@
-# IS3106_Project
+# IS3106_Project Group 8 (AY22-23 Semester 2)
 It should contain both Frontend (Admin side), public_frontend(public facing side) and Common Backend
 
 ## Instructions to run our application
