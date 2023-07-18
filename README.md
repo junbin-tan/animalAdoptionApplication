@@ -26,4 +26,6 @@ It should not return NULL POINTER EXCEPTION. Keep re-deploy until you don't get 
 2. Install required project packages by doing "npm install"
 3. After "npm install", run the app by doing "npm start". The browser should pop up with our website.
 
+### Video Demo
+https://youtu.be/-0h5f99wD6Q.
 
